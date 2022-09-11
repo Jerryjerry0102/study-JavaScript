@@ -14,7 +14,7 @@
 console.log('Hello World!');
 
 
-// 2. Variable // 
+// 2. Variable, rw(read/write) // 
 // 변수 : 변경될 수 있는 값
 // let (added in ES6)
 
@@ -61,14 +61,20 @@ console.log('Hello World!');
 // var는 block을 철저히 무시한다.
 
 
-// 3. Constants
+// 3. Constant, r(read only)
+// use const whenever possible.
+// only use let if variable needs to change.
 // constant는 한 번 할당하면 값이 절대 바뀌지 않는 아이.
+const daysInWeek = 7;
+const maxNumber = 5;
+
+// Note!
+// Immutable data types: primitive types, frozen objects(i.e. object.freeze())
+// Mutable data types: all objects by default are mutable in Js.
 // favor immutable data type always for a few reasons:
     // - security
     // - thread safety         thread(스레드): cpu가 독립적으로 처리하는 하나의 작업 단위 
     // - reduce human mistakes
-const daysInWeek = 7;
-const maxNumber = 5;
 
 
 // 4. Variable types //
@@ -93,7 +99,7 @@ const maxNumber = 5;
     // string //
 
     // boolean //
-    // false: 0, null, undefined, NaN, ''
+    // false: 0, null, undefined, NaN, ''(empty string)
     // true: any other value
     const canRead =  true;
     const test = 3  < 1;    // false
@@ -167,3 +173,4 @@ console.log(text.charAt(0));        // error
 
 
 
+ 
