@@ -10,8 +10,14 @@ class Judgement {
     return result;
   };
 
-  hasPlace = (computer, place, number) => {
+  hasPlace = (computer, placeIndex, number) => {
+    return computer[placeIndex] === number;
+    /* 위랑 똑같은 코드
+    if (computer[placeIndex] === number) {
+      return true;
+    }
     return false;
+    */
   };
 }
 

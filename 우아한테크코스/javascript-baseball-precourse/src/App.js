@@ -9,8 +9,10 @@ class App {
     // console.log(numbers);
 
     const judgement = new Judgement();
-    const count = judgement.correctCount([7, 8, 9], [1, 2, 3]);
-    console.log(count);
+    // const count = judgement.correctCount([7, 8, 9], [1, 2, 3]);
+    // console.log(count);
+    const place = judgement.hasPlace([7, 8, 9], 0, 7);
+    console.log(place);
   }
 }
 
