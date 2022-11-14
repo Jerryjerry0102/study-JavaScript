@@ -16,7 +16,7 @@ class App {
     // console.log(place);
 
     const referee = new Referee();
-    const result = referee.compare([3, 1, 2], [1, 2, 3]);
+    const result = referee.compare([7, 1, 9], [1, 2, 3]);
     console.log(result);
   }
 }
