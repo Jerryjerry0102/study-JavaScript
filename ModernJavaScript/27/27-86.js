@@ -9,3 +9,8 @@
 
 // 중첩 배열을 평탄화하기 위한 깊이 값을 Infinity로 지정하여 중첩 배열 모두를 평탄화한다.
 [1, [2, [3, [4]]]].flat(Infinity); // -> [1, 2, 3, 4]
+
+const array = [1, [2, [3, [4]]]];
+const result = array.flat(Infinity);
+console.log(array); // [1, 2, [3, [4]]]
+console.log(result); // [ 1, 2, 3, 4 ]
