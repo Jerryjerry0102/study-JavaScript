@@ -35,7 +35,7 @@
 - [x] 26장 ES6 함수의 추가 기능
 - [x] 27장 배열
 - [x] 28장 Number
-- [ ] 29장 Math
+- [x] 29장 Math
 - [ ] 30장 Date
 - [ ] 31장 RegExp
 - [ ] 32장 String
