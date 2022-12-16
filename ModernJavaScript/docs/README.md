@@ -36,7 +36,7 @@
 - [x] 27장 배열
 - [x] 28장 Number
 - [x] 29장 Math
-- [ ] 30장 Date
+- [x] 30장 Date
 - [ ] 31장 RegExp
 - [ ] 32장 String
 - [ ] 33장 7번째 데이터 타입 Symbol
