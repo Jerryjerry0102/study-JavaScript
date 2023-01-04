@@ -7,7 +7,7 @@
 
 ### 목차
 
-- [ ] 1 Hello, JavaScript!
+- [x] 1 Hello, JavaScript!
 - [ ] 2 기본 문법 배우기
   - [ ] 2.1 코드 작성 규칙
   - [ ] 2.2 자료형
