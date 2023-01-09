@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>word-relay-alone</title>
+</head>
+
+<body>
+  <div><span id="userNumber">1</span>번째 참가자</div>
+  <div>제시어: <span id="word"></span></div>
+  <input type="text" />
+  <button>입력</button>
+
+  <script>
+    let word = ''; // 제시어
+    let newWord = '';
+    let userNumber = 1;
+    const $word = document.querySelector('#word');
+    const $input = document.querySelector('input');
+    const $userNumber = document.querySelector('#userNumber');
+
+    const userNumbers = prompt('몇 명이 참가하나요?');
+
+    document.querySelector('input').addEventListener('input', (event) => {
+      newWord = event.target.value;
+    })
+    document.querySelector('button').addEventListener('click', () => {
+      if (!word) { // 비어 있다
+        word = newWord;
+        $word.textContent = word;
+        userNumber += 1;
+        $userNumber.textContent = userNumber;
+      } else { // 비어 있지 않다
+        if (word[word.length - 1] === newWord[0]) {
+          word = newWord;
+          $word.textContent = word;
+          if(userNumber < userNumbers){
+            userNumber += 1;
+            $userNumber.textContent = userNumber;
+          }else{
+            userNumber = 1;
+            $userNumber.textContent = userNumber;
+          }
+        } else {
+          alert('올바르지 않은 단어입니다.');
+        }
+      }
+      $input.value = '';
+      $input.focus();
+    })
+
+  </script>
+</body>
+
+</html>
