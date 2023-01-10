@@ -28,26 +28,20 @@
       newWord = event.target.value;
     })
     document.querySelector('button').addEventListener('click', () => {
-      if (!word) { // 비어 있다
-        word = newWord;
-        $word.textContent = word;
-        userNumber += 1;
-        $userNumber.textContent = userNumber;
-      } else { // 비어 있지 않다
-        if (word[word.length - 1] === newWord[0]) {
-          word = newWord;
-          $word.textContent = word;
-          if(userNumber < userNumbers){
-            userNumber += 1;
-            $userNumber.textContent = userNumber;
-          }else{
-            userNumber = 1;
-            $userNumber.textContent = userNumber;
-          }
-        } else {
-          alert('올바르지 않은 단어입니다.');
-        }
+      if (word && word[word.length - 1] !== newWord[0]) { // 비어 있지 않고 단어가 올바르지 않다.
+        alert('올바르지 않은 단어입니다.');
+        return;
       }
+      // 비어 있다.
+      word = newWord;
+      $word.textContent = word;
+      if (userNumber < userNumbers) {
+        userNumber += 1;
+      } else {
+        userNumber = 1;
+      }
+      $userNumber.textContent = userNumber;
+
       $input.value = '';
       $input.focus();
     })
