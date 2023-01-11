@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>calculator-alone</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      button {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+      }
+      #operator {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        text-align: center;
+      }
+      #result {
+        height: 50px;
+        width: 180px;
+        margin: 5px;
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input id="operator" />
+    <input id="result" />
+    <div id="button">
+      <div>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>+</button>
+      </div>
+      <div>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>-</button>
+      </div>
+      <div>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>/</button>
+      </div>
+      <div>
+        <button>c</button>
+        <button>0</button>
+        <button>=</button>
+        <button>x</button>
+      </div>
+    </div>
+
+    <script>
+      let textContent = "";
+      let numberOne = "";
+      let operator = "";
+      let numberTwo = "";
+      let result = "";
+      let equal = false;
+      const OPERATORS = ["+", "-", "/", "x"];
+      const $button = document.querySelector("#button");
+      const $operator = document.querySelector("#operator");
+      const $result = document.querySelector("#result");
+
+      const onClickNumber = () => {
+        if (equal) {
+          numberOne = "";
+          equal = false;
+        }
+        if (!operator) {
+          // operator 변수가 비어 있다.
+          numberOne += textContent;
+          $result.value = numberOne;
+        } else {
+          // 연산자 변수가 비어 있지 않다.
+          numberTwo += textContent;
+          $result.value = numberTwo;
+        }
+      };
+
+      const onClickOperator = () => {
+        equal = false;
+        if (numberTwo) {
+          calculate();
+        }
+        if (!numberOne) {
+          // numberOne 변수가 비어 있다.
+          alert("숫자를 먼저 입력하세요.");
+        } else {
+          // numberOne 변수가 비어 있지 않다.
+          operator = textContent;
+          $operator.value = operator;
+        }
+      };
+
+      const onClickEqual = () => {
+        if (!numberTwo) {
+          alert("숫자 및 연산자를 먼저 입력하세요.");
+          return;
+        }
+        calculate();
+        equal = true;
+      };
+
+      const calculate = () => {
+        switch (operator) {
+          case "+":
+            result = Number(numberOne) + Number(numberTwo);
+            break;
+          case "-":
+            result = numberOne - numberTwo;
+            break;
+          case "x":
+            result = numberOne * numberTwo;
+            break;
+          case "/":
+            result = numberOne / numberTwo;
+            break;
+          default:
+            break;
+        }
+        $result.value = result;
+        $operator.value = "";
+        numberOne = result;
+        operator = "";
+        numberTwo = "";
+      };
+
+      const onClickCancel = () => {
+        numberOne = "";
+        operator = "";
+        numberTwo = "";
+        $result.value = "";
+        $operator.value = "";
+      };
+
+      $button.addEventListener("click", (event) => {
+        textContent = event.target.textContent;
+        if (Number(textContent) || textContent === "0") {
+          onClickNumber();
+        } else if (OPERATORS.includes(textContent)) {
+          onClickOperator();
+        } else if (textContent === "=") {
+          onClickEqual();
+        } else if (textContent === "c") {
+          onClickCancel();
+        }
+      });
+    </script>
+  </body>
+</html>
