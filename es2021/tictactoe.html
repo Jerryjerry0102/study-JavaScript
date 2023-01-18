@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>틱택토</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // 구조분해할당
+      const { body } = document;
+      const $table = document.createElement("table");
+      const $result = document.createElement("div");
+      const rows = [];
+      let turn = "O";
+
+      const checkWinner = (target) => {
+        let rowIndex = event.target.parentNode.rowIndex;
+        let cellIndex = event.target.cellIndex;
+        // let rowIndex;
+        // let cellIndex;
+        // rows.forEach((row, rIndex) => {
+        //   row.forEach((cell, cIndex) => {
+        //     if (cell === target) {
+        //       rowIndex = rIndex;
+        //       cellIndex = cIndex;
+        //     }
+        //   });
+        // });
+
+        // 세 칸이 다 채워졌나?
+        let hasWinner = false;
+        if (
+          // 세로줄 검사
+          rows[rowIndex][0].textContent === turn &&
+          rows[rowIndex][1].textContent === turn &&
+          rows[rowIndex][2].textContent === turn
+        ) {
+          hasWinner = true;
+        } else if (
+          // 가로줄 검사
+          rows[0][cellIndex].textContent === turn &&
+          rows[1][cellIndex].textContent === turn &&
+          rows[2][cellIndex].textContent === turn
+        ) {
+          hasWinner = true;
+        } else if (
+          // 대각선 검사
+          rows[0][0].textContent === turn &&
+          rows[1][1].textContent === turn &&
+          rows[2][2].textContent === turn
+        ) {
+          hasWinner = true;
+        } else if (
+          rows[0][2].textContent === turn &&
+          rows[1][1].textContent === turn &&
+          rows[2][0].textContent === turn
+        ) {
+          hasWinner = true;
+        }
+        return hasWinner;
+      };
+
+      const checkDraw = () => {
+        // flat()으로 이차원 배열을 펴주면 every를 쓸 수 있음.
+        return rows.flat().every((cell) => cell.textContent);
+
+        // let draw = true;
+        // rows.forEach((row) => {
+        //   row.forEach((cell) => {
+        //     if (!cell.textContent) draw = false;
+        //   });
+        // });
+        // return draw;
+      };
+
+      const callback = () => {
+        // 빈칸이면
+        if (event.target.textContent) return;
+        // 빈칸이 아니면
+        event.target.textContent = turn;
+        // 승부 판단하기
+        if (checkWinner(event.target)) {
+          $result.textContent = `${turn}님이 승리!`;
+          $table.removeEventListener("click", callback);
+          return;
+        }
+        // 무승부 검사
+        if (checkDraw()) {
+          $result.textContent = "무승부";
+          return;
+        }
+
+        turn = turn === "O" ? "X" : "O";
+        // if (turn === "O") {
+        //   turn = "X";
+        // } else if (turn === "X") {
+        //   turn = "O";
+        // }
+      };
+
+      for (let i = 0; i < 3; i++) {
+        const $tr = document.createElement("tr");
+        const row = [];
+        for (let j = 0; j < 3; j++) {
+          const $td = document.createElement("td");
+          row.push($td);
+          $tr.append($td);
+        }
+        $table.append($tr);
+        rows.push(row);
+      }
+      // 이벤트 버블링
+      $table.addEventListener("click", callback);
+      body.prepend($result);
+      body.prepend($table);
+    </script>
+  </body>
+</html>
