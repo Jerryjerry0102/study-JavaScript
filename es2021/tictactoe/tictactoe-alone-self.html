@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>틱택토-alone</title>
+    <title>틱택토-alone-self</title>
     <style>
       table {
         border-collapse: collapse;
@@ -27,9 +27,9 @@
   <body>
     <script>
       // dom & data
-      const TURN1 = "X";
-      const TURN2 = "O";
-      let turn = TURN1;
+      const USER_TURN = "X";
+      const COMPUTER_TURN = "O";
+      let turn = USER_TURN;
       const table = [];
       const $result = document.createElement("div");
       const $table = document.createElement("table");
@@ -48,9 +48,9 @@
       document.body.prepend($table);
 
       // 승부 확인
-      const checkWin = () => {
-        let rowIndex = event.target.parentNode.rowIndex;
-        let cellIndex = event.target.cellIndex;
+      const checkWin = (target) => {
+        let rowIndex = target.parentNode.rowIndex;
+        let cellIndex = target.cellIndex;
         if (
           table[rowIndex][0].textContent === turn &&
           table[rowIndex][1].textContent === turn &&
@@ -82,8 +82,8 @@
       const checkTie = () => {
         return table.flat().every((td) => td.textContent);
       };
-      const checkResult = () => {
-        if (checkWin()) {
+      const checkResult = (target) => {
+        if (checkWin(target)) {
           $result.textContent = `🎉 ${turn} 승리 🎉`;
           return true;
         } else if (checkTie()) {
@@ -92,17 +92,38 @@
         } else return false;
       };
 
+      // 컴퓨터 차례 코드
+      const turnComputer = () => {
+        const emptyTds = table.flat().filter((td) => !td.textContent);
+        // const emptyTds = [];
+        // table.flat().forEach((td) => {
+        //   if (!td.textContent) {
+        //     emptyTds.push(td);
+        //   }
+        // });
+        let computerTd = emptyTds[Math.floor(Math.random() * emptyTds.length)];
+        computerTd.textContent = COMPUTER_TURN;
+        console.log(turn);
+        if (checkResult(computerTd)) {
+          $table.removeEventListener("click", callback);
+          return;
+        }
+        turn = USER_TURN;
+      };
+
       // click 이벤트 callback 함수
       const callback = () => {
+        console.log(turn);
         if (event.target.textContent) return;
         event.target.textContent = turn;
 
-        if (checkResult()) {
+        if (checkResult(event.target)) {
           $table.removeEventListener("click", callback);
           return;
         }
 
-        turn = turn === TURN1 ? TURN2 : TURN1;
+        turn = COMPUTER_TURN;
+        turnComputer();
       };
 
       $table.addEventListener("click", callback);
