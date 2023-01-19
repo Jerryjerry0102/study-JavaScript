@@ -21,48 +21,40 @@
   </head>
   <body>
     <script>
-      const $table = document.createElement("table");
       const TURN1 = "X";
       const TURN2 = "O";
       let turn = TURN1;
 
-      // view
+      // view & data [[td, td, td], [td, td, td], [td, td, td]]
+      const $table = document.createElement("table");
+      const table = [];
       for (let i = 0; i < 3; i++) {
         $tr = document.createElement("tr");
+        const tr = [];
         for (let j = 0; j < 3; j++) {
           $td = document.createElement("td");
           $tr.append($td);
-        }
-        $table.append($tr);
-      }
-
-      // data
-      // [[td, td, td], [td, td, td], [td, td, td]]
-      const table = [];
-      for (let i = 0; i < 3; i++) {
-        const tr = [];
-        for (let j = 0; j < 3; j++) {
           tr.push($td);
         }
+        $table.append($tr);
         table.push(tr);
       }
 
       const win = () => {
-        console.log("win");
+        console.log(table[0][0]);
         return false;
       };
-
       const tie = () => {
-        console.log("tie");
         return false;
       };
-
       const checkResult = () => {
-        //이겼는가
         if (win()) {
+          //이겼는가
+          console.log("win");
           return true;
         } else if (tie()) {
           //비겼는가
+          console.log("tie");
           return true;
         } else return false;
       };
