@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>틱택토-alone</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        width: 80px;
+        height: 80px;
+        border: 1px solid black;
+        text-align: center;
+        padding: 8px 4px 0px 4px;
+        font-size: 60px;
+      }
+      div {
+        font-size: 30px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        margin: 10px 0 0 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // dom & data
+      const TURN1 = "X";
+      const TURN2 = "O";
+      let turn = TURN1;
+      const table = [];
+      const $result = document.createElement("div");
+      const $table = document.createElement("table");
+      for (let i = 0; i < 3; i++) {
+        $tr = document.createElement("tr");
+        const tr = [];
+        for (let j = 0; j < 3; j++) {
+          $td = document.createElement("td");
+          $tr.append($td);
+          tr.push($td);
+        }
+        $table.append($tr);
+        table.push(tr);
+      }
+      document.body.prepend($result);
+      document.body.prepend($table);
+
+      // 승부 확인
+      const checkWin = () => {
+        let rowIndex = event.target.parentNode.rowIndex;
+        let cellIndex = event.target.cellIndex;
+        if (
+          table[rowIndex][0].textContent === turn &&
+          table[rowIndex][1].textContent === turn &&
+          table[rowIndex][2].textContent === turn
+        )
+          return true;
+        else if (
+          table[0][cellIndex].textContent === turn &&
+          table[1][cellIndex].textContent === turn &&
+          table[2][cellIndex].textContent === turn
+        )
+          return true;
+        else if (
+          // 대각선 검사
+          table[0][0].textContent === turn &&
+          table[1][1].textContent === turn &&
+          table[2][2].textContent === turn
+        )
+          return true;
+        else if (
+          // 대각선 검사
+          table[0][2].textContent === turn &&
+          table[1][1].textContent === turn &&
+          table[2][0].textContent === turn
+        )
+          return true;
+        else return false;
+      };
+      const checkTie = () => {
+        return table.flat().every((td) => td.textContent);
+      };
+      const checkResult = () => {
+        if (checkWin()) {
+          $result.textContent = `🎉 ${turn} 승리 🎉`;
+          return true;
+        } else if (checkTie()) {
+          $result.textContent = "🥱 무승부 🥱";
+          return true;
+        } else return false;
+      };
+
+      // click 이벤트 callback 함수
+      const callback = () => {
+        if (event.target.textContent) return;
+        event.target.textContent = turn;
+
+        if (checkResult()) {
+          $table.removeEventListener("click", callback);
+          return;
+        }
+
+        turn = turn === TURN1 ? TURN2 : TURN1;
+      };
+
+      $table.addEventListener("click", callback);
+    </script>
+  </body>
+</html>
