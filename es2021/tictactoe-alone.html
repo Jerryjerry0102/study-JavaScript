@@ -17,6 +17,11 @@
         padding: 8px 4px 0px 4px;
         font-size: 60px;
       }
+      div {
+        font-size: 30px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        margin: 10px;
+      }
     </style>
   </head>
   <body>
@@ -24,8 +29,10 @@
       const TURN1 = "X";
       const TURN2 = "O";
       let turn = TURN1;
+      const $result = document.createElement("div");
+      document.body.prepend($result);
 
-      // view & data [[td, td, td], [td, td, td], [td, td, td]]
+      // 초기 view & data [[td, td, td], [td, td, td], [td, td, td]]
       const $table = document.createElement("table");
       const table = [];
       for (let i = 0; i < 3; i++) {
@@ -40,25 +47,55 @@
         table.push(tr);
       }
 
-      const win = () => {
-        console.log(table[0][0]);
-        return false;
+      // 승부 확인
+      const checkWin = () => {
+        let rowIndex = event.target.parentNode.rowIndex;
+        let cellIndex = event.target.cellIndex;
+        if (
+          table[rowIndex][0].textContent === turn &&
+          table[rowIndex][1].textContent === turn &&
+          table[rowIndex][2].textContent === turn
+        )
+          return true;
+        else if (
+          table[0][cellIndex].textContent === turn &&
+          table[1][cellIndex].textContent === turn &&
+          table[2][cellIndex].textContent === turn
+        )
+          return true;
+        else if (
+          // 대각선 검사
+          table[0][0].textContent === turn &&
+          table[1][1].textContent === turn &&
+          table[2][2].textContent === turn
+        )
+          return true;
+        else if (
+          // 대각선 검사
+          table[0][2].textContent === turn &&
+          table[1][1].textContent === turn &&
+          table[2][0].textContent === turn
+        )
+          return true;
+        else return false;
       };
-      const tie = () => {
+      const checkTie = () => {
         return false;
       };
       const checkResult = () => {
-        if (win()) {
-          //이겼는가
-          console.log("win");
+        if (checkWin()) {
+          $result.textContent = `🎉 ${turn} 승 🎉`;
           return true;
-        } else if (tie()) {
-          //비겼는가
+        } else if (checkTie()) {
           console.log("tie");
           return true;
-        } else return false;
+        } else {
+          console.log("keep going");
+          return false;
+        }
       };
 
+      // click 이벤트 callback 함수
       const callback = () => {
         console.log("click");
         if (event.target.textContent) {
