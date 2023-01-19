@@ -5,6 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>틱택토-alone</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        width: 80px;
+        height: 80px;
+        border: 1px solid black;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <script>
+      const $table = document.createElement("table");
+
+      // view
+      for (let i = 0; i < 3; i++) {
+        $tr = document.createElement("tr");
+        for (let j = 0; j < 3; j++) {
+          $td = document.createElement("td");
+          $tr.append($td);
+        }
+        $table.append($tr);
+      }
+
+      // data
+      // [[td, td, td], [td, td, td], [td, td, td]]
+      const table = [];
+      for (let i = 0; i < 3; i++) {
+        const tr = [];
+        for (let j = 0; j < 3; j++) {
+          tr.push($td);
+        }
+        table.push(tr);
+      }
+
+      document.body.prepend($table);
+    </script>
+  </body>
 </html>
