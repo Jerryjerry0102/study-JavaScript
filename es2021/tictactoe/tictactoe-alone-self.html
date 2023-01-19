@@ -95,38 +95,34 @@
       // 컴퓨터 차례 코드
       const turnComputer = () => {
         const emptyTds = table.flat().filter((td) => !td.textContent);
-        // const emptyTds = [];
-        // table.flat().forEach((td) => {
-        //   if (!td.textContent) {
-        //     emptyTds.push(td);
-        //   }
-        // });
         let computerTd = emptyTds[Math.floor(Math.random() * emptyTds.length)];
         computerTd.textContent = COMPUTER_TURN;
-        console.log(turn);
         if (checkResult(computerTd)) {
-          $table.removeEventListener("click", callback);
+          $table.removeEventListener("click", turnUser);
           return;
         }
         turn = USER_TURN;
+        clickable = true;
       };
 
-      // click 이벤트 callback 함수
-      const callback = () => {
-        console.log(turn);
+      // click 이벤트 turnUser 함수
+      let clickable = true;
+      const turnUser = () => {
+        if (!clickable) return;
         if (event.target.textContent) return;
         event.target.textContent = turn;
 
         if (checkResult(event.target)) {
-          $table.removeEventListener("click", callback);
+          $table.removeEventListener("click", turnUser);
           return;
         }
 
         turn = COMPUTER_TURN;
-        turnComputer();
+        clickable = false;
+        setTimeout(turnComputer, 1000);
       };
 
-      $table.addEventListener("click", callback);
+      $table.addEventListener("click", turnUser);
     </script>
   </body>
 </html>
