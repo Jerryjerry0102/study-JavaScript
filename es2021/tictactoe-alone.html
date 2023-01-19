@@ -47,12 +47,38 @@
         table.push(tr);
       }
 
+      const win = () => {
+        console.log("win");
+        return false;
+      };
+
+      const tie = () => {
+        console.log("tie");
+        return false;
+      };
+
+      const checkResult = () => {
+        //이겼는가
+        if (win()) {
+          return true;
+        } else if (tie()) {
+          //비겼는가
+          return true;
+        } else return false;
+      };
+
       const callback = () => {
         console.log("click");
         if (event.target.textContent) {
           return;
         }
         event.target.textContent = turn;
+
+        if (checkResult()) {
+          $table.removeEventListener("click", callback);
+          console.log("remove");
+          return;
+        }
 
         turn = turn === TURN1 ? TURN2 : TURN1;
       };
