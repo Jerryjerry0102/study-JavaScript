@@ -20,7 +20,7 @@
       div {
         font-size: 30px;
         font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-        margin: 10px;
+        margin: 10px 0 0 60px;
       }
     </style>
   </head>
@@ -80,14 +80,14 @@
         else return false;
       };
       const checkTie = () => {
-        return false;
+        return table.flat().every((td) => td.textContent);
       };
       const checkResult = () => {
         if (checkWin()) {
-          $result.textContent = `🎉 ${turn} 승 🎉`;
+          $result.textContent = `🎉 ${turn} 승리 🎉`;
           return true;
         } else if (checkTie()) {
-          console.log("tie");
+          $result.textContent = "🥱 무승부 🥱";
           return true;
         } else {
           console.log("keep going");
