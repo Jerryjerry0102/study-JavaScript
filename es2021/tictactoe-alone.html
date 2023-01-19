@@ -13,12 +13,18 @@
         width: 80px;
         height: 80px;
         border: 1px solid black;
+        text-align: center;
+        padding: 8px 4px 0px 4px;
+        font-size: 60px;
       }
     </style>
   </head>
   <body>
     <script>
       const $table = document.createElement("table");
+      const TURN1 = "X";
+      const TURN2 = "O";
+      let turn = TURN1;
 
       // view
       for (let i = 0; i < 3; i++) {
@@ -40,6 +46,18 @@
         }
         table.push(tr);
       }
+
+      const callback = () => {
+        console.log("click");
+        if (event.target.textContent) {
+          return;
+        }
+        event.target.textContent = turn;
+
+        turn = turn === TURN1 ? TURN2 : TURN1;
+      };
+
+      $table.addEventListener("click", callback);
 
       document.body.prepend($table);
     </script>
