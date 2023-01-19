@@ -26,15 +26,13 @@
   </head>
   <body>
     <script>
+      // dom & data
       const TURN1 = "X";
       const TURN2 = "O";
       let turn = TURN1;
-      const $result = document.createElement("div");
-      document.body.prepend($result);
-
-      // 초기 view & data [[td, td, td], [td, td, td], [td, td, td]]
-      const $table = document.createElement("table");
       const table = [];
+      const $result = document.createElement("div");
+      const $table = document.createElement("table");
       for (let i = 0; i < 3; i++) {
         $tr = document.createElement("tr");
         const tr = [];
@@ -46,6 +44,8 @@
         $table.append($tr);
         table.push(tr);
       }
+      document.body.prepend($result);
+      document.body.prepend($table);
 
       // 승부 확인
       const checkWin = () => {
@@ -89,23 +89,16 @@
         } else if (checkTie()) {
           $result.textContent = "🥱 무승부 🥱";
           return true;
-        } else {
-          console.log("keep going");
-          return false;
-        }
+        } else return false;
       };
 
       // click 이벤트 callback 함수
       const callback = () => {
-        console.log("click");
-        if (event.target.textContent) {
-          return;
-        }
+        if (event.target.textContent) return;
         event.target.textContent = turn;
 
         if (checkResult()) {
           $table.removeEventListener("click", callback);
-          console.log("remove");
           return;
         }
 
@@ -113,8 +106,6 @@
       };
 
       $table.addEventListener("click", callback);
-
-      document.body.prepend($table);
     </script>
   </body>
 </html>
