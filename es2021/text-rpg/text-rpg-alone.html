@@ -59,7 +59,6 @@
           $battlePage.addEventListener("submit", this.onBattlePage);
           this.changePage($startPage, $mainPage);
           this.updateUserInfo();
-          console.log("hi");
         }
         changePage(currentPage, nextPage) {
           currentPage.style.display = "none";
@@ -68,14 +67,11 @@
         onMainPage = (event) => {
           event.preventDefault();
           const input = event.target["mainInput"].value;
-          console.log("hi");
           if (input === "1") {
             this.changePage($mainPage, $battlePage);
           } else if (input === "2") {
           } else if (input === "3") {
-            this.changePage($mainPage, $startPage);
-          } else {
-            console.log(input);
+            this.quit($mainPage);
           }
         };
         onBattlePage = (event) => {
@@ -91,6 +87,14 @@
           const { user } = this;
           const { userName, userLev, userHp, userXp, userAtt } =
             $userInfo.children;
+          if (user === null) {
+            userName.textContent = "";
+            userLev.textContent = "";
+            userHp.textContent = "";
+            userXp.textContent = "";
+            userAtt.textContent = "";
+            return;
+          }
           userName.textContent = `${user.name}`;
           userLev.textContent = `${user.lev}Lev`;
           userHp.textContent = `HP: ${user.hp}/${user.maxHp}`;
@@ -98,6 +102,16 @@
           userAtt.textContent = `ATT: ${user.att}`;
         }
         updateMonsterInfo() {}
+        quit(currentPage) {
+          this.user = null;
+          this.monster = null;
+          this.updateUserInfo();
+          this.updateMonsterInfo();
+          $mainPage.removeEventListener("submit", this.onMainPage);
+          $battlePage.removeEventListener("submit", this.onBattlePage);
+          this.changePage(currentPage, $startPage);
+          game = null;
+        }
       }
 
       class User {
@@ -123,10 +137,11 @@
         attack() {}
       }
 
+      let game = null;
       $startPage.addEventListener("submit", (event) => {
         event.preventDefault();
         const userName = event.target["startInput"].value;
-        const game = new Game(userName);
+        game = new Game(userName);
       });
     </script>
   </body>
