@@ -51,6 +51,36 @@
       const $mainPage = document.getElementById("mainPage");
       const $battlePage = document.getElementById("battlePage");
 
+      class game {
+        constructor() {
+          this.user;
+          this.monster;
+        }
+        startGame() {}
+        changePage() {}
+      }
+
+      class user {
+        constructor() {
+          this.name;
+          this.lev;
+          this.hp;
+          this.xp;
+          this.att;
+        }
+        attack() {}
+        heal() {}
+      }
+
+      class monster {
+        constructor() {
+          this.name;
+          this.hp;
+          this.att;
+        }
+        attack() {}
+      }
+
       $startPage.addEventListener("submit", (event) => {
         event.preventDefault();
         $startPage.style.display = "none";
