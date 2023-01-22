@@ -8,71 +8,113 @@
       <input id="startInput" placeholder="주인공 이름을 입력하세요!" />
       <button>시작</button>
     </form>
-    <form id="mainPage" style="display: none">
-      <div>
+    <div>
+      <div id="userInfo">
         <span id="userName"></span>
         <span id="userLev"></span>
-        <span id="userHP"></span>
-        <span id="userXP"></span>
-        <span id="userATT"></span>
+        <span id="userHp"></span>
+        <span id="userXp"></span>
+        <span id="userAtt"></span>
       </div>
-      <div>
-        <div>1. 모험</div>
-        <div>2. 휴식</div>
-        <div>3. 종료</div>
-      </div>
-      <input id="mainInput" />
-      <button>입력</button>
-    </form>
-    <form id="battlePage" style="display: none">
-      <div>
-        <span id="userName"></span>
-        <span id="userLev"></span>
-        <span id="userHP"></span>
-        <span id="userXP"></span>
-        <span id="userATT"></span>
-      </div>
-      <div>
-        <div>1. 공격</div>
-        <div>2. 회복</div>
-        <div>3. 도망</div>
-      </div>
-      <input id="battleInput" />
-      <button>입력</button>
+      <form id="mainPage" style="display: none">
+        <div>
+          <div>1. 모험</div>
+          <div>2. 휴식</div>
+          <div>3. 종료</div>
+        </div>
+        <input id="mainInput" />
+        <button>입력</button>
+      </form>
+      <form id="battlePage" style="display: none">
+        <div>
+          <div>1. 공격</div>
+          <div>2. 회복</div>
+          <div>3. 도망</div>
+        </div>
+        <input id="battleInput" />
+        <button>입력</button>
+      </form>
       <div id="message"></div>
-      <div>
+      <div id="monsterInfo">
         <span id="monsterName"></span>
         <span id="monsterHP"></span>
         <span id="monsterATT"></span>
       </div>
-    </form>
+    </div>
     <script>
       const $startPage = document.getElementById("startPage");
       const $mainPage = document.getElementById("mainPage");
       const $battlePage = document.getElementById("battlePage");
+      const $userInfo = document.getElementById("userInfo");
+      const $monsterInfo = document.getElementById("monsterInfo");
 
-      class game {
-        constructor() {
-          this.user;
-          this.monster;
+      class Game {
+        constructor(userName) {
+          this.user = new User(this, userName);
+          this.monster = null;
+          this.startGame();
         }
-        startGame() {}
-        changePage() {}
+        startGame() {
+          $mainPage.addEventListener("submit", this.onMainPage);
+          $battlePage.addEventListener("submit", this.onBattlePage);
+          this.changePage($startPage, $mainPage);
+          this.updateUserInfo();
+          console.log("hi");
+        }
+        changePage(currentPage, nextPage) {
+          currentPage.style.display = "none";
+          nextPage.style.display = "block";
+        }
+        onMainPage = (event) => {
+          event.preventDefault();
+          const input = event.target["mainInput"].value;
+          console.log("hi");
+          if (input === "1") {
+            this.changePage($mainPage, $battlePage);
+          } else if (input === "2") {
+          } else if (input === "3") {
+            this.changePage($mainPage, $startPage);
+          } else {
+            console.log(input);
+          }
+        };
+        onBattlePage = (event) => {
+          event.preventDefault();
+          const input = event.target["battleInput"].value;
+          if (input === "1") {
+          } else if (input === "2") {
+          } else if (input === "3") {
+            this.changePage($battlePage, $mainPage);
+          }
+        };
+        updateUserInfo() {
+          const { user } = this;
+          const { userName, userLev, userHp, userXp, userAtt } =
+            $userInfo.children;
+          userName.textContent = `${user.name}`;
+          userLev.textContent = `${user.lev}Lev`;
+          userHp.textContent = `HP: ${user.hp}/${user.maxHp}`;
+          userXp.textContent = `XP: ${user.xp}/${15 * user.lev}`;
+          userAtt.textContent = `ATT: ${user.att}`;
+        }
+        updateMonsterInfo() {}
       }
 
-      class user {
-        constructor() {
-          this.name;
-          this.lev;
-          this.hp;
-          this.xp;
-          this.att;
+      class User {
+        constructor(game, name) {
+          this.game = game;
+          this.name = name;
+          this.lev = 1;
+          this.hp = 100;
+          this.maxHp = 100;
+          this.xp = 0;
+          this.att = 10;
         }
         attack() {}
         heal() {}
       }
 
-      class monster {
+      class Monster {
         constructor() {
           this.name;
           this.hp;
@@ -83,32 +125,8 @@
 
       $startPage.addEventListener("submit", (event) => {
         event.preventDefault();
-        $startPage.style.display = "none";
-        $mainPage.style.display = "block";
-      });
-
-      $mainPage.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const input = event.target["mainInput"].value;
-        if (input === "1") {
-          $mainPage.style.display = "none";
-          $battlePage.style.display = "block";
-        } else if (input === "2") {
-        } else if (input === "3") {
-          $mainPage.style.display = "none";
-          $startPage.style.display = "block";
-        }
-      });
-
-      $battlePage.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const input = event.target["battleInput"].value;
-        if (input === "1") {
-        } else if (input === "2") {
-        } else if (input === "3") {
-          $battlePage.style.display = "none";
-          $mainPage.style.display = "block";
-        }
+        const userName = event.target["startInput"].value;
+        const game = new Game(userName);
       });
     </script>
   </body>
