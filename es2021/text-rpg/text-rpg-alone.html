@@ -3,5 +3,83 @@
     <meta charset="UTF-8" />
     <title>텍스트 RPG - alone</title>
   </head>
-  <body></body>
+  <body>
+    <form id="startPage">
+      <input id="startInput" placeholder="주인공 이름을 입력하세요!" />
+      <button>시작</button>
+    </form>
+    <form id="mainPage" style="display: none">
+      <div>
+        <span id="userName"></span>
+        <span id="userLev"></span>
+        <span id="userHP"></span>
+        <span id="userXP"></span>
+        <span id="userATT"></span>
+      </div>
+      <div>
+        <div>1. 모험</div>
+        <div>2. 휴식</div>
+        <div>3. 종료</div>
+      </div>
+      <input id="mainInput" />
+      <button>입력</button>
+    </form>
+    <form id="battlePage" style="display: none">
+      <div>
+        <span id="userName"></span>
+        <span id="userLev"></span>
+        <span id="userHP"></span>
+        <span id="userXP"></span>
+        <span id="userATT"></span>
+      </div>
+      <div>
+        <div>1. 공격</div>
+        <div>2. 회복</div>
+        <div>3. 도망</div>
+      </div>
+      <input id="battleInput" />
+      <button>입력</button>
+      <div id="message"></div>
+      <div>
+        <span id="monsterName"></span>
+        <span id="monsterHP"></span>
+        <span id="monsterATT"></span>
+      </div>
+    </form>
+    <script>
+      const $startPage = document.getElementById("startPage");
+      const $mainPage = document.getElementById("mainPage");
+      const $battlePage = document.getElementById("battlePage");
+
+      $startPage.addEventListener("submit", (event) => {
+        event.preventDefault();
+        $startPage.style.display = "none";
+        $mainPage.style.display = "block";
+      });
+
+      $mainPage.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = event.target["mainInput"].value;
+        if (input === "1") {
+          $mainPage.style.display = "none";
+          $battlePage.style.display = "block";
+        } else if (input === "2") {
+        } else if (input === "3") {
+          $mainPage.style.display = "none";
+          $startPage.style.display = "block";
+        }
+      });
+
+      $battlePage.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = event.target["battleInput"].value;
+        if (input === "1") {
+        } else if (input === "2") {
+        } else if (input === "3") {
+          $battlePage.style.display = "none";
+          $mainPage.style.display = "block";
+        }
+      });
+    </script>
+  </body>
 </html>
