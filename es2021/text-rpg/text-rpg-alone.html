@@ -37,8 +37,8 @@
       <div id="message"></div>
       <div id="monsterInfo">
         <span id="monsterName"></span>
-        <span id="monsterHP"></span>
-        <span id="monsterATT"></span>
+        <span id="monsterHp"></span>
+        <span id="monsterAtt"></span>
       </div>
     </div>
     <script>
@@ -52,6 +52,11 @@
         constructor(userName) {
           this.user = new User(this, userName);
           this.monster = null;
+          this.monsterList = [
+            { name: "슬라임", hp: 25, att: 10 },
+            { name: "스켈레톤", hp: 50, att: 15 },
+            { name: "마왕", hp: 150, att: 35 },
+          ];
           this.startGame();
         }
         startGame() {
@@ -69,6 +74,8 @@
           const input = event.target["mainInput"].value;
           if (input === "1") {
             this.changePage($mainPage, $battlePage);
+            this.generateMonster();
+            this.updateMonsterInfo();
           } else if (input === "2") {
           } else if (input === "3") {
             this.quit($mainPage);
@@ -83,6 +90,16 @@
             this.changePage($battlePage, $mainPage);
           }
         };
+        generateMonster() {
+          const randomIndex = Math.floor(Math.random() * 3);
+          const randomMonster = this.monsterList[randomIndex];
+          this.monster = new Monster(
+            randomMonster.name,
+            randomMonster.hp,
+            randomMonster.att
+          );
+          console.log(this.monster);
+        }
         updateUserInfo() {
           const { user } = this;
           const { userName, userLev, userHp, userXp, userAtt } =
@@ -101,7 +118,19 @@
           userXp.textContent = `XP: ${user.xp}/${15 * user.lev}`;
           userAtt.textContent = `ATT: ${user.att}`;
         }
-        updateMonsterInfo() {}
+        updateMonsterInfo() {
+          const { monster } = this;
+          const { monsterName, monsterHp, MonsterAtt } = $monsterInfo.children;
+          if (monster === null) {
+            monsterName.textContent = "";
+            monsterHp.textContent = "";
+            monsterAtt.textContent = "";
+            return;
+          }
+          monsterName.textContent = `${monster.name}`;
+          monsterHp.textContent = `HP: ${monster.hp}/${monster.maxHp}`;
+          monsterAtt.textContent = `ATT: ${monster.att}`;
+        }
         quit(currentPage) {
           this.user = null;
           this.monster = null;
@@ -129,10 +158,11 @@
       }
 
       class Monster {
-        constructor() {
-          this.name;
-          this.hp;
-          this.att;
+        constructor(name, hp, att) {
+          this.name = name;
+          this.hp = hp;
+          this.maxHp = hp;
+          this.att = att;
         }
         attack() {}
       }
