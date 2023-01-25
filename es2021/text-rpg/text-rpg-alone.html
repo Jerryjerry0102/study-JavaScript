@@ -47,6 +47,7 @@
       const $battlePage = document.getElementById("battlePage");
       const $userInfo = document.getElementById("userInfo");
       const $monsterInfo = document.getElementById("monsterInfo");
+      const $message = document.getElementById("message");
 
       class Game {
         constructor(userName) {
@@ -76,6 +77,7 @@
             this.changePage($mainPage, $battlePage);
             this.generateMonster();
             this.updateMonsterInfo();
+            this.updateMessage(`${this.monster.name}을 만났다`);
           } else if (input === "2") {
           } else if (input === "3") {
             this.quit($mainPage);
@@ -87,6 +89,9 @@
           if (input === "1") {
           } else if (input === "2") {
           } else if (input === "3") {
+            this.monster = null;
+            this.updateMonsterInfo();
+            this.updateMessage(`부리나케 도망쳤다!`);
             this.changePage($battlePage, $mainPage);
           }
         };
@@ -98,7 +103,6 @@
             randomMonster.hp,
             randomMonster.att
           );
-          console.log(this.monster);
         }
         updateUserInfo() {
           const { user } = this;
@@ -130,6 +134,9 @@
           monsterName.textContent = `${monster.name}`;
           monsterHp.textContent = `HP: ${monster.hp}/${monster.maxHp}`;
           monsterAtt.textContent = `ATT: ${monster.att}`;
+        }
+        updateMessage(message) {
+          $message.textContent = message;
         }
         quit(currentPage) {
           this.user = null;
