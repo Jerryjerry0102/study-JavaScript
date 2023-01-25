@@ -66,6 +66,7 @@
           $battlePage.addEventListener("submit", this.onBattlePage);
           this.changePage($startPage, $mainPage);
           this.updateUserInfo();
+          this.updateMessage("게임이 시작되었습니다.");
         }
         changePage(currentPage, nextPage) {
           currentPage.style.display = "none";
@@ -80,6 +81,9 @@
             this.updateMonsterInfo();
             this.updateMessage(`${this.monster.name}을 만났다`);
           } else if (input === "2") {
+            this.user.hp = this.user.maxHp;
+            this.updateUserInfo();
+            this.updateMessage("충분한 휴식을 취했다.");
           } else if (input === "3") {
             this.quit($mainPage);
           }
@@ -180,6 +184,7 @@
           $mainPage.removeEventListener("submit", this.onMainPage);
           $battlePage.removeEventListener("submit", this.onBattlePage);
           this.changePage(currentPage, $startPage);
+          this.updateMessage("게임이 종료되었습니다.");
           game = null;
         }
       }
