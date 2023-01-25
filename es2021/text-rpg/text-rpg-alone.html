@@ -90,6 +90,7 @@
           if (input === "1") {
             this.battle();
           } else if (input === "2") {
+            this.heal();
           } else if (input === "3") {
             this.monster = null;
             this.updateMonsterInfo();
@@ -97,6 +98,13 @@
             this.changePage($battlePage, $mainPage);
           }
         };
+        heal() {
+          const { user, monster } = this;
+          user.hp = Math.min(user.maxHp, user.hp + 20);
+          monster.attack(user);
+          this.updateMessage("체력을 조금 회복했다!");
+          this.updateUserInfo();
+        }
         battle() {
           const { user, monster, updateMessage } = this;
           user.attack(monster);
