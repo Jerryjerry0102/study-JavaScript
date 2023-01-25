@@ -104,7 +104,7 @@
         };
         heal() {
           const { user, monster } = this;
-          user.hp = Math.min(user.maxHp, user.hp + 20);
+          user.hp = Math.min(user.maxHp, user.hp + 30);
           monster.attack(user);
           this.updateMessage("체력을 조금 회복했다!");
           this.updateUserInfo();
@@ -189,20 +189,29 @@
         }
       }
 
-      class User {
-        constructor(game, name) {
-          this.game = game;
+      class Unit {
+        constructor(name, hp, xp, att) {
           this.name = name;
+          this.hp = hp;
+          this.maxHp = hp;
+          this.xp = xp;
+          this.att = att;
+        }
+        attack(target) {
+          target.hp -= this.att;
+        }
+      }
+
+      class User extends Unit {
+        constructor(game, name) {
+          super(name, 100, 0, 10);
+          this.game = game;
           this.lev = 1;
-          this.hp = 100;
-          this.maxHp = 100;
-          this.xp = 0;
-          this.att = 10;
         }
         attack(monster) {
-          monster.hp -= this.att;
+          super.attack(monster);
+          console.log("user가 monster를 공격");
         }
-        heal() {}
         getXp(xp) {
           this.xp += xp;
           if (this.xp >= this.lev * 15) {
@@ -216,16 +225,13 @@
         }
       }
 
-      class Monster {
+      class Monster extends Unit {
         constructor(name, hp, att, xp) {
-          this.name = name;
-          this.hp = hp;
-          this.maxHp = hp;
-          this.att = att;
-          this.xp = xp;
+          super(name, hp, att, xp);
         }
         attack(user) {
-          user.hp -= this.att;
+          super.attack(user);
+          console.log("monster가 user를 공격");
         }
       }
 
