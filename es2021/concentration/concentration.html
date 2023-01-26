@@ -85,7 +85,22 @@
           const card = createCard(i);
           $wrapper.append(card);
         }
+
+        document.querySelectorAll(".card").forEach((card, index) => {
+          // 초반 카드 공개
+          setTimeout(() => {
+            card.classList.add("flipped");
+          }, 1000 + 100 * index);
+        });
+
+        setTimeout(() => {
+          // 카드 감추기
+          document.querySelectorAll(".card").forEach((card) => {
+            card.classList.remove("flipped");
+          });
+        }, 5000);
       }
+
       startGame();
     </script>
   </body>
