@@ -84,6 +84,9 @@
 
       // function이면 여기서 this는 card가 되고 화살표 함수면 window가 된다.
       function onClickCard() {
+        if (!clickable || completed.includes(this) || clicked[0] === this) {
+          return;
+        }
         this.classList.toggle("flipped");
         clicked.push(this);
         if (clicked.length !== 2) {
@@ -102,7 +105,10 @@
           if (completed.length !== total) {
             return;
           }
-          alert("축하합니다!");
+          setTimeout(() => {
+            alert("축하합니다!");
+            resetGame();
+          }, 1000);
           return;
         }
         setTimeout(() => {
@@ -132,11 +138,19 @@
           // 카드 감추기
           document.querySelectorAll(".card").forEach((card) => {
             card.classList.remove("flipped");
+            clickable = true;
           });
         }, 5000);
       }
-
       startGame();
+
+      function resetGame() {
+        $wrapper.innerHTML = "";
+        colorCopy = colors.concat(colors);
+        shuffled = [];
+        completed = [];
+        startGame();
+      }
     </script>
   </body>
 </html>
