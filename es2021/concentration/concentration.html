@@ -89,6 +89,7 @@
         }
         this.classList.toggle("flipped");
         clicked.push(this);
+        // this 말고 event.target 해서 해도 됨
         if (clicked.length !== 2) {
           return;
         }
@@ -115,7 +116,7 @@
           clicked[0].classList.remove("flipped");
           clicked[1].classList.remove("flipped");
           clicked = [];
-        }, 1000);
+        }, 500);
       }
 
       function startGame() {
@@ -135,13 +136,13 @@
         });
 
         setTimeout(() => {
-          // 카드 감추기
           document.querySelectorAll(".card").forEach((card) => {
             card.classList.remove("flipped");
-            clickable = true;
           });
+          clickable = true;
         }, 5000);
       }
+
       startGame();
 
       function resetGame() {
