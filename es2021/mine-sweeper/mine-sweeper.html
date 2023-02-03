@@ -35,5 +35,21 @@
   <script>
     const $tbody = document.querySelector("#table tbody");
     const $result = document.querySelector("#reuslt");
+    const row = 10; // 줄
+    const cell = 10; // 칸
+    const mine = 10; // 지뢰
+    const CODE = {
+      NORMAL: -1, // 닫힌 칸(지뢰 없음)
+      QUESTION: -2,
+      FLAG: -3,
+      QUESTION_MINE: -4,
+      FLAG_MINE: -5,
+      MINE: -6,
+      OPENED: 0, // 0 이상이면 다모두 열린 칸
+    };
+    let data;
+
+    function planMine() {}
+    function drawTable() {}
   </script>
 </html>
