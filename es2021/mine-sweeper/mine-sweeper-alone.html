@@ -14,6 +14,12 @@
         height: 20px;
         text-align: center;
       }
+      td.question {
+        background-color: dodgerblue;
+      }
+      td.exclamation {
+        background-color: tomato;
+      }
     </style>
   </head>
   <body>
@@ -31,15 +37,22 @@
         OPENED: 0, // 열린 칸
         NORMAL: -1, // 닫힌 칸(지뢰 x)
         QUESTION: -2,
-        FLAG: -3,
+        EXCLAMATION: -3,
         MINE_QUESTION: -4,
-        MINE_FLAG: -5,
+        MINE_EXCLAMATION: -5,
         MINE: -6, // 닫힌 칸(지뢰 o)
       };
       const MARK = {
+        NORMAL: "",
         MINE: "X",
         QUESTION: "?",
         EXCLAMATION: "!",
+      };
+      const LETTER = {
+        NORMAL: "",
+        MINE: "mine",
+        QUESTION: "question",
+        EXCLAMATION: " exclamation",
       };
       let table;
 
@@ -81,6 +94,48 @@
         return plantMines(table);
       }
 
+      function onRightClick() {
+        event.preventDefault();
+        const { target } = event;
+        const rowIndex = target.parentNode.rowIndex;
+        const cellIndex = target.cellIndex;
+        const cellData = table[rowIndex][cellIndex];
+        switch (cellData) {
+          case CODE.OPENED:
+            break;
+          case CODE.NORMAL:
+            table[rowIndex][cellIndex] = CODE.QUESTION;
+            target.textContent = MARK.QUESTION;
+            target.className = LETTER.QUESTION;
+            break;
+          case CODE.QUESTION:
+            table[rowIndex][cellIndex] = CODE.EXCLAMATION;
+            target.textContent = MARK.EXCLAMATION;
+            target.className = LETTER.EXCLAMATION;
+            break;
+          case CODE.EXCLAMATION:
+            table[rowIndex][cellIndex] = CODE.NORMAL;
+            target.textContent = MARK.NORMAL;
+            target.className = LETTER.NORMAL;
+            break;
+          case CODE.MINE:
+            table[rowIndex][cellIndex] = CODE.MINE_QUESTION;
+            target.textContent = MARK.QUESTION;
+            target.className = LETTER.QUESTION;
+            break;
+          case CODE.MINE_QUESTION:
+            table[rowIndex][cellIndex] = CODE.MINE_EXCLAMATION;
+            target.textContent = MARK.EXCLAMATION;
+            target.className = LETTER.EXCLAMATION;
+            break;
+          case CODE.MINE_EXCLAMATION:
+            table[rowIndex][cellIndex] = CODE.MINE;
+            target.textContent = MARK.MINE;
+            target.className = LETTER.MINE;
+            break;
+        }
+      }
+
       function drawTable() {
         table = createTable();
         table.forEach((row) => {
@@ -92,6 +147,7 @@
           });
           $tbody.append($tr);
         });
+        $tbody.addEventListener("contextmenu", onRightClick);
       }
       drawTable();
       console.log(table);
