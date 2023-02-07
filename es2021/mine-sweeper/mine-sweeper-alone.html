@@ -3,6 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>지뢰찾기-혼자</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid #bbb;
+        background-color: #888;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <table id="table">
@@ -23,6 +35,11 @@
         MINE_QUESTION: -4,
         MINE_FLAG: -5,
         MINE: -6, // 닫힌 칸(지뢰 o)
+      };
+      const MARK = {
+        MINE: "X",
+        QUESTION: "?",
+        EXCLAMATION: "!",
       };
       let table;
 
@@ -66,6 +83,15 @@
 
       function drawTable() {
         table = createTable();
+        table.forEach((row) => {
+          $tr = document.createElement("tr");
+          row.forEach((cell) => {
+            $td = document.createElement("td");
+            if (cell === CODE.MINE) $td.textContent = MARK.MINE;
+            $tr.append($td);
+          });
+          $tbody.append($tr);
+        });
       }
       drawTable();
       console.log(table);
