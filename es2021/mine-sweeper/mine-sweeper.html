@@ -85,7 +85,6 @@
       const rowIndex = target.parentNode.rowIndex;
       const cellIndex = target.cellIndex;
       const cellData = data[rowIndex][cellIndex];
-      console.log(cellData);
       if (cellData === CODE.MINE) {
         // 지뢰면
         data[rowIndex][cellIndex] = CODE.QUESTION_MINE; // 물음표 지뢰로
@@ -119,6 +118,38 @@
       }
     }
 
+    function countMine(rowIndex, cellIndex) {
+      const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];
+      let count = 0;
+      mines.includes(data[rowIndex - 1]?.[cellIndex - 1]) && count++;
+      mines.includes(data[rowIndex - 1]?.[cellIndex]) && count++;
+      mines.includes(data[rowIndex - 1]?.[cellIndex + 1]) && count++;
+      mines.includes(data[rowIndex][cellIndex - 1]) && count++;
+      mines.includes(data[rowIndex][cellIndex + 1]) && count++;
+      mines.includes(data[rowIndex + 1]?.[cellIndex - 1]) && count++;
+      mines.includes(data[rowIndex + 1]?.[cellIndex]) && count++;
+      mines.includes(data[rowIndex + 1]?.[cellIndex + 1]) && count++;
+      return count;
+    }
+
+    function onLeftClick(event) {
+      event.preventDefault();
+      const target = event.target;
+      const rowIndex = target.parentNode.rowIndex;
+      const cellIndex = target.cellIndex;
+      const cellData = data[rowIndex][cellIndex];
+      if (cellData === CODE.NORMAL) {
+        // 닫힌 칸(지뢰 x)이면
+        const count = countMine(rowIndex, cellIndex);
+        target.textContent = count || "";
+        // 0도 보여주고 싶으면 ??(null 병합 연산자)를 쓰면 된다.
+        target.className = "opened";
+        data[rowIndex][cellIndex] = count;
+      } else if (cellData === CODE.MINE) {
+        // 지뢰 칸이면
+      } // 나머지는 무시
+    }
+
     function drawTable() {
       data = plantMine();
       data.forEach((row) => {
@@ -131,8 +162,9 @@
           $tr.append($td);
         });
         $tbody.append($tr);
-        $tbody.addEventListener("contextmenu", onRightClick);
       });
+      $tbody.addEventListener("contextmenu", onRightClick);
+      $tbody.addEventListener("click", onLeftClick);
     }
     drawTable();
   </script>
