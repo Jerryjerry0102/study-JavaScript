@@ -24,6 +24,32 @@
         MINE_FLAG: -5,
         MINE: -6, // 닫힌 칸(지뢰 o)
       };
+      let table;
+
+      function shuffleMines() {
+        const candidates = Array(NUMBER.ROW * NUMBER.CELL)
+          .fill()
+          .map((candidate, index) => index);
+        const mineIndexes = [];
+        for (let m = 0; m < NUMBER.MINE; m++) {
+          let mineIndex = candidates.splice(
+            Math.floor(Math.random() * candidates.length),
+            1
+          );
+          mineIndexes.push(mineIndex);
+        }
+        return mineIndexes;
+      }
+
+      function plantMines(table) {
+        const mineIndexes = shuffleMines();
+        mineIndexes.forEach((mineIndex) => {
+          let rowIndex = Math.floor(mineIndex / NUMBER.ROW);
+          let cellIndex = mineIndex % NUMBER.ROW;
+          table[rowIndex][cellIndex] = CODE.MINE;
+        });
+        return table;
+      }
 
       function createTable() {
         const table = [];
@@ -35,7 +61,7 @@
           }
           table.push(row);
         }
-        return table;
+        return plantMines(table);
       }
 
       function drawTable() {
