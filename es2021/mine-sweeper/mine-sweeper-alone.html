@@ -4,5 +4,45 @@
     <meta charset="UTF-8" />
     <title>지뢰찾기-혼자</title>
   </head>
-  <body></body>
+  <body>
+    <table id="table">
+      <tbody></tbody>
+    </table>
+    <script>
+      $tbody = document.querySelector("#table tbody");
+      const NUMBER = {
+        ROW: 10,
+        CELL: 10,
+        MINE: 10,
+      };
+      const CODE = {
+        OPENED: 0, // 열린 칸
+        NORMAL: -1, // 닫힌 칸(지뢰 x)
+        QUESTION: -2,
+        FLAG: -3,
+        MINE_QUESTION: -4,
+        MINE_FLAG: -5,
+        MINE: -6, // 닫힌 칸(지뢰 o)
+      };
+
+      function createTable() {
+        const table = [];
+        for (let r = 0; r < NUMBER.ROW; r++) {
+          const row = [];
+          for (let c = 0; c < NUMBER.CELL; c++) {
+            const cell = CODE.NORMAL;
+            row.push(cell);
+          }
+          table.push(row);
+        }
+        return table;
+      }
+
+      function drawTable() {
+        table = createTable();
+      }
+      drawTable();
+      console.log(table);
+    </script>
+  </body>
 </html>
