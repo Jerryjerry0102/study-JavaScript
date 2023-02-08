@@ -154,6 +154,33 @@
         return count;
       }
 
+      function open(rowIndex, cellIndex) {
+        if (table[rowIndex]?.[cellIndex] >= CODE.OPENED) return;
+        const target = $tbody.children[rowIndex]?.children[cellIndex];
+        if (!target) return;
+        const count = countMine(rowIndex, cellIndex);
+        table[rowIndex][cellIndex] = count;
+        target.className = LETTER.OPENED;
+        target.textContent = count || "";
+        return count;
+      }
+
+      function openAround(rowIndex, cellIndex) {
+        setTimeout(() => {
+          const count = open(rowIndex, cellIndex);
+          if (count === 0) {
+            openAround(rowIndex - 1, cellIndex - 1);
+            openAround(rowIndex - 1, cellIndex);
+            openAround(rowIndex - 1, cellIndex + 1);
+            openAround(rowIndex, cellIndex - 1);
+            openAround(rowIndex, cellIndex + 1);
+            openAround(rowIndex + 1, cellIndex - 1);
+            openAround(rowIndex + 1, cellIndex);
+            openAround(rowIndex + 1, cellIndex + 1);
+          }
+        }, 0);
+      }
+
       function onLeftClick(event) {
         const { target } = event;
         const rowIndex = target.parentNode.rowIndex;
@@ -174,9 +201,7 @@
           $tbody.removeEventListener("contextmenu", onRightClick);
           $tbody.removeEventListener("click", onLeftClick);
         } else {
-          // 주변 지뢰 개수 새기
-          const count = countMine(rowIndex, cellIndex);
-          target.textContent = count || "";
+          openAround(rowIndex, cellIndex);
         }
       }
 
