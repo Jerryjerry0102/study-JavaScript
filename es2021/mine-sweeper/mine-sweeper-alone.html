@@ -20,6 +20,9 @@
       td.exclamation {
         background-color: tomato;
       }
+      td.opened {
+        background-color: white;
+      }
     </style>
   </head>
   <body>
@@ -44,11 +47,12 @@
       };
       const MARK = {
         NORMAL: "",
-        MINE: "X",
+        MINE: "💥",
         QUESTION: "?",
         EXCLAMATION: "!",
       };
       const LETTER = {
+        OPENED: "opened",
         NORMAL: "",
         MINE: "mine",
         QUESTION: "question",
@@ -94,7 +98,7 @@
         return plantMines(table);
       }
 
-      function onRightClick() {
+      function onRightClick(event) {
         event.preventDefault();
         const { target } = event;
         const rowIndex = target.parentNode.rowIndex;
@@ -130,9 +134,49 @@
             break;
           case CODE.MINE_EXCLAMATION:
             table[rowIndex][cellIndex] = CODE.MINE;
-            target.textContent = MARK.MINE;
+            target.textContent = "X"; // 개발 편의
             target.className = LETTER.MINE;
             break;
+        }
+      }
+
+      function countMine(rowIndex, cellIndex) {
+        const mines = [CODE.MINE, CODE.MINE_QUESTION, CODE.MINE_EXCLAMATION];
+        let count = 0;
+        mines.includes(table[rowIndex - 1]?.[cellIndex - 1]) && count++;
+        mines.includes(table[rowIndex - 1]?.[cellIndex]) && count++;
+        mines.includes(table[rowIndex - 1]?.[cellIndex + 1]) && count++;
+        mines.includes(table[rowIndex]?.[cellIndex - 1]) && count++;
+        mines.includes(table[rowIndex]?.[cellIndex + 1]) && count++;
+        mines.includes(table[rowIndex + 1]?.[cellIndex - 1]) && count++;
+        mines.includes(table[rowIndex + 1]?.[cellIndex]) && count++;
+        mines.includes(table[rowIndex + 1]?.[cellIndex + 1]) && count++;
+        return count;
+      }
+
+      function onLeftClick(event) {
+        const { target } = event;
+        const rowIndex = target.parentNode.rowIndex;
+        const cellIndex = target.cellIndex;
+        const cellData = table[rowIndex]?.[cellIndex];
+        if (
+          [
+            CODE.QUESTION,
+            CODE.EXCLAMATION,
+            CODE.MINE_QUESTION,
+            CODE.MINE_EXCLAMATION,
+          ].includes(cellData)
+        )
+          return;
+        target.className = LETTER.OPENED;
+        if (cellData === CODE.MINE) {
+          target.textContent = MARK.MINE;
+          $tbody.removeEventListener("contextmenu", onRightClick);
+          $tbody.removeEventListener("click", onLeftClick);
+        } else {
+          // 주변 지뢰 개수 새기
+          const count = countMine(rowIndex, cellIndex);
+          target.textContent = count || "";
         }
       }
 
@@ -142,15 +186,15 @@
           $tr = document.createElement("tr");
           row.forEach((cell) => {
             $td = document.createElement("td");
-            if (cell === CODE.MINE) $td.textContent = MARK.MINE;
+            if (cell === CODE.MINE) $td.textContent = "X"; // 개발 편의
             $tr.append($td);
           });
           $tbody.append($tr);
         });
         $tbody.addEventListener("contextmenu", onRightClick);
+        $tbody.addEventListener("click", onLeftClick);
       }
       drawTable();
-      console.log(table);
     </script>
   </body>
 </html>
