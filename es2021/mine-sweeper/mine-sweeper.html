@@ -48,6 +48,7 @@
       OPENED: 0, // 0 이상이면 다모두 열린 칸
     };
     let data;
+    let openCount = 0;
 
     function plantMine() {
       const candidate = Array(row * cell)
@@ -132,22 +133,53 @@
       return count;
     }
 
+    function open(rowIndex, cellIndex) {
+      if (data[rowIndex]?.[cellIndex] >= CODE.OPENED) return;
+      const target = $tbody.children[rowIndex]?.children[cellIndex];
+      if (!target) {
+        return;
+      }
+      const count = countMine(rowIndex, cellIndex);
+      target.textContent = count || "";
+      // 0도 보여주고 싶으면 ??(null 병합 연산자)를 쓰면 된다.
+      target.className = "opened";
+      data[rowIndex][cellIndex] = count;
+      openCount++;
+      console.log(openCount);
+      return count;
+    }
+
+    function openAround(rowIndex, cellIndex) {
+      setTimeout(() => {
+        const count = open(rowIndex, cellIndex);
+        if (count === 0) {
+          openAround(rowIndex - 1, cellIndex - 1);
+          openAround(rowIndex - 1, cellIndex);
+          openAround(rowIndex - 1, cellIndex + 1);
+          openAround(rowIndex, cellIndex - 1);
+          openAround(rowIndex, cellIndex + 1);
+          openAround(rowIndex + 1, cellIndex - 1);
+          openAround(rowIndex + 1, cellIndex);
+          openAround(rowIndex + 1, cellIndex + 1);
+        }
+      }, 0);
+    }
+
     function onLeftClick(event) {
-      event.preventDefault();
       const target = event.target;
       const rowIndex = target.parentNode.rowIndex;
       const cellIndex = target.cellIndex;
       const cellData = data[rowIndex][cellIndex];
       if (cellData === CODE.NORMAL) {
         // 닫힌 칸(지뢰 x)이면
-        const count = countMine(rowIndex, cellIndex);
-        target.textContent = count || "";
-        // 0도 보여주고 싶으면 ??(null 병합 연산자)를 쓰면 된다.
-        target.className = "opened";
-        data[rowIndex][cellIndex] = count;
+        openAround(rowIndex, cellIndex);
       } else if (cellData === CODE.MINE) {
-        // 지뢰 칸이면
+        target.textContent = "펑";
+        target.className = "opened";
+        $tbody.removeEventListener("contextmenu", onRightClick);
+        $tbody.removeEventListener("click", onLeftClick);
       } // 나머지는 무시
+      // 아무 동작도 안 함
     }
 
     function drawTable() {
