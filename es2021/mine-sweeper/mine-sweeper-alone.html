@@ -26,11 +26,13 @@
     </style>
   </head>
   <body>
+    <div id="timer"></div>
     <table id="table">
       <tbody></tbody>
     </table>
     <script>
       $tbody = document.querySelector("#table tbody");
+      $timer = document.querySelector("#timer");
       const NUMBER = {
         ROW: 10,
         CELL: 10,
@@ -60,6 +62,10 @@
       };
       let table;
       let openCount = 0;
+      const startTime = new Date();
+      let interval = setInterval(() => {
+        $timer.textContent = `${Math.floor((new Date() - startTime) / 1000)}초`;
+      }, 0);
 
       function shuffleMines() {
         const candidates = Array(NUMBER.ROW * NUMBER.CELL)
@@ -165,7 +171,12 @@
         target.textContent = count || "";
         openCount++;
         if (openCount >= NUMBER.ROW * NUMBER.CELL - NUMBER.MINE) {
-          alert("승리했습니다!");
+          $tbody.removeEventListener("contextmenu", onRightClick);
+          $tbody.removeEventListener("click", onLeftClick);
+          clearInterval(interval);
+          const presentTime = new Date();
+          const time = (presentTime - startTime) / 1000;
+          alert(`승리했습니다! ${time}초 걸렸습니다!`);
         }
         return count;
       }
@@ -205,6 +216,7 @@
           target.textContent = MARK.MINE;
           $tbody.removeEventListener("contextmenu", onRightClick);
           $tbody.removeEventListener("click", onLeftClick);
+          clearInterval(interval);
         } else {
           openAround(rowIndex, cellIndex);
         }
