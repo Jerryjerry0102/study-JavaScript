@@ -23,9 +23,18 @@
       td.opened {
         background-color: white;
       }
+      input {
+        width: 50px;
+      }
     </style>
   </head>
   <body>
+    <form id="form">
+      <input placeholder="가로줄" id="row" type="number" min="1" max="20" />
+      <input placeholder="세로줄" id="cell" type="number" min="1" max="20" />
+      <input placeholder="지뢰수" id="mine" type="number" min="1" max="50" />
+      <button>생성</button>
+    </form>
     <div id="timer"></div>
     <table id="table">
       <tbody></tbody>
@@ -33,10 +42,11 @@
     <script>
       $tbody = document.querySelector("#table tbody");
       $timer = document.querySelector("#timer");
+      $form = document.querySelector("#form");
       const NUMBER = {
-        ROW: 10,
-        CELL: 10,
-        MINE: 10,
+        ROW: 0,
+        CELL: 0,
+        MINE: 0,
       };
       const CODE = {
         OPENED: 0, // 열린 칸
@@ -61,11 +71,27 @@
         EXCLAMATION: " exclamation",
       };
       let table;
-      let openCount = 0;
-      const startTime = new Date();
-      let interval = setInterval(() => {
-        $timer.textContent = `${Math.floor((new Date() - startTime) / 1000)}초`;
-      }, 0);
+      let openCount;
+      let startTime;
+      let interval;
+
+      function onSubmit(event) {
+        event.preventDefault();
+        NUMBER.ROW = parseInt($form.row.value);
+        NUMBER.CELL = $form.cell.value;
+        NUMBER.MINE = $form.mine.value;
+        $tbody.innerHTML = "";
+        openCount = 0;
+        drawTable();
+        startTime = new Date();
+        clearInterval(interval);
+        interval = setInterval(() => {
+          const time = Math.floor((new Date() - startTime) / 1000);
+          $timer.textContent = `${time}초`;
+        }, 0);
+      }
+
+      $form.addEventListener("submit", onSubmit);
 
       function shuffleMines() {
         const candidates = Array(NUMBER.ROW * NUMBER.CELL)
@@ -236,7 +262,6 @@
         $tbody.addEventListener("contextmenu", onRightClick);
         $tbody.addEventListener("click", onLeftClick);
       }
-      drawTable();
     </script>
   </body>
 </html>
