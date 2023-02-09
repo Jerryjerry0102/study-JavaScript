@@ -225,6 +225,17 @@
       }
     }
 
+    function showMines() {
+      const mines = [CODE.MINE, CODE.QUESTION_MINE, CODE.FLAG_MINE];
+      data.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+          if (mines.includes(cell)) {
+            $tbody.children[rowIndex].children[cellIndex].textContent = "X";
+          }
+        });
+      });
+    }
+
     function onLeftClick(event) {
       const target = event.target;
       const rowIndex = target.parentNode.rowIndex;
@@ -247,6 +258,7 @@
         // 닫힌 칸(지뢰 x)이면
         openAround(rowIndex, cellIndex);
       } else if (cellData === CODE.MINE) {
+        showMines();
         target.textContent = "펑";
         target.className = "opened";
         clearInterval(interval);
