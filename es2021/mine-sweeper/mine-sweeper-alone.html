@@ -59,6 +59,7 @@
         EXCLAMATION: " exclamation",
       };
       let table;
+      let openCount = 0;
 
       function shuffleMines() {
         const candidates = Array(NUMBER.ROW * NUMBER.CELL)
@@ -162,6 +163,10 @@
         table[rowIndex][cellIndex] = count;
         target.className = LETTER.OPENED;
         target.textContent = count || "";
+        openCount++;
+        if (openCount >= NUMBER.ROW * NUMBER.CELL - NUMBER.MINE) {
+          alert("승리했습니다!");
+        }
         return count;
       }
 
