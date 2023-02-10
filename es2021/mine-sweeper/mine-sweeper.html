@@ -67,6 +67,10 @@
       cell = parseInt(event.target.cell.value);
       mine = parseInt(event.target.mine.value);
       openCount = 0;
+      normalCellFound = false;
+      searched = null;
+      firstClick = true;
+      clearInterval(interval);
       $tbody.innerHTML = "";
       drawTable();
       startTime = new Date();
@@ -211,6 +215,7 @@
         // 빈칸인 경우
         normalCellFound = true;
         data[rI][cI] = CODE.MINE;
+        // $tbody.children[rI].children[cI].textContent = "X"; // 개발 편의상
       } else {
         searched[rI][cI] = true;
         //  지뢰 칸인 경우 8방향 탐색
@@ -246,7 +251,6 @@
         searched = Array(row)
           .fill()
           .map(() => []);
-        console.log(searched);
         if (cellData === CODE.MINE) {
           // 첫 클릭이 지뢰면
           transferMine(rowIndex, cellIndex); // 지뢰 옮기기
