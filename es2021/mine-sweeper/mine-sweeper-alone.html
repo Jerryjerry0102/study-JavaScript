@@ -32,7 +32,7 @@
     <form id="form">
       <input placeholder="가로줄" id="row" type="number" min="1" max="20" />
       <input placeholder="세로줄" id="cell" type="number" min="1" max="20" />
-      <input placeholder="지뢰수" id="mine" type="number" min="1" max="50" />
+      <input placeholder="지뢰수" id="mine" type="number" />
       <button>생성</button>
     </form>
     <div id="timer"></div>
@@ -82,6 +82,8 @@
         NUMBER.MINE = $form.mine.value;
         $tbody.innerHTML = "";
         openCount = 0;
+        transferredMine = false;
+        searchedTable = null;
         drawTable();
         startTime = new Date();
         clearInterval(interval);
@@ -167,7 +169,7 @@
             break;
           case CODE.MINE_EXCLAMATION:
             table[rowIndex][cellIndex] = CODE.MINE;
-            target.textContent = "X"; // 개발 편의
+            // target.textContent = "X"; // 개발 편의
             target.className = LETTER.MINE;
             break;
         }
@@ -223,11 +225,49 @@
         }, 0);
       }
 
+      let transferredMine = false;
+      let searchedTable;
+      function transferMine(rowIndex, cellIndex) {
+        if (transferredMine) return;
+        if (
+          rowIndex < 0 ||
+          rowIndex >= NUMBER.ROW ||
+          cellIndex < 0 ||
+          cellIndex >= NUMBER.CELL
+        )
+          return;
+        if (searchedTable[rowIndex][cellIndex]) return;
+        if (table[rowIndex][cellIndex] === CODE.NORMAL) {
+          transferredMine = true;
+          table[rowIndex][cellIndex] = CODE.MINE;
+          // $tbody.children[rowIndex].children[cellIndex].textContent = "X"; // 개발 편의상
+        } else {
+          searchedTable[rowIndex][cellIndex] = true;
+          transferMine(rowIndex - 1, cellIndex - 1);
+          transferMine(rowIndex - 1, cellIndex);
+          transferMine(rowIndex - 1, cellIndex + 1);
+          transferMine(rowIndex, cellIndex - 1);
+          transferMine(rowIndex, cellIndex + 1);
+          transferMine(rowIndex + 1, cellIndex - 1);
+          transferMine(rowIndex + 1, cellIndex);
+          transferMine(rowIndex + 1, cellIndex + 1);
+        }
+      }
       function onLeftClick(event) {
         const { target } = event;
         const rowIndex = target.parentNode.rowIndex;
         const cellIndex = target.cellIndex;
-        const cellData = table[rowIndex]?.[cellIndex];
+        let cellData = table[rowIndex]?.[cellIndex];
+        if (openCount === 0) {
+          searchedTable = Array(NUMBER.ROW)
+            .fill()
+            .map(() => []);
+          if (cellData === CODE.MINE) {
+            transferMine(rowIndex, cellIndex);
+            cellData = CODE.NORMAL;
+            table[rowIndex][cellIndex] = CODE.NORMAL;
+          }
+        }
         if (
           [
             CODE.QUESTION,
@@ -254,7 +294,7 @@
           $tr = document.createElement("tr");
           row.forEach((cell) => {
             $td = document.createElement("td");
-            if (cell === CODE.MINE) $td.textContent = "X"; // 개발 편의
+            // if (cell === CODE.MINE) $td.textContent = "X"; // 개발 편의
             $tr.append($td);
           });
           $tbody.append($tr);
