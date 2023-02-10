@@ -56,10 +56,12 @@
         MINE_QUESTION: -4,
         MINE_EXCLAMATION: -5,
         MINE: -6, // 닫힌 칸(지뢰 o)
+        DEAD: -7,
       };
       const MARK = {
         NORMAL: "",
-        MINE: "💥",
+        MINE: "X",
+        DEAD: "💥",
         QUESTION: "?",
         EXCLAMATION: "!",
       };
@@ -169,7 +171,7 @@
             break;
           case CODE.MINE_EXCLAMATION:
             table[rowIndex][cellIndex] = CODE.MINE;
-            // target.textContent = "X"; // 개발 편의
+            // target.textContent = MARK.MINE; // 개발 편의
             target.className = LETTER.MINE;
             break;
         }
@@ -201,6 +203,7 @@
         if (openCount >= NUMBER.ROW * NUMBER.CELL - NUMBER.MINE) {
           $tbody.removeEventListener("contextmenu", onRightClick);
           $tbody.removeEventListener("click", onLeftClick);
+          showMines();
           clearInterval(interval);
           const presentTime = new Date();
           const time = (presentTime - startTime) / 1000;
@@ -240,7 +243,7 @@
         if (table[rowIndex][cellIndex] === CODE.NORMAL) {
           transferredMine = true;
           table[rowIndex][cellIndex] = CODE.MINE;
-          // $tbody.children[rowIndex].children[cellIndex].textContent = "X"; // 개발 편의상
+          // $tbody.children[rowIndex].children[cellIndex].textContent = MARK.MINE; // 개발 편의상
         } else {
           searchedTable[rowIndex][cellIndex] = true;
           transferMine(rowIndex - 1, cellIndex - 1);
@@ -253,6 +256,17 @@
           transferMine(rowIndex + 1, cellIndex + 1);
         }
       }
+      function showMines() {
+        const mines = [CODE.MINE, CODE.MINE_QUESTION, CODE.MINE_EXCLAMATION];
+        table.forEach((row, rowIndex) => {
+          row.forEach((cell, cellIndex) => {
+            if (mines.includes(cell))
+              $tbody.children[rowIndex].children[cellIndex].textContent =
+                MARK.MINE;
+          });
+        });
+      }
+
       function onLeftClick(event) {
         const { target } = event;
         const rowIndex = target.parentNode.rowIndex;
@@ -279,9 +293,11 @@
           return;
         target.className = LETTER.OPENED;
         if (cellData === CODE.MINE) {
-          target.textContent = MARK.MINE;
+          target.textContent = MARK.DEAD;
+          table[rowIndex][cellIndex] = CODE.DEAD;
           $tbody.removeEventListener("contextmenu", onRightClick);
           $tbody.removeEventListener("click", onLeftClick);
+          showMines();
           clearInterval(interval);
         } else {
           openAround(rowIndex, cellIndex);
@@ -294,7 +310,7 @@
           $tr = document.createElement("tr");
           row.forEach((cell) => {
             $td = document.createElement("td");
-            // if (cell === CODE.MINE) $td.textContent = "X"; // 개발 편의
+            // if (cell === CODE.MINE) $td.textContent = MARK.MINE; // 개발 편의
             $tr.append($td);
           });
           $tbody.append($tr);
