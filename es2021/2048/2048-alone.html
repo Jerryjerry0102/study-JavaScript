@@ -120,6 +120,18 @@
       }
 
       startGame();
+
+      function moveCells(direction) {
+        console.log(direction);
+      }
+
+      // keyboard 이벤트
+      window.addEventListener("keyup", (event) => {
+        if (event.key === "ArrowUp") moveCells("ArrowUP");
+        else if (event.key === "ArrowDown") moveCells("ArrowDown");
+        else if (event.key === "ArrowLeft") moveCells("ArrowLeft");
+        else if (event.key === "ArrowRight") moveCells("ArrowRight");
+      });
     </script>
   </body>
 </html>
