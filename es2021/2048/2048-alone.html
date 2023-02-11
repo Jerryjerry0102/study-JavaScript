@@ -3,19 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <title>2048-혼자</title>
-    <style></style>
+    <style>
+      #table {
+        border-collapse: collapse;
+      }
+      #table td {
+        border: 10px solid #bbada0;
+        width: 116px;
+        height: 128px;
+        font-size: 50px;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <table id="table"></table>
     <script>
       const $table = document.getElementById("table");
+      const ROW = 4;
+      const CELL = 4;
+      const table = [];
 
       function startGame() {
         createTable();
         drawTable();
       }
 
-      function createTable() {}
+      function createTable() {
+        const $fragment = document.createDocumentFragment();
+        [1, 2, 3, 4].forEach(() => {
+          const row = [];
+          const $tr = document.createElement("tr");
+          [1, 2, 3, 4].forEach(() => {
+            row.push(0);
+            const $td = document.createElement("td");
+            $tr.append($td);
+          });
+          table.push(row);
+          $fragment.append($tr);
+        });
+        $table.append($fragment);
+        console.log(table);
+      }
+
       function drawTable() {}
 
       startGame();
