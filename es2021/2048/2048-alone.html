@@ -6,6 +6,7 @@
     <style>
       #table {
         border-collapse: collapse;
+        user-select: none;
       }
       #table td {
         border: 10px solid #bbada0;
@@ -89,7 +90,6 @@
           $fragment.append($tr);
         });
         $table.append($fragment);
-        console.log(table);
       }
 
       function put2ToRandomCell() {
@@ -127,10 +127,27 @@
 
       // keyboard 이벤트
       window.addEventListener("keyup", (event) => {
-        if (event.key === "ArrowUp") moveCells("ArrowUP");
-        else if (event.key === "ArrowDown") moveCells("ArrowDown");
-        else if (event.key === "ArrowLeft") moveCells("ArrowLeft");
-        else if (event.key === "ArrowRight") moveCells("ArrowRight");
+        if (event.key === "ArrowUp") moveCells("up ");
+        else if (event.key === "ArrowDown") moveCells("down");
+        else if (event.key === "ArrowLeft") moveCells("left");
+        else if (event.key === "ArrowRight") moveCells("right");
+      });
+
+      // mouse 이벤트
+      let preventX;
+      let downY;
+      window.addEventListener("mousedown", (event) => {
+        downX = event.clientX;
+        downY = event.clientY;
+      });
+      window.addEventListener("mouseup", (event) => {
+        const diffX = event.clientX - downX;
+        const diffY = event.clientY - downY;
+        const { abs } = Math; // 절대값
+        if (diffY < 0 && abs(diffX) < abs(diffY)) moveCells("up");
+        else if (diffY > 0 && abs(diffX) < abs(diffY)) moveCells("down");
+        else if (diffX < 0 && abs(diffX) > abs(diffY)) moveCells("left");
+        else if (diffX > 0 && abs(diffX) > abs(diffY)) moveCells("right");
       });
     </script>
   </body>
