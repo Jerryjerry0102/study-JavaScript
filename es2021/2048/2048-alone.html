@@ -104,7 +104,20 @@
         table[randomCell[0]][randomCell[1]] = 2;
       }
 
-      function drawTable() {}
+      function drawTable() {
+        table.forEach((row, r) => {
+          row.forEach((cell, c) => {
+            let $target = $table.children[r].children[c];
+            if (cell === 0) {
+              $target.className = "";
+              $target.textContent = "";
+            } else {
+              $target.className = "color-" + cell;
+              $target.textContent = cell;
+            }
+          });
+        });
+      }
 
       startGame();
     </script>
