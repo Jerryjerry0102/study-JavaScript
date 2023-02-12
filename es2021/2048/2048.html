@@ -128,12 +128,12 @@
     startGame();
 
     // 가짜 더미 데이터
-    // data = [
-    //   [0, 2, 4, 2],
-    //   [2, 2, 4, 8],
-    //   [2, 2, 2, 2],
-    //   [0, 16, 0, 4],
-    // ];
+    data = [
+      [32, 2, 4, 2],
+      [64, 4, 8, 4],
+      [2, 1024, 1024, 32],
+      [32, 16, 64, 4],
+    ];
     draw();
     function moveCells(direction) {
       switch (direction) {
@@ -226,8 +226,19 @@
           break;
         }
       }
-      put2ToRandomCell();
-      draw();
+      if (data.flat().includes(2048)) {
+        // 승리
+        draw();
+        setTimeout(() => {
+          alert("축하합니다. 2048을 만들었습니다!");
+        }, 500);
+      } else if (!data.flat().includes(0)) {
+        // 빈칸이 없으면 패배
+        alert("패배했습니다...");
+      } else {
+        put2ToRandomCell();
+        draw();
+      }
     }
     // keyboard 이벤트
     window.addEventListener("keyup", (event) => {
