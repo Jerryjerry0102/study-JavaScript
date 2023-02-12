@@ -127,13 +127,18 @@
 
     startGame();
 
+    function calcurateScore(currentRow) {
+      const score = parseInt($score.textContent);
+      $score.textContent = score + currentRow[currentRow.length - 1] * 2;
+    }
+
     // 가짜 더미 데이터
-    data = [
-      [32, 2, 4, 2],
-      [64, 4, 8, 4],
-      [2, 1024, 1024, 32],
-      [32, 16, 64, 4],
-    ];
+    // data = [
+    //   [32, 2, 4, 2],
+    //   [64, 4, 8, 4],
+    //   [2, 1024, 1024, 32],
+    //   [32, 16, 64, 4],
+    // ];
     draw();
     function moveCells(direction) {
       switch (direction) {
@@ -147,6 +152,7 @@
                 const prevData = currentRow[currentRow.length - 1];
                 if (prevData === cellData) {
                   // 이전 값과 지금 값이 같으면
+                  calcurateScore(currentRow);
                   currentRow[currentRow.length - 1] *= -2; // 미쳤다 이건
                 } else newData[i].push(cellData);
               }
@@ -170,6 +176,7 @@
                 const currentRow = newData[i];
                 const prevData = currentRow[currentRow.length - 1];
                 if (prevData === rowData[3 - j]) {
+                  calcurateScore(currentRow);
                   currentRow[currentRow.length - 1] *= -2;
                 } else newData[i].push(rowData[3 - j]);
               }
@@ -191,6 +198,7 @@
                 const currentRow = newData[j];
                 const prevData = currentRow[currentRow.length - 1];
                 if (prevData === cellData) {
+                  calcurateScore(currentRow);
                   currentRow[currentRow.length - 1] *= -2;
                 } else newData[j].push(cellData);
               }
@@ -212,6 +220,7 @@
                 const currentRow = newData[j];
                 const prevData = currentRow[currentRow.length - 1];
                 if (prevData === data[3 - i][j]) {
+                  calcurateScore(currentRow);
                   currentRow[currentRow.length - 1] *= -2;
                 } else newData[j].push(data[3 - i][j]);
               }
@@ -231,10 +240,10 @@
         draw();
         setTimeout(() => {
           alert("축하합니다. 2048을 만들었습니다!");
-        }, 500);
+        }, 50);
       } else if (!data.flat().includes(0)) {
         // 빈칸이 없으면 패배
-        alert("패배했습니다...");
+        alert(`패배했습니다... ${$score.textContent}`);
       } else {
         put2ToRandomCell();
         draw();
