@@ -77,7 +77,7 @@
     function startGame() {
       createTable();
       put2ToRandomCell();
-      drawTable();
+      draw();
     }
 
     function createTable() {
@@ -110,7 +110,7 @@
       data[randomCell[0]][randomCell[1]] = 2;
     }
 
-    function drawTable() {
+    function draw() {
       data.forEach((rowData, i) => {
         rowData.forEach((cellData, j) => {
           const $target = $table.children[i].children[j];
@@ -127,8 +127,74 @@
 
     startGame();
 
+    // 가짜 더미 데이터
+    data = [
+      [0, 2, 4, 2],
+      [2, 2, 4, 8],
+      [2, 2, 2, 2],
+      [0, 16, 0, 4],
+    ];
+    draw();
     function moveCells(direction) {
-      console.log(direction);
+      switch (direction) {
+        case "left": {
+          // case 문에서 변수를 쓸 때는 {} 를 써줘야 한다.(블록스코프)
+          const newData = [[], [], [], []];
+          data.forEach((rowData, i) => {
+            rowData.forEach((cellData, j) => {
+              if (cellData) {
+                const currentRow = newData[i];
+                const prevData = currentRow[currentRow.length - 1];
+                if (prevData === cellData) {
+                  // 이전 값과 지금 값이 같으면
+                  currentRow[currentRow.length - 1] *= -2; // 미쳤다 이건
+                } else newData[i].push(cellData);
+              }
+            });
+          });
+          console.log(newData);
+          // newData는 임시로 만든 배열이고 결국 중요한 건 data
+          // data가 바뀌어야 화면이 바뀐다
+          [1, 2, 3, 4].forEach((rowData, i) => {
+            [1, 2, 3, 4].forEach((cellData, j) => {
+              data[i][j] = Math.abs(newData[i][j]) || 0;
+            });
+          });
+          break;
+        }
+        case "right": {
+          const newData = [[], [], [], []];
+          // [[0, 2, 4, 2], [], [], []]
+          data.forEach((rowData, i) => {
+            rowData.forEach((cellData, j) => {
+              if (rowData[3 - j]) {
+                const currentRow = newData[i];
+                const prevData = currentRow[currentRow.length - 1];
+                if (prevData === rowData[3 - j]) {
+                  // 이전 값과 지금 값이 같으면
+                  currentRow[currentRow.length - 1] *= -2; // 미쳤다 이건
+                } else newData[i].push(rowData[3 - j]);
+              }
+            });
+          });
+          console.log(newData);
+          // newData는 임시로 만든 배열이고 결국 중요한 건 data
+          // data가 바뀌어야 화면이 바뀐다
+          [1, 2, 3, 4].forEach((rowData, i) => {
+            [1, 2, 3, 4].forEach((cellData, j) => {
+              data[i][3 - j] = Math.abs(newData[i][j]) || 0;
+            });
+          });
+          break;
+        }
+        case "up": {
+          break;
+        }
+        case "down": {
+          break;
+        }
+      }
+      draw();
     }
     // keyboard 이벤트
     window.addEventListener("keyup", (event) => {
