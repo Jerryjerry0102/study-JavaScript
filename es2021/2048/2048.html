@@ -67,12 +67,25 @@
   </head>
   <body>
     <table id="table"></table>
-    <div id="score">0</div>
+    <div>
+      <span id="score">0</span>
+      <button id="back">되돌리기</button>
+    </div>
   </body>
   <script>
     const $table = document.getElementById("table");
     const $score = document.getElementById("score");
+    const $back = document.getElementById("back");
     let data = [];
+    const history = [];
+
+    $back.addEventListener("click", () => {
+      const prevData = history.pop();
+      if (!prevData) return; // 되돌릴 게 없으면 종료
+      $score.textContent = prevData.score;
+      data = prevData.table;
+      draw();
+    });
 
     function startGame() {
       createTable();
@@ -139,8 +152,12 @@
     //   [2, 1024, 1024, 32],
     //   [32, 16, 64, 4],
     // ];
-    draw();
+    // draw();
     function moveCells(direction) {
+      history.push({
+        table: JSON.parse(JSON.stringify(data)), // 성능은 별로지만 가장 간단한 깊은 복사 방법
+        score: $score.textContent,
+      });
       switch (direction) {
         case "left": {
           // case 문에서 변수를 쓸 때는 {} 를 써줘야 한다.(블록스코프)
