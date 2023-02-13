@@ -68,7 +68,7 @@
       const $table = document.getElementById("table");
       const ROW = 4;
       const CELL = 4;
-      const table = [];
+      let table = [];
 
       function startGame() {
         createTable();
@@ -121,13 +121,109 @@
 
       startGame();
 
+      // 개발 편의상
+      // table = [
+      //   [0, 2, 0, 2],
+      //   [2, 4, 4, 8],
+      //   [0, 0, 0, 2],
+      //   [2, 2, 0, 2],
+      // ];
+      // drawTable();
+
       function moveCells(direction) {
-        console.log(direction);
+        switch (direction) {
+          case "left": {
+            const newArray = [[], [], [], []];
+            table.forEach((row, r) => {
+              row.forEach((cell, c) => {
+                const curCell = table[r][c];
+                if (curCell) {
+                  const curRow = newArray[r];
+                  const prevCell = curRow[curRow.length - 1];
+                  if (prevCell === curCell) {
+                    curRow[curRow.length - 1] *= -2;
+                  } else newArray[r].push(curCell);
+                }
+              });
+            });
+            [1, 2, 3, 4].forEach((_, r) => {
+              [1, 2, 3, 4].forEach((_, c) => {
+                table[r][c] = Math.abs(newArray[r][c]) || 0;
+              });
+            });
+            break;
+          }
+          case "right": {
+            const newArray = [[], [], [], []];
+            table.forEach((row, r) => {
+              row.forEach((cell, c) => {
+                const curCell = table[r][3 - c];
+                if (curCell) {
+                  const curRow = newArray[r];
+                  const prevCell = curRow[curRow.length - 1];
+                  if (prevCell === curCell) {
+                    curRow[curRow.length - 1] *= -2;
+                  } else newArray[r].push(curCell);
+                }
+              });
+            });
+            [1, 2, 3, 4].forEach((_, r) => {
+              [1, 2, 3, 4].forEach((_, c) => {
+                table[r][3 - c] = Math.abs(newArray[r][c]) || 0;
+              });
+            });
+            break;
+          }
+          case "up": {
+            const newArray = [[], [], [], []];
+            table.forEach((row, r) => {
+              row.forEach((cell, c) => {
+                const curCell = table[c][r];
+                if (curCell) {
+                  const curRow = newArray[r];
+                  const prevCell = curRow[curRow.length - 1];
+                  if (prevCell === curCell) {
+                    curRow[curRow.length - 1] *= -2;
+                  } else newArray[r].push(curCell);
+                }
+              });
+            });
+            [1, 2, 3, 4].forEach((_, r) => {
+              [1, 2, 3, 4].forEach((_, c) => {
+                table[c][r] = Math.abs(newArray[r][c]) || 0;
+              });
+            });
+            break;
+          }
+          case "down": {
+            const newArray = [[], [], [], []];
+            table.forEach((row, r) => {
+              row.forEach((cell, c) => {
+                const curCell = table[3 - c][r];
+                if (curCell) {
+                  const curRow = newArray[r];
+                  const prevCell = curRow[curRow.length - 1];
+                  if (prevCell === curCell) {
+                    curRow[curRow.length - 1] *= -2;
+                  } else newArray[r].push(curCell);
+                }
+              });
+            });
+            [1, 2, 3, 4].forEach((_, r) => {
+              [1, 2, 3, 4].forEach((_, c) => {
+                table[3 - c][r] = Math.abs(newArray[r][c]) || 0;
+              });
+            });
+            break;
+          }
+        }
+        put2ToRandomCell();
+        drawTable();
       }
 
       // keyboard 이벤트
       window.addEventListener("keyup", (event) => {
-        if (event.key === "ArrowUp") moveCells("up ");
+        if (event.key === "ArrowUp") moveCells("up");
         else if (event.key === "ArrowDown") moveCells("down");
         else if (event.key === "ArrowLeft") moveCells("left");
         else if (event.key === "ArrowRight") moveCells("right");
