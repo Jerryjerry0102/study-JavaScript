@@ -64,11 +64,21 @@
   </head>
   <body>
     <table id="table"></table>
+    <button id="back">되돌리기</button>
     <script>
       const $table = document.getElementById("table");
+      const $back = document.getElementById("back");
       const ROW = 4;
       const CELL = 4;
       let table = [];
+      const history = [];
+
+      $back.addEventListener("click", () => {
+        const prevTable = history.pop();
+        if (!prevTable) return;
+        table = prevTable;
+        drawTable();
+      });
 
       function startGame() {
         createTable();
@@ -145,6 +155,7 @@
       }
 
       function moveCells(direction) {
+        history.push(JSON.parse(JSON.stringify(table)));
         switch (direction) {
           case "left": {
             const newArray = [[], [], [], []];
