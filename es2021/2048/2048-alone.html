@@ -123,12 +123,26 @@
 
       // 개발 편의상
       // table = [
-      //   [0, 2, 0, 2],
-      //   [2, 4, 4, 8],
+      //   [1024, 1024, 0, 2],
+      //   [256, 4, 4, 8],
       //   [0, 0, 0, 2],
       //   [2, 2, 0, 2],
       // ];
       // drawTable();
+
+      function win() {
+        if (table.flat().includes(2048)) {
+          drawTable();
+          setTimeout(() => {
+            alert("승리하였습니다!");
+          }, 50);
+          return true;
+        } else if (!table.flat().includes(0)) {
+          alert("패배하셨습니다!");
+          return true;
+        }
+        return false;
+      }
 
       function moveCells(direction) {
         switch (direction) {
@@ -217,6 +231,7 @@
             break;
           }
         }
+        if (win()) return;
         put2ToRandomCell();
         drawTable();
       }
