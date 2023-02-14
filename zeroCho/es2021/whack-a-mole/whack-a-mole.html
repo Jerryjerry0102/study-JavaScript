@@ -130,6 +130,32 @@
       const $game = document.querySelector("#game");
       const $start = document.querySelector("#start");
       const $$cells = document.querySelectorAll(".cell");
+
+      const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      let started = false;
+      let score = 0;
+      $start.addEventListener("click", () => {
+        if (started) return; // 이미 시작했으면 무시
+        started = true;
+        console.log("시작");
+        const tickId = setInterval(tick, 1000);
+        tick();
+      });
+
+      // 비동기 때문에 버그가 생기면 이벤트 루프로 분석해야 한다.
+      function tick() {
+        holes.forEach((hole, index) => {
+          if (hole) return; // 무언가 일어나고 있으면 return
+          const $gopher = $$cells[index].querySelector(".gopher");
+          // setTimeout의 리턴값은 타이머아이디다.
+          // 참조값에 타이머아이디를 대입시켜주고 있는 것(hole은 원시값이기 때문에 안 됨)
+          holes[index] = setTimeout(() => {
+            $gopher.classList.add("hidden");
+            holes[index] = 0;
+          }, 1000);
+          $gopher.classList.remove("hidden");
+        });
+      }
     </script>
   </body>
 </html>
