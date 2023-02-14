@@ -59,7 +59,8 @@
   </head>
   <body>
     <div>
-      <span id="timer">0</span>초&nbsp; <span id="score">0</span>점
+      <span id="timer">0</span>초&nbsp; <span id="life">3</span>목숨&nbsp;
+      <span id="score">0</span>점
       <button id="start">시작</button>
     </div>
     <div id="game">
@@ -126,6 +127,7 @@
     </div>
     <script>
       const $timer = document.querySelector("#timer");
+      const $life = document.querySelector("#life");
       const $score = document.querySelector("#score");
       const $game = document.querySelector("#game");
       const $start = document.querySelector("#start");
@@ -134,24 +136,27 @@
       const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
       let started = false;
       let score = 0;
-      let time = 10;
+      let time = 10; // 개발 편의
+      let life = 3; // 개발 편의
+      let timerId;
+      let tickId;
 
       $start.addEventListener("click", () => {
         if (started) return; // 이미 시작했으면 무시
         started = true;
         console.log("시작");
-        const timerId = setInterval(() => {
+        timerId = setInterval(() => {
           time = (time * 10 - 1) / 10; // 소수점 계산 시 문제있음
           $timer.textContent = time;
           if (time === 0) {
+            clearInterval(timerId);
+            clearInterval(tickId);
             setTimeout(() => {
-              clearInterval(timerId);
-              clearInterval(tickId);
               alert(`게임 오버! 점수는 ${score}점`);
             }, 50);
           }
         }, 100);
-        const tickId = setInterval(tick, 1000);
+        tickId = setInterval(tick, 1000);
         tick();
       });
 
@@ -197,6 +202,10 @@
           }, 1000);
         });
         $cell.querySelector(".bomb").addEventListener("click", (event) => {
+          if (!event.target.classList.contains("boom")) {
+            life--;
+            $life.textContent = life;
+          }
           event.target.classList.add("boom");
           event.target.classList.add("hidden");
           clearTimeout(holes[index]);
@@ -204,6 +213,13 @@
             holes[index] = 0;
             event.target.classList.remove("boom");
           }, 1000);
+          if (life === 0) {
+            clearInterval(timerId);
+            clearInterval(tickId);
+            setTimeout(() => {
+              alert(`게임 오버! 점수는 ${score}점`);
+            }, 50);
+          }
         });
       });
     </script>
