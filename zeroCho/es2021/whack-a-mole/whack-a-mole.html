@@ -168,6 +168,29 @@
           }
         });
       }
+
+      $$cells.forEach(($cell, index) => {
+        $cell.querySelector(".gopher").addEventListener("click", (event) => {
+          event.target.classList.add("dead");
+          event.target.classList.add("hidden"); // 누른 즉시 사라지게 하기 위해서
+          clearTimeout(holes[index]); // 기존 내려가는 타이머는 제거
+          setTimeout(() => {
+            holes[index] = 0;
+            event.target.classList.remove("dead");
+          }, 1000);
+          score += 1;
+          $score.textContent = score;
+        });
+        $cell.querySelector(".bomb").addEventListener("click", (event) => {
+          event.target.classList.add("boom");
+          event.target.classList.add("hidden");
+          clearTimeout(holes[index]);
+          setTimeout(() => {
+            holes[index] = 0;
+            event.target.classList.remove("boom");
+          }, 1000);
+        });
+      });
     </script>
   </body>
 </html>
