@@ -142,18 +142,30 @@
         tick();
       });
 
+      let gopherPercent = 0.3;
+      let bombPercent = 0.5;
       // 비동기 때문에 버그가 생기면 이벤트 루프로 분석해야 한다.
       function tick() {
         holes.forEach((hole, index) => {
           if (hole) return; // 무언가 일어나고 있으면 return
-          const $gopher = $$cells[index].querySelector(".gopher");
-          // setTimeout의 리턴값은 타이머아이디다.
-          // 참조값에 타이머아이디를 대입시켜주고 있는 것(hole은 원시값이기 때문에 안 됨)
-          holes[index] = setTimeout(() => {
-            $gopher.classList.add("hidden");
-            holes[index] = 0;
-          }, 1000);
-          $gopher.classList.remove("hidden");
+          const randomValue = Math.random();
+          if (randomValue < gopherPercent) {
+            const $gopher = $$cells[index].querySelector(".gopher");
+            // setTimeout의 리턴값은 타이머아이디다.
+            // 참조값에 타이머아이디를 대입시켜주고 있는 것(hole은 원시값이기 때문에 안 됨)
+            holes[index] = setTimeout(() => {
+              $gopher.classList.add("hidden");
+              holes[index] = 0;
+            }, 1000);
+            $gopher.classList.remove("hidden");
+          } else if (randomValue < bombPercent) {
+            const $bomb = $$cells[index].querySelector(".bomb");
+            holes[index] = setTimeout(() => {
+              $bomb.classList.add("hidden");
+              holes[index] = 0;
+            }, 1000);
+            $bomb.classList.remove("hidden");
+          }
         });
       }
     </script>
