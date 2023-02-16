@@ -17,30 +17,25 @@
     <script type="text/babel">
       "use strict";
 
-      // 클래스 컴포넌트
-      class LikeButton extends React.Component {
-        constructor(props) {
-          super(props);
-          this.state = { liked: false };
+      // 함수 컴포넌트
+      const LikeButton = () => {
+        // 장점: this 쓸 일이 없다.
+        // [data, data를 바꾸는 함수] = React.useState();
+        const [liked, setLiked] = React.useState(false); // 구조분해
+        // 뭔짓을 하든, 결국 return한 것이 화면
+        if (liked) {
+          return "You liked this.";
         }
-
-        render() {
-          if (this.state.liked) {
-            return "You liked this.";
-          }
-
-          return (
-            <button
-              onClick={() => {
-                // this.state.liked = true;
-                this.setState({ liked: true });
-              }}
-            >
-              Like
-            </button>
-          );
-        }
-      }
+        return (
+          <button
+            onClick={() => {
+              setLiked(true);
+            }}
+          >
+            Like
+          </button>
+        );
+      };
     </script>
     <script type="text/babel">
       // ReactDom.render(<LikeButton />, document.querySelector('#root')); // React 17버전 코드
