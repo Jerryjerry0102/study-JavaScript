@@ -15,10 +15,11 @@
 - [ ] 1. 기본 문법 배우기
   - [x] 타입스크립트는 변수, 매개변수, 리턴값에 타입 붙이는 것!
   - [x] 타입 추론을 적극 활용하자
-  - [ ] js 변환 시 사라지는 부분을 파악하자
-  - [ ] never 타입과 느낌표(non-null assertion)
-  - [ ] 원시 래퍼 타입, 템플릿 리터럴 타입, reset, 튜플
-  - [ ] union(|)과 intersection(&)
+  - [x] js 변환 시 사라지는 부분을 파악하자
+  - [x] never 타입과 느낌표(non-null assertion)
+  - [x] 원시 래퍼 타입, 템플릿 리터럴 타입, reset, 튜플
+  - [x] enum, keyof, typeof
+  - [x] union(|)과 intersection(&)
   - [ ] 타입 애일리어스와 인터페이스의 상속(extends)
   - [ ] 타입을 집합으로 생각하자(좁은 타입과 넓은 타입)
   - [ ] void의 두 가지 사용법
