@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>구구단-혼자</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+      class Gugudan extends React.Component {
+        /*
+        constructor(props) {
+          super(props);
+          this.state = {
+            firstNumber: Math.floor(Math.random() * 9),
+            secondNumber: Math.floor(Math.random() * 9),
+            value: "",
+            result: "",
+          };
+          this.numberInput = React.createRef();
+        }
+        */
+        state = {
+          firstNumber: Math.floor(Math.random() * 9),
+          secondNumber: Math.floor(Math.random() * 9),
+          value: "",
+          result: "",
+        };
+        numberInput = React.createRef();
+
+        handleChange = (event) => {
+          this.setState({ value: event.target.value });
+        };
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+          const { firstNumber, secondNumber, value } = this.state;
+          this.numberInput.current.focus();
+          if (parseInt(value) === firstNumber * secondNumber) {
+            this.setState((state) => {
+              return {
+                firstNumber: Math.floor(Math.random() * 9),
+                secondNumber: Math.floor(Math.random() * 9),
+                value: "",
+                result: "정답: " + state.value,
+              };
+            });
+          } else {
+            this.setState({ result: "땡" });
+          }
+        };
+
+        render() {
+          return (
+            <React.Fragment>
+              <div>
+                {this.state.firstNumber}곱하기{this.state.secondNumber}은?
+              </div>
+              <form onSubmit={this.handleSubmit}>
+                <input
+                  ref={this.numberInput}
+                  type="number"
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                />
+                <input type="submit" value="입력" />
+              </form>
+              <div>{this.state.result}</div>
+            </React.Fragment>
+          );
+        }
+      }
+    </script>
+    <script type="text/babel">
+      ReactDOM.createRoot(document.querySelector("#root")).render(<Gugudan />);
+    </script>
+  </body>
+</html>
