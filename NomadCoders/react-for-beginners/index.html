@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+    /* function 사용 */
+    function Title() {
+      return (
+        <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
+          Hello I'm a title
+        </h3>
+      );
+    }
+    /* 화살표 함수 () => { return } 사용 */
+    const Button = () => {
+      return (
+        <button
+          style={{ backgroundColor: "tomato" }}
+          onClick={() => console.log("I'm clicked")}
+        >
+          Click me
+        </button>
+      );
+    };
+    /* 화살표 함수 축약 버전 사용 () => ( ) */
+    const Container = () => (
+      //! 컴포넌트의 첫 글자는 반드시 대문자여야 한다.
+      // 만약 소문자면 React랑 JSX는 컴포넌트가 아닌 HTML 태그라고 생각하게 된다.
+      <div>
+        <Title></Title>
+        <Button></Button>
+      </div>
+    );
+    ReactDOM.render(<Container />, root);
+  </script>
+</html>

@@ -11,14 +11,14 @@
 ### 목차
 
 - [x] 1 INTRODUCTION
-- [ ] 2 THE BASICS OF REACT
+- [x] 2 THE BASICS OF REACT
   - [x] Introduction
   - [x] Before React
-  - [ ] Our First React Element
-  - [ ] Events in React
-  - [ ] Recap
-  - [ ] JSX
-  - [ ] JSX prat Two
+  - [x] Our First React Element
+  - [x] Events in React
+  - [x] Recap
+  - [x] JSX
+  - [x] JSX prat Two
 - [ ] 3 STATE
 - [ ] 4 PROPS
 - [ ] 5 CREATE REACT APP
