@@ -19,17 +19,17 @@
   - [x] Recap
   - [x] JSX
   - [x] JSX prat Two
-- [ ] 3 STATE
+- [x] 3 STATE
   - [x] Understanding State
   - [x] setState part One
   - [x] setState part Two
   - [x] Recap
   - [x] State Functions
-  - [ ] Inputs and State
-  - [ ] state Practice part One
-  - [ ] state Practice part Two
-  - [ ] Recap
-  - [ ] Final Practice and Recap
+  - [x] Inputs and State
+  - [x] state Practice part One
+  - [x] state Practice part Two
+  - [x] Recap
+  - [x] Final Practice and Recap
 - [ ] 4 PROPS
 - [ ] 5 CREATE REACT APP
 - [ ] 6 EFFECTS
