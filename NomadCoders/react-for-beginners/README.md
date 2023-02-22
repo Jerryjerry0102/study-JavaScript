@@ -24,7 +24,7 @@
   - [x] setState part One
   - [x] setState part Two
   - [x] Recap
-  - [ ] State Functions
+  - [x] State Functions
   - [ ] Inputs and State
   - [ ] state Practice part One
   - [ ] state Practice part Two
