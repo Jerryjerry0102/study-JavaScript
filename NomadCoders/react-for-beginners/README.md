@@ -30,7 +30,7 @@
   - [x] state Practice part Two
   - [x] Recap
   - [x] Final Practice and Recap
-- [ ] 4 PROPS
+- [x] 4 PROPS
   - [x] Props
   - [x] Memo
   - [x] Prop Types
