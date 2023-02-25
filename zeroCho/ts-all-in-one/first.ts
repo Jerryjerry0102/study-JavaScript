@@ -1,14 +1,10 @@
-interface Arr<T> {
-  forEach(callbackfn: (v: T, i: number, array: T[]) => void): void;
-  map<S>(callbackfn: (v: T, i: number, array: T[]) => S): S[];
-  filter<S extends T>(callback: (v: T, i: number, array: T[]) => v is S): S[];
+function a(x: string | number): number {
+  return 0;
 }
+a("1"); // 1
 
-const a: Arr<number> = [1, 2, 3];
-const b = a.filter((v): v is number => v % 2 === 0); // [2] number[]
+type B = (x: string) => number | string;
+const b: B = a;
 
-const c: Arr<number | string> = [1, "2", 3, "4", 5];
-const d = c.filter((v): v is string => typeof v === "string"); // ['2', '4'] string[]
-
-const predicate = (v: string | number): v is number => typeof v === "number";
-const e = c.filter(predicate); // [1, 3, 5] number[]
+// 리턴 값은 좁은 타입 -> 넓은 타입 대입 가능
+// 매개변수는 넓은 타입 -> 좁은 타입 대입 가능
