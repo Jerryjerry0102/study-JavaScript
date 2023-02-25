@@ -1,10 +1,21 @@
-function a(x: string | number): number {
-  return 0;
+interface Axios {
+  get(): void;
 }
-a("1"); // 1
 
-type B = (x: string) => number | string;
-const b: B = a;
+class CustomError extends Error {
+  response?: {
+    data: any;
+  };
+}
+declare const axios: Axios;
 
-// 리턴 값은 좁은 타입 -> 넓은 타입 대입 가능
-// 매개변수는 넓은 타입 -> 좁은 타입 대입 가능
+async () => {
+  try {
+    await axios.get();
+  } catch (err) {
+    if (err instanceof CustomError) {
+      console.error(err.response?.data);
+      err.response?.data;
+    }
+  }
+};
