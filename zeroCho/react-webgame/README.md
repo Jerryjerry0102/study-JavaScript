@@ -32,6 +32,16 @@
   - [x] 끝말잇기 Hooks로 전환하기
   - [x] 컨트롤러 인풋 vs 언컨트롤드 인풋
 - [ ] 3. 숫자야구
+  - [x] import와 require 비교
+  - [x] 리액트 반복문(map)
+  - [x] 리액트 반복문(key)
+  - [x] 컴포넌트 분리와 props
+  - [x] 주석과 메서드 바인딩
+  - [ ] 숫자야구 만들기
+  - [ ] Q&A
+  - [ ] 숫자야구 Hooks로 전환하기
+  - [ ] React Devtools
+  - [ ] shouldComponentUpdate
 - [ ] 4. 반응속도체크
 - [ ] 5. 로또 추첨기
 - [ ] 6. 틱택토
