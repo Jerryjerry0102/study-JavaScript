@@ -33,8 +33,8 @@
 - [ ] 4 PROPS
   - [x] Props
   - [x] Memo
-  - [ ] Prop Types
-  - [ ] Recap
+  - [x] Prop Types
+  - [x] Recap
 - [ ] 5 CREATE REACT APP
 - [ ] 6 EFFECTS
 - [ ] 7 PRACTICE MOVIE APP
