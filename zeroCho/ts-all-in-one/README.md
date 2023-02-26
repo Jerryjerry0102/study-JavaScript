@@ -41,12 +41,13 @@
   - [x] 하나에는 걸리겠지(오버로딩)
   - [x] 타입스크립트는 건망증이 심하다(+에러 처리법)
 - [ ] 3. Utility Types
-  - [ ] Partial 타입 분석
-  - [ ] Pick 타입 분석
-  - [ ] Omit, Exclude, Extract 타입 분석
+  - [x] Partial 타입 분석
+  - [x] Pick 타입 분석
+  - [x] Omit, Exclude, Extract 타입 분석
   - [ ] Required, Record, NonNullable 타입 분석
   - [ ] infer 타입 분석
   - [ ] 완전 복잡한 타입 분석하기(Promise와 Awaite 편)
+  - [ ] 완전 복잡한 타입 분석하기(bind 편)
   - [ ] 완전 복잡한 타입 분석하기(flat 편)
 
 ### Part2. 실전 분석편

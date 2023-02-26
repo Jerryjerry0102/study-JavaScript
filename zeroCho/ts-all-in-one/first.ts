@@ -1,21 +1,6 @@
-interface Axios {
-  get(): void;
-}
+// type Exclude<T, U> = T extends U ? never : T;
+// type Extract<T, U> = T extends U ? T : never;
 
-class CustomError extends Error {
-  response?: {
-    data: any;
-  };
-}
-declare const axios: Axios;
-
-async () => {
-  try {
-    await axios.get();
-  } catch (err) {
-    if (err instanceof CustomError) {
-      console.error(err.response?.data);
-      err.response?.data;
-    }
-  }
-};
+type Animal = "Cat" | "Dog" | "Human";
+type Mammal = Exclude<Animal, "Human">;
+type Human = Extract<Animal, "Human">;
