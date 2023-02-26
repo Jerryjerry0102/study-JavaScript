@@ -35,6 +35,6 @@
   - [x] Memo
   - [x] Prop Types
   - [x] Recap
-- [ ] 5 CREATE REACT APP
+- [x] 5 CREATE REACT APP
 - [ ] 6 EFFECTS
 - [ ] 7 PRACTICE MOVIE APP
