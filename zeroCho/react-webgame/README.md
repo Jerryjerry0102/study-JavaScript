@@ -37,11 +37,14 @@
   - [x] 리액트 반복문(key)
   - [x] 컴포넌트 분리와 props
   - [x] 주석과 메서드 바인딩
-  - [ ] 숫자야구 만들기
-  - [ ] Q&A
-  - [ ] 숫자야구 Hooks로 전환하기
+  - [x] 숫자야구 만들기
+  - [x] Q&A
+  - [x] 숫자야구 Hooks로 전환하기
   - [ ] React Devtools
   - [ ] shouldComponentUpdate
+  - [ ] 억울한 자식 리렌더링 막기
+  - [ ] React.createRef
+  - [ ] props와 state 연결하기
 - [ ] 4. 반응속도체크
 - [ ] 5. 로또 추첨기
 - [ ] 6. 틱택토
