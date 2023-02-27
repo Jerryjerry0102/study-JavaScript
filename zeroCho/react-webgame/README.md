@@ -43,7 +43,7 @@
   - [x] React Devtools
   - [x] shouldComponentUpdate
   - [x] 억울한 자식 리렌더링 막기(PureComponent와 memo)
-  - [ ] React.createRef
+  - [x] React.createRef
   - [ ] props와 state 연결하기
 - [ ] 4. 반응속도체크
 - [ ] 5. 로또 추첨기
