@@ -44,9 +44,9 @@
   - [x] Partial 타입 분석
   - [x] Pick 타입 분석
   - [x] Omit, Exclude, Extract 타입 분석
-  - [ ] Required, Record, NonNullable 타입 분석
-  - [ ] infer 타입 분석
-  - [ ] 완전 복잡한 타입 분석하기(Promise와 Awaite 편)
+  - [x] Required, Record, NonNullable 타입 분석
+  - [x] infer 타입 분석
+  - [x] 완전 복잡한 타입 분석하기(Promise와 Awaited 편)
   - [ ] 완전 복잡한 타입 분석하기(bind 편)
   - [ ] 완전 복잡한 타입 분석하기(flat 편)
 
