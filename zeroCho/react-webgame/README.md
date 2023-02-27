@@ -40,8 +40,8 @@
   - [x] 숫자야구 만들기
   - [x] Q&A
   - [x] 숫자야구 Hooks로 전환하기
-  - [ ] React Devtools
-  - [ ] shouldComponentUpdate
+  - [x] React Devtools
+  - [x] shouldComponentUpdate
   - [ ] 억울한 자식 리렌더링 막기
   - [ ] React.createRef
   - [ ] props와 state 연결하기
