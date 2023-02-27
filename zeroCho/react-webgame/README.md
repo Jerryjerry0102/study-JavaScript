@@ -42,7 +42,7 @@
   - [x] 숫자야구 Hooks로 전환하기
   - [x] React Devtools
   - [x] shouldComponentUpdate
-  - [ ] 억울한 자식 리렌더링 막기
+  - [x] 억울한 자식 리렌더링 막기(PureComponent와 memo)
   - [ ] React.createRef
   - [ ] props와 state 연결하기
 - [ ] 4. 반응속도체크
