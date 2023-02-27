@@ -1,8 +1,3 @@
-class Block {
-    constructor(data) {
-        this.data = data;
-    }
-    static hello() {
-        return "hi";
-    }
-}
+import { init, exit } from "./myPackage";
+init({ debug: true, url: "hi" });
+exit(1);
