@@ -22,6 +22,7 @@ const NumberBaseball = () => {
     setTimeout(() => {
       alert("게임을 다시 시작합니다");
       setAnswer(getRandomNumbers());
+      setValue("");
       setResult("");
       setTries([]);
     }, 500);
@@ -31,6 +32,9 @@ const NumberBaseball = () => {
     e.preventDefault();
     if (value === answer.join("")) {
       setResult("홈런!");
+      setTries((prevTries) => {
+        return [...prevTries, { value, comment: "홈런!" }];
+      });
       restart();
     } else {
       if (tries.length >= 9) {
@@ -44,10 +48,12 @@ const NumberBaseball = () => {
           else if (answer.includes(+value[i])) ball += 1;
         });
         let comment = `${strike} 스트라이크 ${ball} 볼`;
-        setTries([...tries, { value, comment }]);
+        setTries((prevTries) => {
+          return [...prevTries, { value, comment }];
+        });
+        setValue("");
       }
     }
-    setValue("");
   };
   const onChange = (e) => {
     setValue(e.target.value);
@@ -56,7 +62,7 @@ const NumberBaseball = () => {
     <>
       <div style={{ fontSize: 25, color: "yellowgreen" }}>{result}</div>
       <form onSubmit={onSubmit}>
-        <input onChange={onChange} value={value} />
+        <input onChange={onChange} value={value} maxLength="4" />
       </form>
       <div>시도: {tries.length}</div>
       <ul>
