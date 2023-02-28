@@ -8,6 +8,7 @@ const getRandomNumbers = () => {
     let randomIndex = Math.floor(Math.random() * candidates.length);
     randomNumbers.push(parseInt(candidates.splice(randomIndex, 1)));
   }
+  console.log(randomNumbers); // 개발용
   return randomNumbers;
 };
 
@@ -28,8 +29,6 @@ const NumberBaseball = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(answer); // 개발용
-    setValue("");
     if (value === answer.join("")) {
       setResult("홈런!");
       restart();
@@ -48,6 +47,7 @@ const NumberBaseball = () => {
         setTries([...tries, { value, comment }]);
       }
     }
+    setValue("");
   };
   const onChange = (e) => {
     setValue(e.target.value);
