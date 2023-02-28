@@ -1,12 +1,9 @@
-const p1 = Promise.resolve(1)
-  .then((a) => a + 1)
-  .then((a) => a + 1)
-  .then((a) => a.toString());
-const p2 = Promise.resolve(2);
-const p3 = new Promise((res, rej) => {
-  setTimeout(res, 1000);
-});
+const a = [1, 2, 3, [1, 2], [[1], [2]]].flat(); // [1, 2, 3, 1, 2, [ 1 ] [ 2 ]]
+const b = [1, 2, 3, [1, 2]].flat(); // [1, 2, 3, 1, 2]
+const c = [1, 2, 3, [1, 2], [[1], [2]]].flat(2); // [1, 2, 3, 1, 2, [ 1 ] [ 2 ]]
 
-Promise.all([p1, p2, p3]).then((result) => {
-  console.log(result); // [ '3', 2, undefined ]
-});
+type A = {
+  name: string;
+  age: number;
+};
+type B = A[1 extends number ? "age" : "name"];
