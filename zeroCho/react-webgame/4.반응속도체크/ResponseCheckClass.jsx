@@ -32,7 +32,6 @@ class ResponseCheck extends Component {
       });
     } else if (state === "go") {
       const endTime = new Date();
-      console.log(this.startTime, endTime);
       this.setState((prevState) => {
         return {
           state: "ready",

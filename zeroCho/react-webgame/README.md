@@ -45,7 +45,7 @@
   - [x] 억울한 자식 리렌더링 막기(PureComponent와 memo)
   - [x] React.createRef
   - [x] props와 state 연결하기
-- [ ] 4. 반응속도체크
+- [x] 4. 반응속도체크
   - [x] React 조건문
   - [x] setTimeout 넣어 반응속도체크
   - [x] 성능 체크와 Q&A
