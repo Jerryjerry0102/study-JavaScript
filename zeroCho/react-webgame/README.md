@@ -46,6 +46,11 @@
   - [x] React.createRef
   - [x] props와 state 연결하기
 - [ ] 4. 반응속도체크
+  - [x] React 조건문
+  - [ ] setTimeout 넣어 반응속도체크
+  - [ ] 성능 체크와 Q&amp;A
+  - [ ] 반응속도체크 Hooks로 전환하기
+  - [ ] return 내부에 for과 if 쓰기
 - [ ] 5. 로또 추첨기
 - [ ] 6. 틱택토
 - [ ] 7. 지뢰찾기
