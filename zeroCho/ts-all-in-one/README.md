@@ -40,7 +40,7 @@
   - [x] 공변성과 반공변성
   - [x] 하나에는 걸리겠지(오버로딩)
   - [x] 타입스크립트는 건망증이 심하다(+에러 처리법)
-- [ ] 3. Utility Types
+- [x] 3. Utility Types
   - [x] Partial 타입 분석
   - [x] Pick 타입 분석
   - [x] Omit, Exclude, Extract 타입 분석
