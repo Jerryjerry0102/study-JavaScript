@@ -28,6 +28,7 @@ class RSP extends Component {
   };
 
   interval;
+  clickable = true;
 
   componentDidMount() {
     // 컴포넌트가 첫 렌더링된 후, 비동기 요청을 많이 함
@@ -57,34 +58,38 @@ class RSP extends Component {
     }
   };
 
-  onClickBtn = (choice) => {
+  onClickBtn = (choice) => () => {
     const { imgCoord } = this.state;
-    clearInterval(this.interval);
-    const myScore = scores[choice];
-    const computerScore = scores[computerChoice(imgCoord)];
-    const diff = myScore - computerScore;
-    if (diff === 0) {
-      this.setState({
-        result: "비겼습니다.",
-      });
-    } else if ([-1, 2].includes(diff)) {
-      this.setState((prevState) => {
-        return {
-          result: "이겼습니다.",
-          score: prevState.score + 1,
-        };
-      });
-    } else {
-      this.setState((prevState) => {
-        return {
-          result: "졌습니다.",
-          score: prevState.score - 1,
-        };
-      });
+    if (this.clickable) {
+      clearInterval(this.interval);
+      this.clickable = false;
+      const myScore = scores[choice];
+      const computerScore = scores[computerChoice(imgCoord)];
+      const diff = myScore - computerScore;
+      if (diff === 0) {
+        this.setState({
+          result: "비겼습니다.",
+        });
+      } else if ([-1, 2].includes(diff)) {
+        this.setState((prevState) => {
+          return {
+            result: "이겼습니다.",
+            score: prevState.score + 1,
+          };
+        });
+      } else {
+        this.setState((prevState) => {
+          return {
+            result: "졌습니다.",
+            score: prevState.score - 1,
+          };
+        });
+      }
+      setTimeout(() => {
+        this.clickable = true;
+        this.interval = setInterval(this.changeHand, 100);
+      }, 2000);
     }
-    setTimeout(() => {
-      this.interval = setInterval(this.changeHand, 100);
-    }, 2000);
   };
 
   render() {
@@ -99,25 +104,17 @@ class RSP extends Component {
           }}
         ></div>
         <div>
-          <button
-            id="rock"
-            className="btn"
-            onClick={() => this.onClickBtn("rock")}
-          >
+          <button id="rock" className="btn" onClick={this.onClickBtn("rock")}>
             바위
           </button>
           <button
             id="scissor"
             className="btn"
-            onClick={() => this.onClickBtn("scissor")}
+            onClick={this.onClickBtn("scissor")}
           >
             가위
           </button>
-          <button
-            id="paper"
-            className="btn"
-            onClick={() => this.onClickBtn("paper")}
-          >
+          <button id="paper" className="btn" onClick={this.onClickBtn("paper")}>
             보
           </button>
         </div>
