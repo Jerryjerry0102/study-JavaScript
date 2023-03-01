@@ -53,7 +53,7 @@
   - [x] return 내부에 for과 if 쓰기
 - [ ] 5. 가위바위보
   - [x] 리액트 라이프사이클 소개
-  - [ ] setInterval과 라이프사이클 연동하기
+  - [x] setInterval과 라이프사이클 연동하기
   - [ ] 가위바위보 게임 만들기
   - [ ] 고차 함수와 Q&A
   - [ ] Hooks와 useEffect
