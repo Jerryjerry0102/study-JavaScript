@@ -36,5 +36,5 @@
   - [x] Prop Types
   - [x] Recap
 - [x] 5 CREATE REACT APP
-- [ ] 6 EFFECTS
+- [x] 6 EFFECTS
 - [ ] 7 PRACTICE MOVIE APP
