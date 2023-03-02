@@ -33,7 +33,7 @@ const RSP = () => {
     }
   };
 
-  useInterval(changeHand, isRunning ? 100 : null);
+  useInterval(changeHand, isRunning);
 
   const onClickBtn = (choice) => () => {
     if (clickable.current) {

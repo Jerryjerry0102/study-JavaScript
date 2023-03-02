@@ -8,7 +8,7 @@ import { useRef, useEffect } from "react";
  * // 장점 delay를 null로 만들면 멈춤
  */
 
-function useInterval(callback, delay) {
+function useInterval(callback, isRunning) {
   const savedCallback = useRef();
 
   useEffect(() => {
@@ -19,11 +19,11 @@ function useInterval(callback, delay) {
     function tick() {
       savedCallback.current();
     }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
+    if (isRunning) {
+      let id = setInterval(tick, 100);
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }, [isRunning]);
 
   return callback;
 }
