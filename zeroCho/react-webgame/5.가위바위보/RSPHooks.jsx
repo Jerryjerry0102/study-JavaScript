@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import useInterval from "./useInterval";
 
 const rspCoords = {
   rock: "0",
@@ -19,42 +20,24 @@ const RSP = () => {
   const [result, setResult] = useState("");
   const [imgCoord, setImgCoord] = useState(rspCoords.rock);
   const [score, setScore] = useState(0);
-  const interval = useRef(null);
   const clickable = useRef(true);
-
-  useEffect(() => {
-    console.log("componentDidMount");
-
-    return () => {
-      // return 부분이 componentWillUnmount 역할
-      console.log("componentWillUnmount");
-    };
-  }, []); // 빈배열일 경우 componentDidMount 역할
-
-  useEffect(() => {
-    console.log("componentDidUpdate");
-    interval.current = setInterval(changeHand, 1000);
-    return () => {
-      console.log("getSnapshotBeforeUpdate");
-      clearInterval(interval.current);
-    };
-  }, [imgCoord]); // [] 안에 들어있는 데이터(imgCoord)가 바뀔 때마다 실행하는 역할
+  const [isRunning, setIsRunning] = useState(true);
 
   const changeHand = () => {
     if (imgCoord === rspCoords.rock) {
-      console.log("rock");
       setImgCoord(rspCoords.scissor);
     } else if (imgCoord === rspCoords.scissor) {
-      console.log("scissor");
       setImgCoord(rspCoords.paper);
     } else if (imgCoord === rspCoords.paper) {
       setImgCoord(rspCoords.rock);
     }
   };
 
+  useInterval(changeHand, isRunning ? 100 : null);
+
   const onClickBtn = (choice) => () => {
     if (clickable.current) {
-      clearInterval(interval.current);
+      setIsRunning(false);
       clickable.current = false;
       const myScore = scores[choice];
       const computerScore = scores[computerChoice(imgCoord)];
@@ -70,7 +53,7 @@ const RSP = () => {
       }
       setTimeout(() => {
         clickable.current = true;
-        interval.current = setInterval(changeHand, 100);
+        setIsRunning(true);
       }, 2000);
     }
   };
