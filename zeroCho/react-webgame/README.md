@@ -56,8 +56,8 @@
   - [x] setInterval과 라이프사이클 연동하기
   - [x] 가위바위보 게임 만들기
   - [x] 고차 함수와 Q&A
-  - [ ] Hooks와 useEffect
-  - [ ] 클래스와 Hooks 라이프사이클 비교
+  - [x] Hooks와 useEffect
+  - [x] 클래스와 Hooks 라이프사이클 비교
   - [ ] 커스텀 훅으로 우아하게 interval하기
 - [ ] 6. 로또 추첨기
 - [ ] 7. 틱택토
