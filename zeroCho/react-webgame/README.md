@@ -63,7 +63,7 @@
   - [x] 로또 추첨기 컴포넌트
   - [x] setTimeout 여러 번 사용하기
   - [x] componentDidUpdate
-  - [ ] useEffect로 업데이트 감지하기
+  - [x] useEffect로 업데이트 감지하기
   - [ ] useMemo와 useCallback
   - [ ] Hooks에 대한 자잘한 팁들
 - [ ] 7. 틱택토
