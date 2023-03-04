@@ -51,7 +51,7 @@
   - [x] 성능 체크와 Q&A
   - [x] 반응속도체크 Hooks로 전환하기
   - [x] return 내부에 for과 if 쓰기
-- [ ] 5. 가위바위보
+- [x] 5. 가위바위보
   - [x] 리액트 라이프사이클 소개
   - [x] setInterval과 라이프사이클 연동하기
   - [x] 가위바위보 게임 만들기
@@ -59,13 +59,13 @@
   - [x] Hooks와 useEffect
   - [x] 클래스와 Hooks 라이프사이클 비교
   - [x] 커스텀 훅으로 우아하게 interval하기
-- [ ] 6. 로또 추첨기
+- [x] 6. 로또 추첨기
   - [x] 로또 추첨기 컴포넌트
   - [x] setTimeout 여러 번 사용하기
   - [x] componentDidUpdate
   - [x] useEffect로 업데이트 감지하기
   - [x] useMemo와 useCallback
-  - [ ] Hooks에 대한 자잘한 팁들
+  - [x] Hooks에 대한 자잘한 팁들
 - [ ] 7. 틱택토
 - [ ] 8. 지뢰찾기
 - [ ] 9. React-router
