@@ -64,7 +64,7 @@
   - [x] setTimeout 여러 번 사용하기
   - [x] componentDidUpdate
   - [x] useEffect로 업데이트 감지하기
-  - [ ] useMemo와 useCallback
+  - [x] useMemo와 useCallback
   - [ ] Hooks에 대한 자잘한 팁들
 - [ ] 7. 틱택토
 - [ ] 8. 지뢰찾기
