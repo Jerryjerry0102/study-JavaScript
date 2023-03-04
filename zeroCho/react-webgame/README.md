@@ -60,6 +60,12 @@
   - [x] 클래스와 Hooks 라이프사이클 비교
   - [x] 커스텀 훅으로 우아하게 interval하기
 - [ ] 6. 로또 추첨기
+  - [x] 로또 추첨기 컴포넌트
+  - [ ] setTimeout 여러 번 사용하기
+  - [ ] componentDidUpdate
+  - [ ] useEffect로 업데이트 감지하기
+  - [ ] useMemo와 useCallback
+  - [ ] Hooks에 대한 자잘한 팁들
 - [ ] 7. 틱택토
 - [ ] 8. 지뢰찾기
 - [ ] 9. React-router
