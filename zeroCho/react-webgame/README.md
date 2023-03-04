@@ -61,7 +61,7 @@
   - [x] 커스텀 훅으로 우아하게 interval하기
 - [ ] 6. 로또 추첨기
   - [x] 로또 추첨기 컴포넌트
-  - [ ] setTimeout 여러 번 사용하기
+  - [x] setTimeout 여러 번 사용하기
   - [ ] componentDidUpdate
   - [ ] useEffect로 업데이트 감지하기
   - [ ] useMemo와 useCallback
