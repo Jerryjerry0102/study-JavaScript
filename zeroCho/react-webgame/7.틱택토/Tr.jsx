@@ -8,6 +8,7 @@ const Tr = ({ rowData, rowIndex, dispatch }) => {
         .fill()
         .map((_, i) => (
           <Td
+            key={i}
             cellData={rowData[i]}
             rowIndex={rowIndex}
             cellIndex={i}
