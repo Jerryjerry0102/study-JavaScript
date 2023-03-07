@@ -11,7 +11,9 @@ const initialState = {
   ],
 };
 
-const SET_WINNER = "SET_WINNER";
+export const SET_WINNER = "SET_WINNER";
+export const CLICK_CELL = "CLICK_CELL";
+export const CHANGE_TURN = "CHANGE_TURN";
 
 const reducer = (state, action) => {
   // reducer 안에서 state를 어떻게 바꿀지 적어준다.
@@ -21,6 +23,20 @@ const reducer = (state, action) => {
       return {
         ...state,
         winner: action.winner,
+      };
+    case CLICK_CELL:
+      // 나중에 immer라는 라이브러리로 가독성문제 해결
+      const tableData = [...state.tableData];
+      tableData[action.row] = [...tableData[action.row]];
+      tableData[action.row][action.cell] = state.turn;
+      return {
+        ...state,
+        tableData,
+      };
+    case CHANGE_TURN:
+      return {
+        ...state,
+        turn: state.turn === "O" ? "X" : "O",
       };
   }
 };
@@ -39,7 +55,11 @@ const TicTacToe = () => {
 
   return (
     <>
-      <Table onClick={onClickTable} tableData={state.tableData} />
+      <Table
+        onClick={onClickTable}
+        tableData={state.tableData}
+        dispatch={dispatch}
+      />
       {state.winner && <div>{state.winner}님의 승리</div>}
     </>
   );
