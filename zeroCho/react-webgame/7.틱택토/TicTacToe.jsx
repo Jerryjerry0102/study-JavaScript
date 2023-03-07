@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { memo, useCallback, useEffect, useReducer } from "react";
 import Table from "./Table";
 
 const initialState = {
@@ -57,6 +57,7 @@ const reducer = (state, action) => {
 };
 
 const TicTacToe = () => {
+  console.log("tictactoe");
   const [state, dispatch] = useReducer(reducer, initialState);
   // const [winner, setWinner] = useState("");
   // const [turn, setTurn] = useState("O");

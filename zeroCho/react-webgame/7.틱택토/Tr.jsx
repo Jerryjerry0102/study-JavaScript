@@ -1,7 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
+import { render } from "react-dom";
 import Td from "./Td";
 
-const Tr = ({ rowData, rowIndex, dispatch }) => {
+const Tr = memo(({ rowData, rowIndex, dispatch }) => {
+  console.log("tr rendered");
   return (
     <tr>
       {Array(rowData.length)
@@ -17,6 +19,6 @@ const Tr = ({ rowData, rowIndex, dispatch }) => {
         ))}
     </tr>
   );
-};
+});
 
 export default Tr;
