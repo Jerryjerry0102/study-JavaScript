@@ -67,8 +67,8 @@
   - [x] useMemo와 useCallback
   - [x] Hooks에 대한 자잘한 팁들
 - [ ] 7. 틱택토
-  - [ ] 틱택토와 useReducer 소개
-  - [ ] reducer, action, dispatch의 관계
+  - [x] 틱택토와 useReducer 소개
+  - [x] reducer, action, dispatch의 관계
   - [ ] action 만들어 dispatch 하기
   - [ ] 틱택토 구현하기
   - [ ] 테이블 최적화하기
