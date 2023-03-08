@@ -38,3 +38,10 @@
 - [x] 5 CREATE REACT APP
 - [x] 6 EFFECTS
 - [ ] 7 PRACTICE MOVIE APP
+  - [x] To Do List
+  - [ ] Coin Tracker
+  - [ ] Movie App
+  - [ ] React Router
+  - [ ] Parameters
+  - [ ] Publishing
+  - [ ] Styles
