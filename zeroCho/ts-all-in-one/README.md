@@ -61,13 +61,13 @@
 
 ### 목차
 
-- [ ] 1. 제이쿼리 타입 분석
-  - [ ] @types/jquery 설치하기
-  - [ ] commonjs 모듈 타이핑하는 방법과 esMoudleInterop
-  - [ ] 네임스페이스(namespace)
-  - [ ] 메서드와 this 타이핑
-  - [ ] jQuery 타입 직접 만들어보기
-  - [ ] Q&A
+- [x] 1. 제이쿼리 타입 분석
+  - [x] @types/jquery 설치하기
+  - [x] commonjs 모듈 타이핑하는 방법과 esMoudleInterop
+  - [x] 네임스페이스(namespace)
+  - [x] 메서드와 this 타이핑
+  - [x] jQuery 타입 직접 만들어보기
+  - [x] Q&A
 - [ ] 2. Axios 타입 분석
 - [ ] 3. React 타입 분석
 - [ ] 4. Redux 타입 분석
