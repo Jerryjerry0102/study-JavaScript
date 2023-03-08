@@ -39,7 +39,7 @@
 - [x] 6 EFFECTS
 - [ ] 7 PRACTICE MOVIE APP
   - [x] To Do List
-  - [ ] Coin Tracker
+  - [x] Coin Tracker
   - [ ] Movie App
   - [ ] React Router
   - [ ] Parameters
