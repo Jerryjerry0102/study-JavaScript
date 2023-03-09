@@ -4,7 +4,9 @@ import Tr from "./Tr";
 const Table = () => {
   return (
     <table>
-      <Tr />
+      <tbody>
+        <Tr />
+      </tbody>
     </table>
   );
 };
