@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TableContext } from "./MineSearch";
+import Td from "./Td";
+const Tr = ({ rowIndex }) => {
+  const { tableData } = useContext(TableContext);
 
-const Tr = () => {
-  return;
+  return (
+    <tr>
+      {Array(tableData[0].length)
+        .fill()
+        .map((_, i) => (
+          <Td key={i} rowIndex={rowIndex} cellIndex={i} />
+        ))}
+    </tr>
+  );
 };
 
 export default Tr;

@@ -73,9 +73,9 @@
   - [x] 틱택토 구현하기
   - [x] 테이블 최적화하기
 - [ ] 8. 지뢰찾기
-  - [ ] Context API 소개와 지뢰찾기
-  - [ ] createContext와 Provider
-  - [ ] useContext 사용해 지뢰 칸 렌더링
+  - [x] Context API 소개와 지뢰찾기
+  - [x] createContext와 Provider
+  - [x] useContext 사용해 지뢰 칸 렌더링
   - [ ] 왼쪽 오른쪽 클릭 로직 작성하기
   - [ ] 지뢰 개수 표시하기
   - [ ] 빈 칸들 한 번에 열기
