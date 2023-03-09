@@ -16,5 +16,5 @@
 - [x] 4 LOGIN
 - [x] 5 CLOCK
 - [x] 6 QUOTES AND BACKGROUND
-- [ ] 7 TO DO LIST
+- [x] 7 TO DO LIST
 - [ ] 8 WEATHER
