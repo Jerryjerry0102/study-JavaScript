@@ -1,9 +1,14 @@
 import React from "react";
+import Form from "./Form";
+import Table from "./Table";
 
 const MineSearch = () => {
   return (
     <>
-      <div>Hello MineSearch</div>
+      <Form />
+      <div id="timer"></div>
+      <Table />
+      <div id="result"></div>
     </>
   );
 };
