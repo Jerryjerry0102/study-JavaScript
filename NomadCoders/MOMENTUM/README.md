@@ -17,4 +17,4 @@
 - [x] 5 CLOCK
 - [x] 6 QUOTES AND BACKGROUND
 - [x] 7 TO DO LIST
-- [ ] 8 WEATHER
+- [x] 8 WEATHER
