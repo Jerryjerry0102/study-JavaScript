@@ -81,7 +81,25 @@ const reducer = (state, action) => {
       console.log("reducer", "open_cell");
       const tableData = [...state.tableData];
       tableData[action.row] = [...state.tableData[action.row]];
-      tableData[action.row][action.cell] = CODE.OPENED;
+
+      // 주변 지뢰 개수 표시하기
+      const aroundDatas = [
+        tableData[action.row - 1]?.[action.cell - 1],
+        tableData[action.row - 1]?.[action.cell],
+        tableData[action.row - 1]?.[action.cell + 1],
+        tableData[action.row]?.[action.cell - 1],
+        tableData[action.row]?.[action.cell + 1],
+        tableData[action.row + 1]?.[action.cell - 1],
+        tableData[action.row + 1]?.[action.cell],
+        tableData[action.row + 1]?.[action.cell + 1],
+      ];
+      let count = 0;
+      aroundDatas.forEach((data) => {
+        if ([CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE].includes(data))
+          count += 1;
+      });
+      tableData[action.row][action.cell] = count;
+      console.log(count);
       return {
         ...state,
         tableData,
