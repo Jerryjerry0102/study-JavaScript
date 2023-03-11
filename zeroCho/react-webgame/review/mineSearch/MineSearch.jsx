@@ -18,11 +18,13 @@ export const CODE = {
 export const TableContext = createContext({
   tableData: [],
   dispatch: () => {},
+  halted: true,
 });
 
 // useReducer
 const initialState = {
   tableData: [],
+  halted: true,
 };
 
 const plantMine = (row, cell, mine) => {
@@ -56,18 +58,77 @@ const makeTable = (row, cell, mine) => {
     const cellIndex = mine % cell;
     tableData[rowIndex][cellIndex] = CODE.MINE;
   });
+  console.log(tableData);
   return tableData;
 };
 
 // useReducer
 export const START_GAME = "START_GAME";
+export const OPEN_CELL = "OPEN_CELL";
+export const OPEN_MINE = "OPEN_MINE";
+export const RIGHT_CLICK = "RIGHT_CLICK";
+
 const reducer = (state, action) => {
   switch (action.type) {
-    case START_GAME:
+    case START_GAME: {
       return {
         ...state,
         tableData: makeTable(action.row, action.cell, action.mine),
+        halted: false,
       };
+    }
+    case OPEN_CELL: {
+      console.log("reducer", "open_cell");
+      const tableData = [...state.tableData];
+      tableData[action.row] = [...state.tableData[action.row]];
+      tableData[action.row][action.cell] = CODE.OPENED;
+      return {
+        ...state,
+        tableData,
+      };
+    }
+    case OPEN_MINE: {
+      console.log("reducer", "click_mine");
+      const tableData = [...state.tableData];
+      tableData[action.row] = [...state.tableData[action.row]];
+      tableData[action.row][action.cell] = CODE.CLICKED_MINE;
+      return {
+        ...state,
+        tableData,
+        halted: true,
+      };
+    }
+    case RIGHT_CLICK: {
+      console.log("right_click");
+      const tableData = [...state.tableData];
+      tableData[action.row] = [...state.tableData[action.row]];
+      switch (tableData[action.row][action.cell]) {
+        case CODE.NORMAL:
+          tableData[action.row][action.cell] = CODE.FLAG;
+          break;
+        case CODE.FLAG:
+          tableData[action.row][action.cell] = CODE.QUESTION;
+          break;
+        case CODE.QUESTION:
+          tableData[action.row][action.cell] = CODE.NORMAL;
+          break;
+        case CODE.MINE:
+          tableData[action.row][action.cell] = CODE.FLAG_MINE;
+          break;
+        case CODE.FLAG_MINE:
+          tableData[action.row][action.cell] = CODE.QUESTION_MINE;
+          break;
+        case CODE.QUESTION_MINE:
+          tableData[action.row][action.cell] = CODE.MINE;
+          break;
+        default:
+          break;
+      }
+      return {
+        ...state,
+        tableData,
+      };
+    }
     default:
       return state;
   }
@@ -77,7 +138,7 @@ const MineSearch = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const value = useMemo(
-    () => ({ tableData: state.tableData, dispatch }),
+    () => ({ tableData: state.tableData, dispatch, halted: state.halted }),
     [state.tableData]
   );
 
