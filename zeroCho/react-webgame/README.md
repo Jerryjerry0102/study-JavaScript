@@ -80,5 +80,5 @@
   - [x] 지뢰 개수 표시하기
   - [x] 빈 칸들 한 번에 열기
   - [x] 승리 조건 체크와 타이머
-  - [ ] Context api 최적화
+  - [x] Context api 최적화
 - [ ] 9. React-router

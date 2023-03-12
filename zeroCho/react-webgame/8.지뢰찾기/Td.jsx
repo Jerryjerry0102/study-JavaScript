@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { memo, useCallback, useContext, useMemo } from "react";
 import {
   CLICK_MINE,
   CODE,
@@ -57,7 +57,7 @@ const getTdText = (code) => {
   }
 };
 
-const Td = ({ rowIndex, cellIndex }) => {
+const Td = memo(({ rowIndex, cellIndex }) => {
   const { tableData, halted, dispatch } = useContext(TableContext);
 
   const onClickTd = useCallback(() => {
@@ -105,15 +105,18 @@ const Td = ({ rowIndex, cellIndex }) => {
     [tableData[rowIndex][cellIndex], halted]
   );
 
-  return (
-    <td
-      style={getTdStyle(tableData[rowIndex][cellIndex])}
-      onClick={onClickTd}
-      onContextMenu={onRightClickTd}
-    >
-      {getTdText(tableData[rowIndex][cellIndex])}
-    </td>
+  return useMemo(
+    () => (
+      <td
+        style={getTdStyle(tableData[rowIndex][cellIndex])}
+        onClick={onClickTd}
+        onContextMenu={onRightClickTd}
+      >
+        {getTdText(tableData[rowIndex][cellIndex])}
+      </td>
+    ),
+    [tableData[rowIndex][cellIndex]]
   );
-};
+});
 
 export default Td;
