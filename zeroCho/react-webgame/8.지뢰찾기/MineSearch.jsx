@@ -78,25 +78,64 @@ const reducer = (state, action) => {
     case OPEN_CELL: {
       console.log("reducer, OPEN_CELL");
       const tableData = [...state.tableData];
-      tableData[action.row] = [...state.tableData[action.row]];
-
-      // 주변 지뢰 개수 구하기
-      let around = [
-        tableData[action.row - 1]?.[action.cell - 1],
-        tableData[action.row - 1]?.[action.cell],
-        tableData[action.row - 1]?.[action.cell + 1],
-        tableData[action.row]?.[action.cell - 1],
-        tableData[action.row]?.[action.cell + 1],
-        tableData[action.row + 1]?.[action.cell - 1],
-        tableData[action.row + 1]?.[action.cell],
-        tableData[action.row + 1]?.[action.cell + 1],
-      ];
-      const count = around.filter((v) =>
-        [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE].includes(v)
-      ).length;
-      tableData[action.row][action.cell] = count;
-      console.log(count);
-
+      tableData.forEach((row, i) => (tableData[i] = [...row]));
+      const checked = [];
+      const checkAround = (row, cell) => {
+        // 상하좌우 없는 칸은 안 열기
+        if (
+          row < 0 ||
+          row >= tableData.length ||
+          cell < 0 ||
+          cell >= tableData[0].length
+        )
+          return;
+        // 닫힌 칸만 열기
+        if (
+          [
+            CODE.OPENED,
+            CODE.FLAG,
+            CODE.FLAG_MINE,
+            CODE.QUESTION,
+            CODE.QUESTION_MINE,
+          ].includes(tableData[row][cell])
+        )
+          return;
+        // 한 번 연 칸은 무시하기
+        if (checked.includes(row + "," + cell)) return;
+        else checked.push(row + "," + cell);
+        // 주변 지뢰 개수 구하기
+        let around = [
+          tableData[row - 1]?.[cell - 1],
+          tableData[row - 1]?.[cell],
+          tableData[row - 1]?.[cell + 1],
+          tableData[row][cell - 1],
+          tableData[row][cell + 1],
+          tableData[row + 1]?.[cell - 1],
+          tableData[row + 1]?.[cell],
+          tableData[row + 1]?.[cell + 1],
+        ];
+        const count = around.filter((v) =>
+          [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE].includes(v)
+        ).length;
+        // 주변칸 오픈
+        if (count === 0) {
+          const near = [];
+          near.push([row - 1, cell - 1]);
+          near.push([row - 1, cell]);
+          near.push([row - 1, cell + 1]);
+          near.push([row, cell - 1]);
+          near.push([row, cell + 1]);
+          near.push([row + 1, cell - 1]);
+          near.push([row + 1, cell]);
+          near.push([row + 1, cell + 1]);
+          near.forEach((n) => {
+            if (tableData[n[0]]?.[n[1]] !== CODE.OPENED)
+              checkAround(n[0], n[1]);
+          });
+        }
+        tableData[row][cell] = count;
+      };
+      checkAround(action.row, action.cell);
       return {
         ...state,
         tableData,
