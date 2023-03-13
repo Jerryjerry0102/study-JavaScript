@@ -42,6 +42,6 @@
   - [x] Coin Tracker
   - [x] Movie App
   - [x] React Router
-  - [ ] Parameters
+  - [x] Parameters
   - [ ] Publishing
   - [ ] Styles
