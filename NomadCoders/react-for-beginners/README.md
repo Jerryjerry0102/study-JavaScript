@@ -40,8 +40,8 @@
 - [ ] 7 PRACTICE MOVIE APP
   - [x] To Do List
   - [x] Coin Tracker
-  - [ ] Movie App
-  - [ ] React Router
+  - [x] Movie App
+  - [x] React Router
   - [ ] Parameters
   - [ ] Publishing
   - [ ] Styles

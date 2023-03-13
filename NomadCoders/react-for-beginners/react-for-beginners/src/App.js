@@ -1,35 +1,25 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./routes/Home";
+import Detail from "./routes/Detail";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [coins, setCoins] = useState([]);
-  useEffect(() => {
-    console.log("once");
-    fetch("https://api.coinpaprika.com/v1/tickers")
-      .then((response) => response.json())
-      .then((json) => {
-        setCoins(json);
-        console.log(json);
-        setLoading(false);
-      });
-  }, []);
+  // Switch가 하는 일은 Route를 찾는 건데 Route는 URL을 의미한다.
+  //                 한 번에 하나의 Route만 렌더링 하기 위해서
+  // Route 안에 컴포넌트를 넣어주기만 하면 된다.
+  // 그럼 Router가 해당 경로일 대 그 컴포넌트를 보여준다.
+  // Link는 브라우저 새로고침 없이도 유저를 다른 페이지로 이동시켜주는 컴포넌트
   return (
-    <>
-      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
-      {loading ? (
-        <strong>Loading...</strong>
-      ) : (
-        <select>
-          {coins.map((coin) => {
-            return (
-              <option key={coin.id}>
-                {coin.name} ({coin.symbol}): {coin.quotes.USD.price} USD
-              </option>
-            );
-          })}
-        </select>
-      )}
-    </>
+    <Router>
+      <Switch>
+        <Route path="/movie">
+          <Detail />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
