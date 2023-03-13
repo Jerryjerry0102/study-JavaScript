@@ -82,3 +82,10 @@
   - [x] 승리 조건 체크와 타이머
   - [x] Context api 최적화
 - [ ] 9. React-router
+  - [x] React Router 도입하기
+  - [x] Link와 브라우저라우터
+  - [ ] 해시라우터, params, withRouter
+  - [ ] location, match, history
+  - [ ] 쿼리스트링과 URLSearchParams
+  - [ ] render props, switch, exact
+  - [ ] 리액트라우터6(feat. REMIX) + 라이브러리 버전 업그레이드 꿀팁
