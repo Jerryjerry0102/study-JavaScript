@@ -1,11 +1,12 @@
 const path = require("path");
-const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
-  mode: "development", // 실서비스: 'production'
-  devtool: "eval", // 실서비스: 'hidden-source-map'
+  name: "react-router",
+  mode: "development",
+  devtool: "inline-source-map",
   resolve: {
-    extensions: [".jsx", ".js"],
+    extensions: [".js", ".jsx"],
   },
   entry: {
     app: "./client",
@@ -20,9 +21,7 @@ module.exports = {
             [
               "@babel/preset-env",
               {
-                targets: {
-                  browsers: ["> 5% in KR"],
-                },
+                targets: { browsers: ["last 2 chrome versions"] },
                 debug: true,
               },
             ],
@@ -30,23 +29,23 @@ module.exports = {
           ],
           plugins: [
             "react-refresh/babel",
-            "@babel/plugin-proposal-class-properties", // //  이걸 설치해줘야 class 컴포넌트가 돌아간다.
+            "@babel/plugin-proposal-class-properties",
           ],
-          // 바벨이 최신 문법을 옛날 자바스크립토 transfile할 때 핫 리로딩 기능까지 추가해줌
         },
+        exclude: path.join(__dirname, "node_modules"),
       },
     ],
   },
-  plugins: [new RefreshWebpackPlugin()], // 확장프로그램 느낌
+  plugins: [new ReactRefreshWebpackPlugin()],
   output: {
-    filename: "app.js",
     path: path.join(__dirname, "dist"),
-    publicPath: "/dist",
+    filename: "[name].js",
+    publicPath: "/dist/",
   },
   devServer: {
-    historyApiFallback: true, // // can not get 에러를 꼼수로 해결하는 코드
-    devMiddleware: { publicPath: "/dist" }, // 나중에 웹팩이 생성을 해주는 경로
-    static: { directory: path.resolve(__dirname) }, // 실제로 존재하는 파일들에 대한 경로
+    historyApiFallback: true,
+    devMiddleware: { publicPath: "/dist" },
+    static: { directory: path.resolve(__dirname) },
     hot: true,
   },
 };
