@@ -43,5 +43,5 @@
   - [x] Movie App
   - [x] React Router
   - [x] Parameters
-  - [ ] Publishing
+  - [x] Publishing
   - [ ] Styles
