@@ -69,7 +69,7 @@
   - [x] jQuery 타입 직접 만들어보기
   - [x] Q&A
 - [ ] 2. Axios 타입 분석
-  - [ ] 다양한 방식으로 사용 가능한 axios
+  - [x] 다양한 방식으로 사용 가능한 axios
   - [ ] ts-node 사용하기
   - [ ] 제네릭을 활용한 Response 타이핑
   - [ ] AxiosError와 unknown error 대처법
