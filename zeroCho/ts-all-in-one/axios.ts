@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 
 interface Post {
   userId: number;
@@ -48,5 +48,34 @@ interface Data {
         },
       }
     );
-  } catch (error) {}
+  } catch (error) {
+    // 네트워크 요청을 보낼 때는 에러가 날 가능성을 고려해야 한다.
+    // 기본적으로 catch 문의 error는 unknown으로 되어 있다.
+    // 어떤 에러가 날지는 에러가 나기 전까지는 모르기 때문(axios 에러가 아닐 수도 있다.)
+    // 그럴 때 사용하는 방법이 as를 이용하거나 타입가드를 사용하는 것이다.
+
+    /* as사용
+    const errorResponse = (error as AxiosError).response;
+    console.error(errorResponse?.data);
+    errorResponse?.data;
+    * response 뒤에 ?을 붙이는 건 response가 undefined일 상황을 방어하는 것
+    * typseScript는 건망증이 심하기 때문에 변수에 저장해 두고 써야한다.
+    */
+
+    /* 타입 가드 사용
+    if (error instanceof AxiosError) {
+      error.response?.data
+    }
+    * AxiosError는 클래스 이기 때문에 아래 코드처럼 사용 가능
+    */
+
+    /* isAxiosError 사용 */
+    if (axios.isAxiosError(error)) {
+      // { message: '서버 장애입니다. 다시 시도해주세요.' }
+      console.error(
+        (error.response as AxiosResponse<{ message: string }>)?.data.message,
+        (error as AxiosError<{ message: string }>).response?.data.message
+      );
+    }
+  }
 })();
