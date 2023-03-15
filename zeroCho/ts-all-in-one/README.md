@@ -68,12 +68,12 @@
   - [x] 메서드와 this 타이핑
   - [x] jQuery 타입 직접 만들어보기
   - [x] Q&A
-- [ ] 2. Axios 타입 분석
+- [x] 2. Axios 타입 분석
   - [x] 다양한 방식으로 사용 가능한 axios
   - [x] ts-node 사용하기
   - [x] 제네릭을 활용한 Response 타이핑
   - [x] AxiosError와 unknown error 대처법
-  - [ ] Axios 타입 직접 만들기
+  - [x] Axios 타입 직접 만들기
 - [ ] 3. React 타입 분석
 - [ ] 4. Redux 타입 분석
 - [ ] 5. Node, Express 타입 분석
