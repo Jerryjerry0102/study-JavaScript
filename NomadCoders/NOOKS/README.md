@@ -9,8 +9,8 @@
   - [x] useInput
   - [x] useTabs
 - #2 useEffect
-  - [ ] useTitle
-  - [ ] useClick
+  - [x] useTitle
+  - [x] useClick
   - [ ] useConfirm & usePreventLeave
   - [ ] useBeforeLeave
   - [ ] useFadeln & useNetwork
