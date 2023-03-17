@@ -11,7 +11,7 @@
 - #2 useEffect
   - [x] useTitle
   - [x] useClick
-  - [ ] useConfirm & usePreventLeave
+  - [x] useConfirm & usePreventLeave
   - [ ] useBeforeLeave
   - [ ] useFadeln & useNetwork
   - [ ] useScroll & useFullscreen
