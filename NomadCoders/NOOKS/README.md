@@ -12,7 +12,7 @@
   - [x] useTitle
   - [x] useClick
   - [x] useConfirm & usePreventLeave
-  - [ ] useBeforeLeave
+  - [x] useBeforeLeave
   - [ ] useFadeln & useNetwork
   - [ ] useScroll & useFullscreen
   - [ ] useNotification
