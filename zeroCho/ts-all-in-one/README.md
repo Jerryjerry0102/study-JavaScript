@@ -75,6 +75,13 @@
   - [x] AxiosError와 unknown error 대처법
   - [x] Axios 타입 직접 만들기
 - [ ] 3. React 타입 분석
+  - [x] UMD 모듈과 tsconfig.json jsx 설정하기
+  - [x] 함수 컴포넌트(FC vs VFC), Props 타이핑
+  - [x] useState, useEffect 타이핑
+  - [x] 번외편: 브랜딩 기법
+  - [x] useCallback, useRef 타이핑
+  - [ ] 클래스 컴포넌트 타이핑
+  - [ ] Q&A
 - [ ] 4. Redux 타입 분석
 - [ ] 5. Node, Express 타입 분석
 - [ ] 6. 직접 라이브러리 타이핑하기
