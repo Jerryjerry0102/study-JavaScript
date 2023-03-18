@@ -13,7 +13,7 @@
   - [x] useClick
   - [x] useConfirm & usePreventLeave
   - [x] useBeforeLeave
-  - [ ] useFadeln & useNetwork
+  - [x] useFadeln & useNetwork
   - [ ] useScroll & useFullscreen
   - [ ] useNotification
   - [ ] useAxios
