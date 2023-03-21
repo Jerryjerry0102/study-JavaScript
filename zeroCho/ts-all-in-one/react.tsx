@@ -1,65 +1,71 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  FunctionComponent,
-  FC,
-  FormEvent,
-  MouseEvent,
-  ChangeEvent,
-} from "react";
+import React, { FormEvent, MouseEvent, ChangeEvent, Component } from "react";
 
-// 리액트에서 컴포넌트는 사실 엄청 간단한 함수이다.
-// (prop) => JSX
+interface P {
+  name: string;
+  title: string;
+}
+interface S {
+  word: string;
+  value: string;
+  result: string;
+}
 
-const WordRelay: FC = () => {
-  const [word, setWord] = useState("제로초초");
-  const [value, setValue] = useState("");
-  const [result, setResult] = useState("");
-  const inputEl = useRef<HTMLInputElement>(null);
-  const mutaRef = useRef(0);
-
-  useEffect(() => {
-    console.log("useEffect");
-    mutaRef.current += 1;
-  }, []);
-
-  const onClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {}, []);
-
-  const onSubmitForm = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const input = inputEl.current;
-      if (word[word.length - 1] === value[0]) {
-        setResult("딩동댕");
-        setWord(value);
-        setValue("");
-      } else {
-        setResult("땡");
-        setValue("");
-        if (input) {
-          input.focus();
-        }
-      }
-    },
-    [word, value]
-  );
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+class WordRelay extends Component<P, S> {
+  state = {
+    word: "제로초",
+    value: "",
+    result: "",
   };
 
-  return (
-    <>
-      <div>{word}</div>
-      <form onSubmit={onSubmitForm}>
-        <input ref={inputEl} value={value} onChange={onChange} />
-        <button>입력</button>
-      </form>
-      <div>{result}</div>
-    </>
-  );
-};
+  onSubmitForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const input = this.input;
+    if (this.state.word[this.state.word.length - 1] === this.state.value[0]) {
+      this.setState({
+        result: "딩동댕",
+        word: this.state.value,
+        value: "",
+      });
+      if (input) {
+        input.focus();
+      }
+    } else {
+      this.setState({
+        result: "땡",
+        value: "",
+      });
+      if (input) {
+        input.focus();
+      }
+    }
+  };
+
+  onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ value: e.currentTarget.value });
+  };
+
+  input: HTMLInputElement | null = null; // this.input을 생성
+
+  onRefInput = (c: HTMLInputElement) => {
+    this.input = c;
+  };
+
+  render() {
+    return (
+      <>
+        <div>{this.state.word}</div>
+        <form onSubmit={this.onSubmitForm}>
+          <input
+            ref={this.onRefInput}
+            value={this.state.value}
+            onChange={this.onChangeInput}
+          />
+          <button>입력</button>
+        </form>
+        <div>{this.state.result}</div>
+      </>
+    );
+  }
+}
 
 module.exports = WordRelay;
