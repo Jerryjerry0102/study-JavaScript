@@ -15,6 +15,6 @@
   - [x] useBeforeLeave
   - [x] useFadeln & useNetwork
   - [x] useScroll & useFullscreen
-  - [ ] useNotification
+  - [x] useNotification
   - [ ] useAxios
   - [ ] Publishing to NPM
