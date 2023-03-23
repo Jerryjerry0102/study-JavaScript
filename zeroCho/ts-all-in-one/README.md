@@ -83,5 +83,9 @@
   - [x] 클래스 컴포넌트 타이핑
   - [x] Q&A
 - [ ] 4. Redux 타입 분석
+  - [ ] named exports만 있는 Redux 알아보기
+  - [ ] action, reducer 타이핑하기
+  - [ ] thunk 미들웨어 타이핑하기
+  - [ ] react-redux 타이핑하기
 - [ ] 5. Node, Express 타입 분석
 - [ ] 6. 직접 라이브러리 타이핑하기
