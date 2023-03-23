@@ -16,5 +16,5 @@
   - [x] useFadeln & useNetwork
   - [x] useScroll & useFullscreen
   - [x] useNotification
-  - [ ] useAxios
+  - [x] useAxios
   - [ ] Publishing to NPM
