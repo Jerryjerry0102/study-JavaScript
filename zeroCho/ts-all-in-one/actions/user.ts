@@ -1,6 +1,9 @@
-export const logIn = (data) => {
+import { Dispatch, AnyAction } from "redux";
+
+export type LogInRequestData = { nickname: string; password: string };
+export const logIn = (data: LogInRequestData) => {
   // async action creator
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch<AnyAction>, getState: () => any) => {
     // async action
     dispatch(logInRequest(data));
     try {
@@ -18,7 +21,11 @@ export const logIn = (data) => {
   };
 };
 
-const logInRequest = (data) => {
+export type logInRequestAction = {
+  type: "LOG_IN_REQUEST";
+  data: LogInRequestData;
+};
+const logInRequest = (data: LogInRequestData): logInRequestAction => {
   return {
     type: "LOG_IN_REQUEST",
     data,
