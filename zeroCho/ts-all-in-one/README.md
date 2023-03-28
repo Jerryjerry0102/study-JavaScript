@@ -82,10 +82,18 @@
   - [x] useCallback, useRef 타이핑
   - [x] 클래스 컴포넌트 타이핑
   - [x] Q&A
-- [ ] 4. Redux 타입 분석
+- [x] 4. Redux 타입 분석
   - [x] named exports만 있는 Redux 알아보기
   - [x] action, reducer 타이핑하기
   - [x] thunk 미들웨어 타이핑하기
   - [x] react-redux 타이핑하기
 - [ ] 5. Node, Express 타입 분석
+  - [ ] @types/node
+  - [ ] http, fs, path 모듈 타입 분석
+  - [ ] @types/express
+  - [ ] 익스프레스 미들웨어 타이핑
+  - [ ] req, res 속성 타이핑(+인터페이스 확장)
+  - [ ] d.ts에서의 declare global
+  - [ ] passport에서 req.user 타이핑하기
+  - [ ] passport Strategy 타입 분석
 - [ ] 6. 직접 라이브러리 타이핑하기
