@@ -88,8 +88,8 @@
   - [x] thunk 미들웨어 타이핑하기
   - [x] react-redux 타이핑하기
 - [ ] 5. Node, Express 타입 분석
-  - [ ] @types/node
-  - [ ] http, fs, path 모듈 타입 분석
+  - [x] @types/node
+  - [x] http, fs, path 모듈 타입 분석
   - [ ] @types/express
   - [ ] 익스프레스 미들웨어 타이핑
   - [ ] req, res 속성 타이핑(+인터페이스 확장)
