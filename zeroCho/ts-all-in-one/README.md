@@ -90,9 +90,9 @@
 - [ ] 5. Node, Express 타입 분석
   - [x] @types/node
   - [x] http, fs, path 모듈 타입 분석
-  - [ ] @types/express
-  - [ ] 익스프레스 미들웨어 타이핑
-  - [ ] req, res 속성 타이핑(+인터페이스 확장)
+  - [x] @types/express
+  - [x] 익스프레스 미들웨어 타이핑
+  - [x] req, res 속성 타이핑(+인터페이스 확장)
   - [ ] d.ts에서의 declare global
   - [ ] passport에서 req.user 타이핑하기
   - [ ] passport Strategy 타입 분석
