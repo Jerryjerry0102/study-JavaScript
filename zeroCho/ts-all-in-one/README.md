@@ -93,7 +93,7 @@
   - [x] @types/express
   - [x] 익스프레스 미들웨어 타이핑
   - [x] req, res 속성 타이핑(+인터페이스 확장)
-  - [ ] d.ts에서의 declare global
+  - [x] d.ts에서의 declare global
   - [ ] passport에서 req.user 타이핑하기
   - [ ] passport Strategy 타입 분석
 - [ ] 6. 직접 라이브러리 타이핑하기

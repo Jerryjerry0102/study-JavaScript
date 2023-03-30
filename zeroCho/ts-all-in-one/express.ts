@@ -1,4 +1,8 @@
-import express, { NextFunction, RequestHandler } from "express";
+import express, {
+  ErrorRequestHandler,
+  NextFunction,
+  RequestHandler,
+} from "express";
 
 const app = express();
 
@@ -35,11 +39,11 @@ const middleware: RequestHandler<
   req.zerocho;
 };
 
-app.get(
-  "/",
-  (req, res) => {},
-  (req, res) => {},
-  (req, res) => {}
-);
+app.get("/", middleware);
+
+const errorMiddleware: ErrorRequestHandler = (err: Error, req, res, next) => {
+  console.log(err.status);
+};
+app.use(errorMiddleware);
 
 app.listen(8080, () => {});
