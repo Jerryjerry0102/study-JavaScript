@@ -1,14 +1,21 @@
+import cookieParser from "cookie-parser";
 import express, {
   ErrorRequestHandler,
   NextFunction,
   RequestHandler,
 } from "express";
+import session from "express-session";
+import passport from "passport";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", express.static("./public"));
+app.use(cookieParser());
+app.use(session({ secret: "SECRET" }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 declare global {
   namespace Express {
@@ -37,6 +44,11 @@ const middleware: RequestHandler<
     message: "hello",
   });
   req.zerocho;
+  req.cookies;
+
+  req.session;
+  req.user;
+  req.user?.zerocho;
 };
 
 app.get("/", middleware);
