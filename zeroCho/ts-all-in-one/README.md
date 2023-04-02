@@ -95,5 +95,5 @@
   - [x] req, res 속성 타이핑(+인터페이스 확장)
   - [x] d.ts에서의 declare global
   - [x] passport에서 req.user 타이핑하기
-  - [ ] passport Strategy 타입 분석
+  - [x] passport Strategy 타입 분석
 - [ ] 6. 직접 라이브러리 타이핑하기
