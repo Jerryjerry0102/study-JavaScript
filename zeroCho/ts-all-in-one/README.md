@@ -87,7 +87,7 @@
   - [x] action, reducer 타이핑하기
   - [x] thunk 미들웨어 타이핑하기
   - [x] react-redux 타이핑하기
-- [ ] 5. Node, Express 타입 분석
+- [x] 5. Node, Express 타입 분석
   - [x] @types/node
   - [x] http, fs, path 모듈 타입 분석
   - [x] @types/express
@@ -97,3 +97,5 @@
   - [x] passport에서 req.user 타이핑하기
   - [x] passport Strategy 타입 분석
 - [ ] 6. 직접 라이브러리 타이핑하기
+  - [ ] react-native-keyboard-aware-scrollview 직접 타이핑하기
+  - [ ] connect-flash 직접 타이핑하기
