@@ -6,6 +6,7 @@ import express, {
 } from "express";
 import session from "express-session";
 import passport from "passport";
+import flash from "connect-flash";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 app.use(session({ secret: "SECRET" }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 declare global {
   namespace Express {
@@ -45,6 +47,11 @@ const middleware: RequestHandler<
   });
   req.zerocho;
   req.cookies;
+
+  req.flash("플래시메시지"); // set
+  req.flash("1회성", "플래시메시지"); // set
+  req.flash(); // get
+  req.flash(); // undefined
 
   req.session;
   req.user;
