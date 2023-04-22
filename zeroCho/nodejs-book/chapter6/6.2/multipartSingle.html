@@ -1,0 +1,23 @@
+<form id="form" enctype="multipart/form-data">
+  <input type="file" name="image" />
+  <input type="text" name="title" />
+  <button type="submit">업로드</button>
+</form>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  document.getElementById("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!e.target.title.value) {
+      alert("텍스트를 입력하세요");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", e.target.image.files[0]);
+    formData.append("title", e.target.title.value);
+    axios.post("/upload/single", formData).then((res) => {
+      e.target.reset();
+      console.log("성공");
+      console.log("res.data:", res.data);
+    });
+  });
+</script>
