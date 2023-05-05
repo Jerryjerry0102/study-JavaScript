@@ -9,7 +9,7 @@ import axios from 'axios';
 import App from '@layouts/App';
 import { rootCertificates } from 'tls';
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true; // swr 관련 코드
 axios.defaults.baseURL =
   process.env.NODE_ENV === 'production' ? 'https://sleact.nodebird.com' : 'http://localhost:3090';
 
