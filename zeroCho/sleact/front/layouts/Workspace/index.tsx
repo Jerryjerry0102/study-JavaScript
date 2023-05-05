@@ -10,22 +10,34 @@ import {
   WorkspaceWrapper,
   ProfileMenu,
   LogOutButton,
+  WorkspaceButton,
+  AddButton,
 } from '@layouts/Workspace/styles';
 import loadable from '@loadable/component';
 import fetcher from '@utils/fetcher';
-import React, { useCallback, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router';
+import React, { FormEvent, useCallback, useState } from 'react';
+import { Navigate, Route, Routes, Link } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Menu from '@components/Menu';
+import { IUser } from '@typings/db';
+import { Button, Input, Label } from '@pages/SignUp/styles';
+import useInput from '@hooks/useInput';
+import Modal from '@components/Modal';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
 
 const Workspace = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
+  const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
+  const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
+  const [newUrl, onChangeNewUrl, setNewUrl] = useInput('');
+
+  const { data: userData, error, mutate } = useSWR<IUser | false>('http://localhost:3095/api/users', fetcher);
 
   const onLogout = useCallback(() => {
     axios
@@ -38,11 +50,49 @@ const Workspace = () => {
 
   // 토글 함수
   const onClickUserProfile = useCallback(() => {
-    console.log('onClick');
     setShowUserMenu((prev) => !prev);
   }, []);
 
-  if (!data) {
+  const onClickCreateWorkspace = useCallback(() => {
+    setShowCreateWorkspaceModal(true);
+  }, []);
+
+  const onCreateWorkspace = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      // 필수값들 들어있는지 검사
+      if (!newWorkspace || !newWorkspace.trim()) return;
+      if (!newUrl || !newUrl.trim()) return;
+
+      axios
+        .post('http://localhost:3095/api/workspaces', { workspace: newWorkspace, url: newUrl })
+        .then(() => {
+          mutate();
+          setShowCreateWorkspaceModal(false);
+          setNewWorkspace('');
+          setNewUrl('');
+        })
+        .catch((error) => {
+          toast.error(`${error.response.data}`, {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        });
+    },
+    [newWorkspace, newUrl],
+  );
+
+  const onCloseModal = useCallback(() => {
+    setShowCreateWorkspaceModal(false);
+  }, []);
+
+  if (!userData) {
     return <Navigate to="/login" />;
   }
 
@@ -51,13 +101,13 @@ const Workspace = () => {
       <Header>
         <RightMenu>
           <span onClick={onClickUserProfile}>
-            <ProfileImg src={gravatar.url(data.email, { s: '28px', d: 'retro' })} alt={data.nickname} />
+            <ProfileImg src={gravatar.url(userData.email, { s: '28px', d: 'retro' })} alt={userData.nickname} />
             {showUserMenu && (
               <Menu style={{ right: 0, top: 38 }} show={showUserMenu} onCloseMenu={onClickUserProfile}>
                 <ProfileMenu>
-                  <img src={gravatar.url(data.email, { s: '36px', d: 'retro' })} alt={data.nickname} />
+                  <img src={gravatar.url(userData.email, { s: '36px', d: 'retro' })} alt={userData.nickname} />
                   <div>
-                    <span id="profile-name">{data.nickname}</span>
+                    <span id="profile-name">{userData.nickname}</span>
                     <span id="profile-active">Active</span>
                   </div>
                 </ProfileMenu>
@@ -68,9 +118,18 @@ const Workspace = () => {
         </RightMenu>
       </Header>
       <WorkspaceWrapper>
-        <Workspaces></Workspaces>
+        <Workspaces>
+          {userData.Workspaces.map((ws) => {
+            return (
+              <Link key={ws.id} to={`/workspace/${123}/channel/일반`}>
+                <WorkspaceButton>{ws.name[0].toUpperCase()}</WorkspaceButton>
+              </Link>
+            );
+          })}
+          <AddButton onClick={onClickCreateWorkspace}>+</AddButton>
+        </Workspaces>
         <Channels>
-          <WorkspaceName>test</WorkspaceName>
+          <WorkspaceName>Sleact</WorkspaceName>
           <MenuScroll>menu scroll</MenuScroll>
         </Channels>
         <Chats>
@@ -80,6 +139,20 @@ const Workspace = () => {
           </Routes>
         </Chats>
       </WorkspaceWrapper>
+      <Modal show={showCreateWorkspaceModal} onCloseModal={onCloseModal}>
+        <form onSubmit={onCreateWorkspace}>
+          <Label id="workspace-label">
+            <span>워크스페이스 이름</span>
+            <Input id="newWorkspace" value={newWorkspace} onChange={onChangeNewWorkspace} />
+          </Label>
+          <Label id="workspace-url-label">
+            <span>워크스페이스 url</span>
+            <Input id="newUrl" value={newUrl} onChange={onChangeNewUrl} />
+          </Label>
+          <Button type="submit">생성하기</Button>
+        </form>
+      </Modal>
+      <ToastContainer />
     </div>
   );
 };
