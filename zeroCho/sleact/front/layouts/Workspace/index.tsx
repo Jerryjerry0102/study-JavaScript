@@ -8,19 +8,23 @@ import {
   RightMenu,
   Workspaces,
   WorkspaceWrapper,
+  ProfileMenu,
+  LogOutButton,
 } from '@layouts/Workspace/styles';
 import loadable from '@loadable/component';
 import fetcher from '@utils/fetcher';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import axios from 'axios';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
+import Menu from '@components/Menu';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
 
 const Workspace = () => {
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
 
   const onLogout = useCallback(() => {
@@ -32,6 +36,12 @@ const Workspace = () => {
       .catch(() => {});
   }, []);
 
+  // 토글 함수
+  const onClickUserProfile = useCallback(() => {
+    console.log('onClick');
+    setShowUserMenu((prev) => !prev);
+  }, []);
+
   if (!data) {
     return <Navigate to="/login" />;
   }
@@ -40,12 +50,23 @@ const Workspace = () => {
     <div>
       <Header>
         <RightMenu>
-          <span>
+          <span onClick={onClickUserProfile}>
             <ProfileImg src={gravatar.url(data.email, { s: '28px', d: 'retro' })} alt={data.nickname} />
+            {showUserMenu && (
+              <Menu style={{ right: 0, top: 38 }} show={showUserMenu} onCloseMenu={onClickUserProfile}>
+                <ProfileMenu>
+                  <img src={gravatar.url(data.email, { s: '36px', d: 'retro' })} alt={data.nickname} />
+                  <div>
+                    <span id="profile-name">{data.nickname}</span>
+                    <span id="profile-active">Active</span>
+                  </div>
+                </ProfileMenu>
+                <LogOutButton onClick={onLogout}>로그아웃</LogOutButton>
+              </Menu>
+            )}
           </span>
         </RightMenu>
       </Header>
-      <button onClick={onLogout}>로그아웃</button>
       <WorkspaceWrapper>
         <Workspaces></Workspaces>
         <Channels>
