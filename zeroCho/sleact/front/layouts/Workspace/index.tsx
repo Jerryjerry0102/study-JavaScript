@@ -1,14 +1,26 @@
+import {
+  WorkspaceName,
+  Channels,
+  Chats,
+  Header,
+  MenuScroll,
+  ProfileImg,
+  RightMenu,
+  Workspaces,
+  WorkspaceWrapper,
+} from '@layouts/Workspace/styles';
+import loadable from '@loadable/component';
 import fetcher from '@utils/fetcher';
-import React, { FC, ReactNode, useCallback } from 'react';
-import { Navigate } from 'react-router';
+import React, { useCallback } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
 import axios from 'axios';
 import useSWR from 'swr';
+import gravatar from 'gravatar';
 
-interface P {
-  children: ReactNode;
-}
+const Channel = loadable(() => import('@pages/Channel'));
+const DirectMessage = loadable(() => import('@pages/DirectMessage'));
 
-const Workspace: FC<P> = ({ children }) => {
+const Workspace = () => {
   const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
 
   const onLogout = useCallback(() => {
@@ -26,8 +38,27 @@ const Workspace: FC<P> = ({ children }) => {
 
   return (
     <div>
+      <Header>
+        <RightMenu>
+          <span>
+            <ProfileImg src={gravatar.url(data.email, { s: '28px', d: 'retro' })} alt={data.nickname} />
+          </span>
+        </RightMenu>
+      </Header>
       <button onClick={onLogout}>로그아웃</button>
-      {children}
+      <WorkspaceWrapper>
+        <Workspaces></Workspaces>
+        <Channels>
+          <WorkspaceName>test</WorkspaceName>
+          <MenuScroll>menu scroll</MenuScroll>
+        </Channels>
+        <Chats>
+          <Routes>
+            <Route path="/channel" element={<Channel />} />
+            <Route path="/dm" element={<DirectMessage />} />
+          </Routes>
+        </Chats>
+      </WorkspaceWrapper>
     </div>
   );
 };
