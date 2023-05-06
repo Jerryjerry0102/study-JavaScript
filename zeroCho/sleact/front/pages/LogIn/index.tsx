@@ -7,7 +7,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 const Login = () => {
-  const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher, {
+  const { data, error, mutate } = useSWR('/api/users', fetcher, {
     dedupingInterval: 1000000, // 캐시 유지시간
   }); // 연결관계가 중요
   const [email, onChangeEmail] = useInput('');
@@ -20,7 +20,7 @@ const Login = () => {
       e.preventDefault();
       setlogInError('');
       axios
-        .post('http://localhost:3095/api/users/login', { email, password })
+        .post('/api/users/login', { email, password })
         .then((res) => {
           // 기존에 가지고 있던 정보를 넣기 때문에 요청을 안 보내도 됨.
           // 근데 여기 부분은 죽어라 해도 안 됨.

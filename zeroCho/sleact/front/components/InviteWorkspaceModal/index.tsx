@@ -1,7 +1,7 @@
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
 import { Button, Input, Label } from '@pages/SignUp/styles';
-import { IChannel } from '@typings/db';
+import { IUser } from '@typings/db';
 import axios from 'axios';
 import React, { Dispatch, FC, FormEvent, MouseEventHandler, useCallback } from 'react';
 import { useParams } from 'react-router';
@@ -11,26 +11,26 @@ import { KeyedMutator } from 'swr';
 interface Props {
   show: boolean;
   onCloseModal: MouseEventHandler;
-  setShowCreateChannelModal: Dispatch<boolean>;
-  mutate: KeyedMutator<IChannel[]>;
+  setShowInviteWorkspaceModal: Dispatch<boolean>;
+  mutate: KeyedMutator<IUser[]>;
 }
 
-const CreateChannelModal: FC<Props> = ({ show, onCloseModal, setShowCreateChannelModal, mutate }) => {
-  const [newChannel, onChangeNewChannel, setNewChannel] = useInput('');
+const InviteWorkspaceModal: FC<Props> = ({ show, onCloseModal, setShowInviteWorkspaceModal, mutate }) => {
+  const [newMember, onChangeNewMember, setNewMember] = useInput('');
   const { workspace } = useParams();
 
-  const onCreateChannel = useCallback(
+  const onInviteMember = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
       // 필수값들 들어있는지 검사
-      if (!newChannel || !newChannel.trim()) return;
+      if (!newMember || !newMember.trim()) return;
 
       axios
-        .post(`/api/workspaces/${workspace}/channels`, { name: newChannel })
+        .post(`/api/workspaces/${workspace}/members`, { email: newMember })
         .then(() => {
           mutate(); // 강의에서는 여기서도 useSWR를 해주지만 나는 props로 받아와서 해보자
-          setShowCreateChannelModal(false);
-          setNewChannel('');
+          setShowInviteWorkspaceModal(false);
+          setNewMember('');
         })
         .catch((error) => {
           console.dir(error);
@@ -46,20 +46,20 @@ const CreateChannelModal: FC<Props> = ({ show, onCloseModal, setShowCreateChanne
           });
         });
     },
-    [newChannel],
+    [newMember],
   );
 
   return (
     <Modal show={show} onCloseModal={onCloseModal}>
-      <form onSubmit={onCreateChannel}>
-        <Label id="channel-label">
-          <span>채널 이름</span>
-          <Input id="newChannel" value={newChannel} onChange={onChangeNewChannel} />
+      <form onSubmit={onInviteMember}>
+        <Label id="member-label">
+          <span>이메일</span>
+          <Input id="newMember" value={newMember} onChange={onChangeNewMember} />
         </Label>
-        <Button type="submit">생성하기</Button>
+        <Button type="submit">초대하기</Button>
       </form>
     </Modal>
   );
 };
 
-export default CreateChannelModal;
+export default InviteWorkspaceModal;

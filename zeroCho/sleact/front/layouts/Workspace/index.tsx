@@ -29,6 +29,8 @@ import { Button, Input, Label } from '@pages/SignUp/styles';
 import useInput from '@hooks/useInput';
 import Modal from '@components/Modal';
 import CreateChannelModal from '@components/CreateChannelModal';
+import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
+import InviteChannelModal from '@components/InviteChannelModal';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -38,22 +40,28 @@ const Workspace = () => {
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [showWorkspaceMenu, setShowWorkspaceMenu] = useState(false);
   const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
+  const [showInviteWorkspaceModal, setShowInviteWorkspaceModal] = useState(false);
+  const [showInviteChannelModal, setShowInviteChannelModal] = useState(false);
 
   const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
   const [newUrl, onChangeNewUrl, setNewUrl] = useInput('');
 
   const { workspace } = useParams();
 
-  const { data: userData, error, mutate } = useSWR<IUser | false>('http://localhost:3095/api/users', fetcher);
-  const { data: channelData, mutate: channelMutate } = useSWR<IChannel[]>(
+  const { data: userData, mutate } = useSWR<IUser | false>('/api/users', fetcher);
+  const { data: channelData, mutate: mutateChannel } = useSWR<IChannel[]>(
     // 조건부 요청(내가 로그인한 상태일 때만 요청 보내도록 설정한 것)
-    userData ? `http://localhost:3095/api/workspaces/${workspace}/channels` : null,
+    userData ? `/api/workspaces/${workspace}/channels` : null,
+    fetcher,
+  );
+  const { data: MemberData, mutate: mutateWorkspaceMember } = useSWR(
+    userData ? `/api/workspaces/${workspace}/members` : null,
     fetcher,
   );
 
   const onLogout = useCallback(() => {
     axios
-      .post('http://localhost:3095/api/users/logout')
+      .post('/api/users/logout')
       .then(() => {
         mutate(false, false); // 기존에 가지고 있던 정보를 넣기 때문에 요청을 안 보내도 됨
       })
@@ -77,7 +85,7 @@ const Workspace = () => {
       if (!newUrl || !newUrl.trim()) return;
 
       axios
-        .post('http://localhost:3095/api/workspaces', { workspace: newWorkspace, url: newUrl })
+        .post('/api/workspaces', { workspace: newWorkspace, url: newUrl })
         .then(() => {
           mutate();
           setShowCreateWorkspaceModal(false);
@@ -103,6 +111,8 @@ const Workspace = () => {
   const onCloseModal = useCallback(() => {
     setShowCreateWorkspaceModal(false);
     setShowCreateChannelModal(false);
+    setShowInviteWorkspaceModal(false);
+    setShowInviteChannelModal(false);
   }, []);
 
   const toggleWorkspaceMenu = useCallback(() => {
@@ -111,6 +121,10 @@ const Workspace = () => {
 
   const onClickAddChannel = useCallback(() => {
     setShowCreateChannelModal(true);
+  }, []);
+
+  const onClickInviteMember = useCallback(() => {
+    setShowInviteWorkspaceModal((prev) => !prev);
   }, []);
 
   if (!userData) {
@@ -138,7 +152,7 @@ const Workspace = () => {
       </Header>
       <WorkspaceWrapper>
         <Workspaces>
-          {userData.Workspaces.map((ws) => {
+          {userData.Workspaces?.map((ws) => {
             return (
               <Link key={ws.id} to={`/workspace/${workspace}/channel/일반`}>
                 <WorkspaceButton>{ws.name[0].toUpperCase()}</WorkspaceButton>
@@ -153,13 +167,14 @@ const Workspace = () => {
             <Menu show={showWorkspaceMenu} onCloseMenu={toggleWorkspaceMenu} style={{ top: 95, left: 80 }}>
               <WorkspaceMenu>
                 <h2>Sleact</h2>
+                <button onClick={onClickInviteMember}>워크스페이스에 사용자 초대</button>
                 <button onClick={onClickAddChannel}>채널 만들기</button>
                 <button onClick={onLogout}>로그아웃</button>
               </WorkspaceMenu>
             </Menu>
-            {channelData?.map((ch) => (
-              <div key={ch.id}>{ch.name}</div>
-            ))}
+            {channelData?.map((ch) => {
+              return <div key={ch.id}>{ch.name}</div>;
+            })}
           </MenuScroll>
         </Channels>
         <Chats>
@@ -186,7 +201,18 @@ const Workspace = () => {
         show={showCreateChannelModal}
         onCloseModal={onCloseModal}
         setShowCreateChannelModal={setShowCreateChannelModal}
-        mutate={channelMutate}
+        mutate={mutateChannel}
+      />
+      <InviteWorkspaceModal
+        show={showInviteWorkspaceModal}
+        onCloseModal={onCloseModal}
+        setShowInviteWorkspaceModal={setShowInviteWorkspaceModal}
+        mutate={mutateWorkspaceMember}
+      />
+      <InviteChannelModal
+        show={showInviteChannelModal}
+        onCloseModal={onCloseModal}
+        setShowInviteChannelModal={setShowInviteChannelModal}
       />
       <ToastContainer />
     </div>
