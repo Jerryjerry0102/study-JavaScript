@@ -13,8 +13,11 @@ const Menu: FC<Props> = ({ children, style, show, onCloseMenu, closeButton = tru
   const stopPropagation = useCallback((e: MouseEvent) => {
     e.stopPropagation();
   }, []);
+
+  if (!show) return null;
+
   return (
-    <CreateMenu>
+    <CreateMenu onClick={onCloseMenu}>
       <div style={style} onClick={stopPropagation}>
         {closeButton && <CloseMenuButton onClick={onCloseMenu}>&times;</CloseMenuButton>}
         {children}

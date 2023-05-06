@@ -27,7 +27,7 @@ const Login = () => {
           mutate(res.data, false);
         })
         .catch((error) => {
-          console.log(error.response);
+          console.dir(error.response);
           setlogInError(error.response.data);
           // setLogInError(error.response?.data?.code === 401);
         });
@@ -40,7 +40,7 @@ const Login = () => {
   }
 
   if (data) {
-    return <Navigate to="/workspace/channel" />;
+    return <Navigate to="/workspace/sleact/channel/일반" />;
   }
 
   return (

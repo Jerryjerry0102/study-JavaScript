@@ -39,17 +39,15 @@ const SignUp = () => {
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!mismatchError && nickname && email) {
-        console.log('서버로 회원가입하기');
         setSignUpError(false);
         setSignUpSuccess(false);
         axios
           .post('http://localhost:3095/api/users', { email, nickname, password })
           .then((res) => {
-            console.log(res);
             setSignUpSuccess(true);
           })
           .catch((error) => {
-            console.log(error.response);
+            console.dir(error.response);
             setSignUpError(error.response.data);
           });
       }
@@ -62,7 +60,7 @@ const SignUp = () => {
   }
 
   if (data) {
-    return <Navigate to="/workspace/channel" />;
+    return <Navigate to="/workspace/sleact/channel/일반" />;
   }
 
   return (

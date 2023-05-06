@@ -154,7 +154,7 @@ export const MenuScroll = styled.div`
   overflow-y: auto;
 `;
 
-export const WorkspaceModal = styled.div`
+export const WorkspaceMenu = styled.div`
   padding: 10px 0 0;
 
   & h2 {
