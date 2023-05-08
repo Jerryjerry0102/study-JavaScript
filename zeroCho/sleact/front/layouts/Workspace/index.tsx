@@ -16,21 +16,19 @@ import {
 } from '@layouts/Workspace/styles';
 import loadable from '@loadable/component';
 import fetcher from '@utils/fetcher';
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Navigate, Route, Routes, Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Menu from '@components/Menu';
 import { IChannel, IUser } from '@typings/db';
-import { Button, Input, Label } from '@pages/SignUp/styles';
-import useInput from '@hooks/useInput';
-import Modal from '@components/Modal';
 import CreateChannelModal from '@components/CreateChannelModal';
 import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
 import InviteChannelModal from '@components/InviteChannelModal';
+import CreateWorkspaceModal from '@components/CreateWorkspaceModal';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -42,9 +40,6 @@ const Workspace = () => {
   const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
   const [showInviteWorkspaceModal, setShowInviteWorkspaceModal] = useState(false);
   const [showInviteChannelModal, setShowInviteChannelModal] = useState(false);
-
-  const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
-  const [newUrl, onChangeNewUrl, setNewUrl] = useInput('');
 
   const { workspace } = useParams();
 
@@ -76,37 +71,6 @@ const Workspace = () => {
   const onClickCreateWorkspace = useCallback(() => {
     setShowCreateWorkspaceModal(true);
   }, []);
-
-  const onCreateWorkspace = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      // 필수값들 들어있는지 검사
-      if (!newWorkspace || !newWorkspace.trim()) return;
-      if (!newUrl || !newUrl.trim()) return;
-
-      axios
-        .post('/api/workspaces', { workspace: newWorkspace, url: newUrl })
-        .then(() => {
-          mutate();
-          setShowCreateWorkspaceModal(false);
-          setNewWorkspace('');
-          setNewUrl('');
-        })
-        .catch((error) => {
-          toast.error(`${error.response.data}`, {
-            position: 'top-right',
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          });
-        });
-    },
-    [newWorkspace, newUrl],
-  );
 
   const onCloseModal = useCallback(() => {
     setShowCreateWorkspaceModal(false);
@@ -184,19 +148,12 @@ const Workspace = () => {
           </Routes>
         </Chats>
       </WorkspaceWrapper>
-      <Modal show={showCreateWorkspaceModal} onCloseModal={onCloseModal}>
-        <form onSubmit={onCreateWorkspace}>
-          <Label id="workspace-label">
-            <span>워크스페이스 이름</span>
-            <Input id="newWorkspace" value={newWorkspace} onChange={onChangeNewWorkspace} />
-          </Label>
-          <Label id="workspace-url-label">
-            <span>워크스페이스 url</span>
-            <Input id="newUrl" value={newUrl} onChange={onChangeNewUrl} />
-          </Label>
-          <Button type="submit">생성하기</Button>
-        </form>
-      </Modal>
+      <CreateWorkspaceModal
+        show={showCreateWorkspaceModal}
+        onCloseModal={onCloseModal}
+        setShowCreateWorkspaceModal={setShowCreateWorkspaceModal}
+        mutate={mutate}
+      />
       <CreateChannelModal
         show={showCreateChannelModal}
         onCloseModal={onCloseModal}
