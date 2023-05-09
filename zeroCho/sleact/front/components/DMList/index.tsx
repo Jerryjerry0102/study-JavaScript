@@ -1,10 +1,11 @@
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import useSWR from 'swr';
 import { CollapseButton } from '@components/DMList/styles';
+import useSocket from '@hooks/useSocket';
 
 const DMList = () => {
   const { workspace } = useParams<{ workspace?: string }>();
@@ -13,11 +14,28 @@ const DMList = () => {
   });
   const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
 
+  const [socket] = useSocket(workspace);
+
   const [channelCollapse, setChannelCollapse] = useState(false);
+  const [onlineList, setOnlineList] = useState<number[]>([]);
 
   const toggleChannelCollapse = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    console.log('DMList: workspace 바꼈다', workspace);
+    setOnlineList([]);
+  }, [workspace]);
+
+  useEffect(() => {
+    socket?.on('onlineList', (data: number[]) => {
+      setOnlineList(data);
+    });
+    return () => {
+      socket?.off('onlineList');
+    };
+  }, [socket]);
 
   return (
     <>
@@ -34,6 +52,7 @@ const DMList = () => {
       <div>
         {!channelCollapse &&
           memberData?.map((member) => {
+            const isOnline = onlineList.includes(member.id);
             return (
               <NavLink
                 key={member.id}
@@ -42,7 +61,7 @@ const DMList = () => {
               >
                 <i
                   className={`c-icon p-channel_sidebar__presence_icon p-channel_sidebar__presence_icon--dim_enabled c-presence ${
-                    false ? 'c-presence--active c-icon--presence-online' : 'c-icon--presence-offline'
+                    isOnline ? 'c-presence--active c-icon--presence-online' : 'c-icon--presence-offline'
                   }`}
                   aria-hidden="true"
                   data-qa="presence_indicator"

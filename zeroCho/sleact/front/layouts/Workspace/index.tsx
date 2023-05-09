@@ -16,7 +16,7 @@ import {
 } from '@layouts/Workspace/styles';
 import loadable from '@loadable/component';
 import fetcher from '@utils/fetcher';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
@@ -31,6 +31,7 @@ import InviteChannelModal from '@components/InviteChannelModal';
 import CreateWorkspaceModal from '@components/CreateWorkspaceModal';
 import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
+import useSocket from '@hooks/useSocket';
 import { channel } from 'diagnostics_channel';
 
 const Channel = loadable(() => import('@pages/Channel'));
@@ -57,6 +58,21 @@ const Workspace = () => {
     fetcher,
   );
 
+  const [socket, disconnect] = useSocket(workspace);
+
+  useEffect(() => {
+    if (channelData && userData && socket) {
+      console.log(socket);
+      socket.emit('login', { id: userData.id, channels: channelData.map((v) => v.id) });
+    }
+  }, [channelData, socket, userData]);
+  useEffect(() => {
+    // 워크스페이스가 바뀌면 기존 워크스페이스를 정리해줘야 함
+    return () => {
+      disconnect();
+    };
+  }, [workspace, disconnect]);
+
   const onLogout = useCallback(() => {
     axios
       .post('/api/users/logout')
@@ -64,7 +80,7 @@ const Workspace = () => {
         mutate(false, false); // 기존에 가지고 있던 정보를 넣기 때문에 요청을 안 보내도 됨
       })
       .catch(() => {});
-  }, []);
+  }, [mutate]);
 
   // 토글 함수
   const onClickUserProfile = useCallback(() => {
