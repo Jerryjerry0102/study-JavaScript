@@ -29,6 +29,9 @@ import CreateChannelModal from '@components/CreateChannelModal';
 import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
 import InviteChannelModal from '@components/InviteChannelModal';
 import CreateWorkspaceModal from '@components/CreateWorkspaceModal';
+import ChannelList from '@components/ChannelList';
+import DMList from '@components/DMList';
+import { channel } from 'diagnostics_channel';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -49,7 +52,7 @@ const Workspace = () => {
     userData ? `/api/workspaces/${workspace}/channels` : null,
     fetcher,
   );
-  const { data: MemberData, mutate: mutateWorkspaceMember } = useSWR(
+  const { data: memberData, mutate: mutateWorkspaceMember } = useSWR(
     userData ? `/api/workspaces/${workspace}/members` : null,
     fetcher,
   );
@@ -87,7 +90,7 @@ const Workspace = () => {
     setShowCreateChannelModal(true);
   }, []);
 
-  const onClickInviteMember = useCallback(() => {
+  const onClickInviteWorkspace = useCallback(() => {
     setShowInviteWorkspaceModal((prev) => !prev);
   }, []);
 
@@ -118,7 +121,7 @@ const Workspace = () => {
         <Workspaces>
           {userData.Workspaces?.map((ws) => {
             return (
-              <Link key={ws.id} to={`/workspace/${workspace}/channel/일반`}>
+              <Link key={ws.id} to={`/workspace/${ws.name}/channel/일반`}>
                 <WorkspaceButton>{ws.name[0].toUpperCase()}</WorkspaceButton>
               </Link>
             );
@@ -126,19 +129,18 @@ const Workspace = () => {
           <AddButton onClick={onClickCreateWorkspace}>+</AddButton>
         </Workspaces>
         <Channels>
-          <WorkspaceName onClick={toggleWorkspaceMenu}>Sleact</WorkspaceName>
+          <WorkspaceName onClick={toggleWorkspaceMenu}>{workspace}</WorkspaceName>
           <MenuScroll>
             <Menu show={showWorkspaceMenu} onCloseMenu={toggleWorkspaceMenu} style={{ top: 95, left: 80 }}>
               <WorkspaceMenu>
                 <h2>Sleact</h2>
-                <button onClick={onClickInviteMember}>워크스페이스에 사용자 초대</button>
+                <button onClick={onClickInviteWorkspace}>워크스페이스에 사용자 초대</button>
                 <button onClick={onClickAddChannel}>채널 만들기</button>
                 <button onClick={onLogout}>로그아웃</button>
               </WorkspaceMenu>
             </Menu>
-            {channelData?.map((ch) => {
-              return <div key={ch.id}>{ch.name}</div>;
-            })}
+            <ChannelList />
+            <DMList />
           </MenuScroll>
         </Channels>
         <Chats>
