@@ -8,35 +8,40 @@ import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { IDM } from '@typings/db';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams();
   const { data: myData } = useSWR(`/api/users`, fetcher);
-  const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${id}`, fetcher);
-  // const { mutate } = useSWR(`/api/workspaces/${workspace}/dms/${id}/chats`, fetcher);
+  const { data: userData, isLoading } = useSWR(`/api/workspaces/${workspace}/users/${id}`, fetcher);
+  const { data: chatData, mutate: mutateChat } = useSWR(
+    `/api/workspaces/${workspace}/dms/${id}/chats?perPage=20&page=1`,
+    fetcher,
+  );
 
   const [chat, onChangeChat, setChat] = useInput('');
 
   const onSubmitForm = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      if (chat?.trim()) {
-        axios
-          .post(`/api/workspaces/${workspace}/dms/${id}/chats`, { content: chat })
-          .then((res) => {
-            console.log(res.data);
-            // mutate();
-            setChat('');
-          })
-          .catch((error) => {
-            console.dir(error);
-          });
-      }
+      if (!chat || !chat.trim()) return;
+      console.log('chat!');
+      axios
+        .post(`/api/workspaces/${workspace}/dms/${id}/chats`, { content: chat })
+        .then(() => {
+          mutateChat();
+          setChat('');
+        })
+        .catch((err) => {
+          console.dir(err);
+          toast.error(err.response.data);
+        });
     },
-    [chat, workspace, id, setChat],
+    [chat, id, mutateChat, setChat, workspace],
   );
 
-  if (!userData || !myData) return null;
+  if (isLoading) return <div>로딩중</div>;
 
   return (
     <Container>
@@ -44,7 +49,7 @@ const DirectMessage = () => {
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
-      <ChatList />
+      <ChatList chatData={chatData} />
       <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
     </Container>
   );

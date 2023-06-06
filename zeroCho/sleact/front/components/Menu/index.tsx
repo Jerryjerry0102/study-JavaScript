@@ -10,9 +10,7 @@ interface Props {
 }
 
 const Menu: FC<Props> = ({ children, style, show, onCloseMenu, closeButton = true }) => {
-  const stopPropagation = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-  }, []);
+  const stopPropagation = useCallback((e: MouseEvent) => e.stopPropagation(), []);
 
   if (!show) return null;
 

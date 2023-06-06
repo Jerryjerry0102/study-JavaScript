@@ -8,25 +8,18 @@ import { CollapseButton } from '@components/DMList/styles';
 import useSocket from '@hooks/useSocket';
 
 const DMList = () => {
-  const { workspace } = useParams<{ workspace?: string }>();
-  const { data: userData } = useSWR<IUser>('/api/users', fetcher, {
-    dedupingInterval: 2000,
-  });
+  const { workspace } = useParams();
+  const { data: userData } = useSWR<IUser>('/api/users', fetcher);
   const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
 
   const [socket] = useSocket(workspace);
 
-  const [channelCollapse, setChannelCollapse] = useState(false);
+  const [dmCollapse, setDmCollapse] = useState(false);
   const [onlineList, setOnlineList] = useState<number[]>([]);
 
-  const toggleChannelCollapse = useCallback(() => {
-    setChannelCollapse((prev) => !prev);
+  const onClickDmCollapse = useCallback(() => {
+    setDmCollapse((prev) => !prev);
   }, []);
-
-  useEffect(() => {
-    console.log('DMList: workspace 바꼈다', workspace);
-    setOnlineList([]);
-  }, [workspace]);
 
   useEffect(() => {
     socket?.on('onlineList', (data: number[]) => {
@@ -40,7 +33,7 @@ const DMList = () => {
   return (
     <>
       <h2>
-        <CollapseButton collapse={channelCollapse} onClick={toggleChannelCollapse}>
+        <CollapseButton collapse={dmCollapse} onClick={onClickDmCollapse}>
           <i
             className="c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline"
             data-qa="channel-section-collapse"
@@ -50,7 +43,7 @@ const DMList = () => {
         <span>Direct Messages</span>
       </h2>
       <div>
-        {!channelCollapse &&
+        {!dmCollapse &&
           memberData?.map((member) => {
             const isOnline = onlineList.includes(member.id);
             return (
@@ -70,7 +63,7 @@ const DMList = () => {
                   data-qa-presence-dnd="false"
                 />
                 <span>{member.nickname}</span>
-                {member.id === userData?.id && <span>(나)</span>}
+                {member.id === userData?.id && <span>&nbsp;(나)</span>}
               </NavLink>
             );
           })}
@@ -78,5 +71,4 @@ const DMList = () => {
     </>
   );
 };
-
 export default DMList;

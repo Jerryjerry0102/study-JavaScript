@@ -1,24 +1,19 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import axios from 'axios';
-
-// import App from './layouts/App';
 import App from '@layouts/App';
-import { rootCertificates } from 'tls';
+import axios from 'axios';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
-axios.defaults.withCredentials = true; // swr 관련 코드
-axios.defaults.baseURL =
-  process.env.NODE_ENV === 'production' ? 'https://sleact.nodebird.com' : 'http://localhost:3090';
+// 프론트 서버 주소와 백엔드 서버 주소가 다를 경우 쿠키가 전달되지 않는다.
+// (나는 지금 proxy로 프론트 서버 주소를 속이고 있기 때문에 쿠키 전달이 잘 됨.)
+// 이 문제를 해결하기 위해서 아래 코드 추가
+axios.defaults.withCredentials = true;
 
-const container = document.getElementById('app');
-
-const root = createRoot(container!); // createRoot(container!) if you use TypeScript
-
+const root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
 );

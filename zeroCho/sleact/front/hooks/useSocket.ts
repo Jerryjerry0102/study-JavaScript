@@ -1,25 +1,25 @@
 import { useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const backUrl = 'http://localhost:3095';
+const backUrl = process.env.NODE_ENV === 'production' ? 'https://sleact.nodebird.com' : 'http://localhost:3095';
 
-// 빈 객체나 빈 배열일 경우 타이핑해줘야 함
 const sockets: { [key: string]: Socket } = {};
 
 const useSocket = (workspace?: string): [Socket | undefined, () => void] => {
   const disconnect = useCallback(() => {
-    if (workspace) {
+    if (workspace && sockets[workspace]) {
+      console.log('소켓 연결 끊음');
       sockets[workspace].disconnect();
       delete sockets[workspace];
     }
   }, [workspace]);
 
-  if (!workspace) return [undefined, disconnect];
+  if (!workspace) {
+    return [undefined, disconnect];
+  }
 
   if (!sockets[workspace]) {
-    sockets[workspace] = io(`${backUrl}/ws-${workspace}`, {
-      transports: ['websocket'],
-    });
+    sockets[workspace] = io(`${backUrl}/ws-${workspace}`, { transports: ['websocket'] });
   }
 
   return [sockets[workspace], disconnect];

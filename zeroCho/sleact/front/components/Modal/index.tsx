@@ -8,21 +8,19 @@ interface Props {
 }
 
 const Modal: FC<Props> = ({ children, show, onCloseModal }) => {
-  const stopPropagation = useCallback((e: MouseEvent) => {
-    e.stopPropagation();
-  }, []);
+  const stopPropagation = useCallback((e: MouseEvent) => e.stopPropagation(), []);
 
-  if (!show) {
-    return null;
-  }
+  if (!show) return null;
 
   return (
-    <CreateModal>
-      <div onClick={stopPropagation}>
-        <CloseModalButton onClick={onCloseModal}>&times;</CloseModalButton>
-        {children}
-      </div>
-    </CreateModal>
+    <>
+      <CreateModal onClick={onCloseModal}>
+        <div onClick={stopPropagation}>
+          <CloseModalButton onClick={onCloseModal}>&times;</CloseModalButton>
+          {children}
+        </div>
+      </CreateModal>
+    </>
   );
 };
 

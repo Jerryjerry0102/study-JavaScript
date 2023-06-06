@@ -6,42 +6,31 @@ import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import useSWR from 'swr';
 
-const Login = () => {
-  const { data, error, mutate } = useSWR('/api/users', fetcher, {
-    dedupingInterval: 1000000, // 캐시 유지시간
-  }); // 연결관계가 중요
+const LogIn = () => {
+  const { data, error, isLoading, isValidating, mutate } = useSWR('/api/users', fetcher, { dedupingInterval: 1000000 });
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-  // 에러 정의
-  const [logInError, setlogInError] = useState(''); // 서버에서 오는 에러
+  // Error
+  const [logInError, setLogInError] = useState('');
 
   const onSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    (e: FormEvent) => {
       e.preventDefault();
-      setlogInError('');
-      axios
-        .post('/api/users/login', { email, password })
-        .then((res) => {
-          // 기존에 가지고 있던 정보를 넣기 때문에 요청을 안 보내도 됨.
-          // 근데 여기 부분은 죽어라 해도 안 됨.
-          mutate(res.data, false);
-        })
-        .catch((error) => {
-          console.dir(error.response);
-          setlogInError(error.response.data);
-          // setLogInError(error.response?.data?.code === 401);
-        });
+      if (email && password) {
+        axios
+          .post('/api/users/login', { email, password })
+          .then(() => mutate())
+          .catch((err) => setLogInError(err.response.data));
+      } else {
+        setLogInError('입력사항을 모두 적었는지 확인해주세요');
+      }
     },
     [email, password],
   );
 
-  if (data === undefined) {
-    return <div>로딩중...</div>; // 여기에 로딩 중 화면 꾸미면 됨
-  }
+  if (isLoading) return <div>로딩중</div>;
 
-  if (data) {
-    return <Navigate to="/workspace/sleact/channel/일반" />;
-  }
+  if (data) return <Navigate to="/workspace/Sleact/channel/일반" />;
 
   return (
     <div id="container">
@@ -70,4 +59,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LogIn;

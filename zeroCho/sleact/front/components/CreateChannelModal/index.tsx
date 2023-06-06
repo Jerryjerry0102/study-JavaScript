@@ -2,59 +2,48 @@ import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
 import { Button, Input, Label } from '@pages/SignUp/styles';
 import { IChannel } from '@typings/db';
+import fetcher from '@utils/fetcher';
 import axios from 'axios';
-import React, { Dispatch, FC, FormEvent, MouseEventHandler, useCallback } from 'react';
+import React, { Dispatch, FC, FormEvent, MouseEventHandler, SetStateAction, useCallback } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
-import { KeyedMutator } from 'swr';
+import useSWR from 'swr';
 
 interface Props {
   show: boolean;
+  setShow: Dispatch<SetStateAction<boolean>>;
   onCloseModal: MouseEventHandler;
-  setShowCreateChannelModal: Dispatch<boolean>;
-  mutate: KeyedMutator<IChannel[]>;
 }
 
-const CreateChannelModal: FC<Props> = ({ show, onCloseModal, setShowCreateChannelModal, mutate }) => {
+const CreateChannelModal: FC<Props> = ({ show, setShow, onCloseModal }) => {
   const [newChannel, onChangeNewChannel, setNewChannel] = useInput('');
   const { workspace } = useParams();
 
-  const onCreateChannel = useCallback(
+  const { mutate } = useSWR<IChannel[]>(`/api/workspaces/${workspace}/channels`, fetcher);
+
+  const createChannel = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      // 필수값들 들어있는지 검사
       if (!newChannel || !newChannel.trim()) return;
-
       axios
         .post(`/api/workspaces/${workspace}/channels`, { name: newChannel })
         .then(() => {
-          mutate(); // 강의에서는 여기서도 useSWR를 해주지만 나는 props로 받아와서 해보자
-          setShowCreateChannelModal(false);
+          mutate();
+          toast.success(`${newChannel} 채널 생성에 성공했습니다`);
+          setShow(false);
           setNewChannel('');
         })
-        .catch((error) => {
-          console.dir(error);
-          toast.error(`${error.response.data}`, {
-            position: 'top-right',
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          });
-        });
+        .catch((err) => toast.error(err.response.data));
     },
     [newChannel],
   );
 
   return (
     <Modal show={show} onCloseModal={onCloseModal}>
-      <form onSubmit={onCreateChannel}>
+      <form onSubmit={createChannel}>
         <Label id="channel-label">
           <span>채널 이름</span>
-          <Input id="newChannel" value={newChannel} onChange={onChangeNewChannel} />
+          <Input id="channel" value={newChannel} onChange={onChangeNewChannel} />
         </Label>
         <Button type="submit">생성하기</Button>
       </form>
