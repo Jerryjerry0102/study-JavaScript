@@ -19,15 +19,19 @@ const Chat: FC<Props> = ({ data }) => {
   const result = useMemo(
     () =>
       regexifyString({
-        input: data.content,
         pattern: /@\[(.+?)]\((\d+?)\)|\n/g,
         decorator(match, index) {
           const arr = match.match(/@\[(.+?)]\((\d+?)\)/)!;
           if (arr) {
-            return <Link to={`/workspaces/${workspace}/dm/${arr[2]}`}>@{arr[1]}</Link>;
+            return (
+              <Link key={match + index} to={`/workspaces/${workspace}/dm/${arr[2]}`}>
+                @{arr[1]}
+              </Link>
+            );
           }
-          return <br />;
+          return <br key={match + index} />;
         },
+        input: data.content,
       }),
     [data.content, workspace],
   );

@@ -25,12 +25,12 @@ const LogIn = () => {
         setLogInError('입력사항을 모두 적었는지 확인해주세요');
       }
     },
-    [email, password],
+    [email, mutate, password],
   );
 
   if (isLoading) return <div>로딩중</div>;
 
-  if (data) return <Navigate to="/workspace/Sleact/channel/일반" />;
+  if (data) return <Navigate to="/workspace/sleact/channel/일반" />;
 
   return (
     <div id="container">

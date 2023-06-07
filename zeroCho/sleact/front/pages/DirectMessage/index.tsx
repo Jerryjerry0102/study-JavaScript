@@ -10,6 +10,7 @@ import useInput from '@hooks/useInput';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IDM } from '@typings/db';
+import makeSection from '@utils/makeSection';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams();
@@ -26,7 +27,6 @@ const DirectMessage = () => {
     (e: FormEvent) => {
       e.preventDefault();
       if (!chat || !chat.trim()) return;
-      console.log('chat!');
       axios
         .post(`/api/workspaces/${workspace}/dms/${id}/chats`, { content: chat })
         .then(() => {
@@ -34,14 +34,16 @@ const DirectMessage = () => {
           setChat('');
         })
         .catch((err) => {
-          console.dir(err);
           toast.error(err.response.data);
         });
     },
     [chat, id, mutateChat, setChat, workspace],
   );
 
+  // if (!userData || !myData) return null;
   if (isLoading) return <div>로딩중</div>;
+
+  const chatSections = makeSection(chatData ? [...chatData].reverse() : []);
 
   return (
     <Container>
@@ -49,7 +51,7 @@ const DirectMessage = () => {
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
-      <ChatList chatData={chatData} />
+      <ChatList chatSections={chatSections} />
       <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
     </Container>
   );

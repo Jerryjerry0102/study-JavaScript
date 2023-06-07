@@ -20,6 +20,7 @@ const ChatBox: FC<Props> = ({ chat, onChangeChat, onSubmitForm, placeholder }) =
 
   const onKeyDownChat = useCallback(
     (e: KeyboardEvent) => {
+      if (e.nativeEvent.isComposing) return;
       if (e.key === 'Enter')
         if (!e.shiftKey) {
           e.preventDefault();
