@@ -12,6 +12,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import makeSection from '@utils/makeSection';
 import Scrollbars from 'react-custom-scrollbars-2';
+import { IDM } from '@typings/db';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams();
@@ -32,18 +33,38 @@ const DirectMessage = () => {
     (e: FormEvent) => {
       e.preventDefault();
       if (!chat || !chat.trim()) return;
+      if (!isEmpty) {
+        const savedChat = chat;
+        console.log(chatData?.[0]);
+        mutateChat(
+          (prev) => {
+            prev?.[0].unshift({
+              id: (chatData?.[0][0]?.id || 0) + 1,
+              content: savedChat,
+              SenderId: myData.id,
+              Sender: myData,
+              ReceiverId: userData.id,
+              Receiver: userData,
+              createdAt: new Date(),
+            });
+            return prev;
+          },
+          { revalidate: false },
+        ).then(() => {
+          setChat('');
+          scrollbarRef.current?.scrollToBottom();
+        });
+      }
       axios
         .post(`/api/workspaces/${workspace}/dms/${id}/chats`, { content: chat })
         .then(() => {
           mutateChat();
-          setChat('');
-          scrollbarRef.current?.scrollToBottom();
         })
         .catch((err) => {
           toast.error(err.response.data);
         });
     },
-    [chat, id, mutateChat, setChat, workspace],
+    [chat, chatData, id, myData, userData, workspace],
   );
 
   // 로딩 시 스크롤바 제일 아래로
