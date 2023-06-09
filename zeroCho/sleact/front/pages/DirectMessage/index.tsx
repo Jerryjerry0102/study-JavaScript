@@ -1,6 +1,7 @@
-import React, { FormEvent, useCallback } from 'react';
+import React, { FormEvent, useCallback, useEffect, useRef } from 'react';
 import gravatar from 'gravatar';
 import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 import { useParams } from 'react-router';
 import fetcher from '@utils/fetcher';
 import { Container, Header } from '@pages/DirectMessage/styels';
@@ -9,19 +10,23 @@ import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { IDM } from '@typings/db';
 import makeSection from '@utils/makeSection';
+import Scrollbars from 'react-custom-scrollbars-2';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams();
   const { data: myData } = useSWR(`/api/users`, fetcher);
   const { data: userData, isLoading } = useSWR(`/api/workspaces/${workspace}/users/${id}`, fetcher);
-  const { data: chatData, mutate: mutateChat } = useSWR(
-    `/api/workspaces/${workspace}/dms/${id}/chats?perPage=20&page=1`,
-    fetcher,
-  );
+  const {
+    data: chatData,
+    mutate: mutateChat,
+    setSize,
+  } = useSWRInfinite((size) => `/api/workspaces/${workspace}/dms/${id}/chats?perPage=20&page=${size + 1}`, fetcher);
+  const isEmpty = chatData?.[0]?.length === 0;
+  const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < 20) || false;
 
   const [chat, onChangeChat, setChat] = useInput('');
+  const scrollbarRef = useRef<Scrollbars>(null);
 
   const onSubmitForm = useCallback(
     (e: FormEvent) => {
@@ -32,6 +37,7 @@ const DirectMessage = () => {
         .then(() => {
           mutateChat();
           setChat('');
+          scrollbarRef.current?.scrollToBottom();
         })
         .catch((err) => {
           toast.error(err.response.data);
@@ -40,10 +46,17 @@ const DirectMessage = () => {
     [chat, id, mutateChat, setChat, workspace],
   );
 
+  // 로딩 시 스크롤바 제일 아래로
+  useEffect(() => {
+    if (!isEmpty) {
+      scrollbarRef.current?.scrollToBottom();
+    }
+  }, [chatData]);
+
   // if (!userData || !myData) return null;
   if (isLoading) return <div>로딩중</div>;
 
-  const chatSections = makeSection(chatData ? [...chatData].reverse() : []);
+  const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
 
   return (
     <Container>
@@ -51,7 +64,13 @@ const DirectMessage = () => {
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
-      <ChatList chatSections={chatSections} />
+      <ChatList
+        chatSections={chatSections}
+        ref={scrollbarRef}
+        setSize={setSize}
+        isEmpty={isEmpty}
+        isReachingEnd={isReachingEnd}
+      />
       <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
     </Container>
   );

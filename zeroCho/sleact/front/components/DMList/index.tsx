@@ -10,7 +10,7 @@ import useSocket from '@hooks/useSocket';
 const DMList = () => {
   const { workspace } = useParams();
   const { data: userData } = useSWR<IUser>('/api/users', fetcher);
-  const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
+  const { data: memberData } = useSWR<IUser[]>(`/api/workspaces/${workspace}/members`, fetcher);
 
   const [socket] = useSocket(workspace);
 
