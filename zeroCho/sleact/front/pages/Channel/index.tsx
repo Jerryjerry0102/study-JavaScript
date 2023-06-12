@@ -36,13 +36,7 @@ const Channel = () => {
   return (
     <Container>
       <Header>채널!</Header>
-      <ChatList
-        chatSections={chatSections}
-        ref={scrollbarRef}
-        setSize={setSize}
-        isEmpty={isEmpty}
-        isReachingEnd={isReachingEnd}
-      />
+      <ChatList ref={scrollbarRef} chatSections={chatSections} setSize={setSize} isReachingEnd={isReachingEnd} />
       <ChatBox chat={chat} onChangeChat={onChangeChat} onSubmitForm={onSubmitForm} />
     </Container>
   );
