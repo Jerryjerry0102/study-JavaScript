@@ -1,4 +1,6 @@
-export default function App() {
+import SearchInput from "./components/SearchInput.js";
+
+export default function App({ $target }) {
   this.state = {
     fetchedLanguages: [],
     selectedLanguages: [],
@@ -7,4 +9,6 @@ export default function App() {
   this.setState = (nextState) => {
     // TODO
   };
+
+  new SearchInput({ $target, initialState: "" });
 }
