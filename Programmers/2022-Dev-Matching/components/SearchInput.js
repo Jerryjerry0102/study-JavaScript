@@ -1,10 +1,14 @@
-export default function SearchInput({ $target, initialState }) {
+export default function SearchInput({ $target, initialState, onChange }) {
   this.state = {
     value: initialState,
   };
 
   this.$element = document.createElement("div");
   this.$element.className = "SearchInput";
+  // 이벤트 핸들러 구현
+  this.$element.addEventListener("keyup", (e) => {
+    onChange(e.target.value);
+  });
 
   $target.appendChild(this.$element);
 
