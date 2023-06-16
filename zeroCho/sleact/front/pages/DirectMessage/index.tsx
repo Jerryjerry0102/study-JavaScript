@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import makeSection from '@utils/makeSection';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { IDM } from '@typings/db';
+import useSocket from '@hooks/useSocket';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams();
@@ -29,13 +30,14 @@ const DirectMessage = () => {
   const [chat, onChangeChat, setChat] = useInput('');
   const scrollbarRef = useRef<Scrollbars>(null);
 
+  const [socket, disconnect] = useSocket(workspace);
+
   const onSubmitForm = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
       if (!chat || !chat.trim()) return;
       if (!isEmpty) {
         const savedChat = chat;
-        console.log(chatData?.[0]);
         mutateChat(
           (prev) => {
             prev?.[0].unshift({
@@ -59,6 +61,7 @@ const DirectMessage = () => {
         .post(`/api/workspaces/${workspace}/dms/${id}/chats`, { content: chat })
         .then(() => {
           mutateChat();
+          scrollbarRef.current?.scrollToBottom();
         })
         .catch((err) => {
           toast.error(err.response.data);
@@ -67,12 +70,46 @@ const DirectMessage = () => {
     [chat, chatData, id, myData, userData, workspace],
   );
 
+  const onMessage = useCallback(
+    (data: IDM) => {
+      // id는 상대방 아이디
+      if (data.SenderId === Number(id) && myData.id !== Number(id)) {
+        mutateChat(
+          (prev) => {
+            prev?.[0].unshift(data);
+            return prev;
+          },
+          { revalidate: true },
+        ).then(() => {
+          if (scrollbarRef.current) {
+            if (
+              scrollbarRef.current.getScrollHeight() <
+              scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150
+            ) {
+              console.log('scrollToBottom!', scrollbarRef.current?.getValues());
+              scrollbarRef.current?.scrollToBottom();
+            }
+          }
+        });
+      }
+    },
+    [id, mutateChat, myData.id],
+  );
+
+  useEffect(() => {
+    socket?.on('dm', onMessage);
+    return () => {
+      socket?.off('dm', onMessage);
+    };
+  }, [socket, onMessage]);
+
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
-    if (!isEmpty) {
+    setTimeout(() => {
+      console.log('채팅방 바뀔 때 한 번만');
       scrollbarRef.current?.scrollToBottom();
-    }
-  }, [chatData]);
+    }, 50);
+  }, [id]);
 
   // if (!userData || !myData) return null;
   if (isLoading) return <div>로딩중</div>;

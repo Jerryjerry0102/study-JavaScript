@@ -1,10 +1,13 @@
 import Modal from '@components/Modal';
 import useInput from '@hooks/useInput';
 import { Button, Input, Label } from '@pages/SignUp/styles';
+import { IUser } from '@typings/db';
+import fetcher from '@utils/fetcher';
 import axios from 'axios';
 import React, { Dispatch, FC, FormEvent, MouseEventHandler, SetStateAction, useCallback } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
 
 interface Props {
   show: boolean;
@@ -14,6 +17,8 @@ interface Props {
 
 const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShow }) => {
   const { workspace, channel } = useParams();
+
+  const { mutate } = useSWR<IUser[]>(`/api/workspaces/${workspace}/channels/${channel}/members`, fetcher);
 
   const [newMember, onChangeNewMember, setNewMember] = useInput('');
 
@@ -27,10 +32,11 @@ const InviteChannelModal: FC<Props> = ({ show, onCloseModal, setShow }) => {
           toast.success(`${newMember} 초대에 성공했습니다`);
           setShow(false);
           setNewMember('');
+          mutate();
         })
         .catch((err) => toast.error(err.response.data));
     },
-    [channel, newMember, setNewMember, setShow, workspace],
+    [channel, mutate, newMember, setNewMember, setShow, workspace],
   );
 
   return (
