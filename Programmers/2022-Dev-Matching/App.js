@@ -1,5 +1,6 @@
 import fetchLanguages from "./api.js";
 import SearchInput from "./components/SearchInput.js";
+import SelectedLanguage from "./components/SelectedLanguage.js";
 import Suggestion from "./components/Suggestion.js";
 
 export default function App({ $target }) {
@@ -17,7 +18,12 @@ export default function App({ $target }) {
       selectedIndex: 0,
       languages: this.state.fetchedLanguages,
     });
+    selectedLanguage.setState({
+      selectedLanguages: this.state.selectedLanguages,
+    });
   };
+
+  const selectedLanguage = new SelectedLanguage({ $target, initialState: [] });
 
   new SearchInput({
     $target,
@@ -36,7 +42,7 @@ export default function App({ $target }) {
     $target,
     initialState: { selectedIndex: 0, languages: [] },
     onSelect: (language) => {
-      alert(language);
+      // alert(language);
 
       // 이미 선택된 언어의 경우, 맨 뒤로 보내는 처리
       const nextSelectedLanguages = [...this.state.selectedLanguages];
