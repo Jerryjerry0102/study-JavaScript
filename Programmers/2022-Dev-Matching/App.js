@@ -37,6 +37,16 @@ export default function App({ $target }) {
     initialState: { selectedIndex: 0, languages: [] },
     onSelect: (language) => {
       alert(language);
+
+      // 이미 선택된 언어의 경우, 맨 뒤로 보내는 처리
+      const nextSelectedLanguages = [...this.state.selectedLanguages];
+      const index = nextSelectedLanguages.findIndex(
+        (selectedLanguage) => selectedLanguage === language
+      );
+      if (index > -1) nextSelectedLanguages.splice(index, 1);
+      nextSelectedLanguages.push(language);
+
+      this.setState({ selectedLanguages: nextSelectedLanguages });
     },
   });
 }
