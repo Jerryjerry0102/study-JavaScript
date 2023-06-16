@@ -3,11 +3,17 @@ export default function SearchInput({ $target, initialState, onChange }) {
     value: initialState,
   };
 
-  this.$element = document.createElement("div");
+  this.$element = document.createElement("form");
   this.$element.className = "SearchInput";
   // 이벤트 핸들러 구현
   this.$element.addEventListener("keyup", (e) => {
-    onChange(e.target.value);
+    const actionIgnoreKeys = [
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+    ];
+    if (!actionIgnoreKeys.includes(e.key)) onChange(e.target.value);
   });
 
   $target.appendChild(this.$element);

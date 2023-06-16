@@ -1,5 +1,6 @@
 import fetchLanguages from "./api.js";
 import SearchInput from "./components/SearchInput.js";
+import Suggestion from "./components/Suggestion.js";
 
 export default function App({ $target }) {
   this.state = {
@@ -8,15 +9,31 @@ export default function App({ $target }) {
   };
 
   this.setState = (nextState) => {
-    // TODO
+    this.state = {
+      ...this.state,
+      ...nextState,
+    };
+    suggestion.setState({
+      selectedIndex: 0,
+      languages: this.state.fetchedLanguages,
+    });
   };
 
   new SearchInput({
     $target,
     initialState: "",
     onChange: async (keyword) => {
-      const fetchedLanguages = await fetchLanguages(keyword);
-      console.log(fetchedLanguages);
+      if (keyword.length > 0) {
+        const fetchedLanguages = await fetchLanguages(keyword);
+        this.setState({ fetchedLanguages });
+      } else {
+        this.setState({ fetchedLanguages: [] });
+      }
     },
+  });
+
+  const suggestion = new Suggestion({
+    $target,
+    initialState: { selectedIndex: 0, languages: [] },
   });
 }
