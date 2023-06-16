@@ -1,4 +1,4 @@
-export default function Suggestion({ $target, initialState }) {
+export default function Suggestion({ $target, initialState, onSelect }) {
   this.state = { selectedIndex: 0, languages: initialState };
   this.setState = (nextState) => {
     this.state = {
@@ -10,6 +10,17 @@ export default function Suggestion({ $target, initialState }) {
 
   this.$element = document.createElement("div");
   this.$element.className = "Suggestion";
+  this.$element.addEventListener("click", (e) => {
+    const $tag = e.target;
+    if ($tag.tagName === "LI") {
+      const { index } = $tag.dataset;
+      try {
+        onSelect(this.state.languages[+index]);
+      } catch {
+        alert("선택할 수 없습니다!");
+      }
+    }
+  });
 
   $target.appendChild(this.$element);
 
@@ -23,7 +34,7 @@ export default function Suggestion({ $target, initialState }) {
           (language, index) =>
             `<li class="${
               index === selectedIndex ? "Suggestion__item--selected" : ""
-            }">${language}</li>`
+            }" data-index="${index}">${language}</li>`
         )
         .join("")}
     </ul>`;
@@ -48,6 +59,8 @@ export default function Suggestion({ $target, initialState }) {
           nextIndex = selectedIndex === lastIndex ? 0 : nextIndex + 1;
         }
         this.setState({ selectedIndex: nextIndex });
+      } else if (e.key === "Enter") {
+        onSelect(languages[selectedIndex]);
       }
     }
   });

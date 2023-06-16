@@ -8,12 +8,16 @@ export default function SearchInput({ $target, initialState, onChange }) {
   // 이벤트 핸들러 구현
   this.$element.addEventListener("keyup", (e) => {
     const actionIgnoreKeys = [
+      "Enter",
       "ArrowUp",
       "ArrowDown",
       "ArrowLeft",
       "ArrowRight",
     ];
     if (!actionIgnoreKeys.includes(e.key)) onChange(e.target.value);
+  });
+  this.$element.addEventListener("submit", (e) => {
+    e.preventDefault();
   });
 
   $target.appendChild(this.$element);
