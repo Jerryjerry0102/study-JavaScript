@@ -32,7 +32,8 @@
     "regexify-string": "^1.0.19",
     "socket.io-client": "^4.6.1",
     "swr": "^2.1.5",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "webpack-bundle-analyzer": "^4.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
@@ -47,6 +48,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/socket.io-client": "^3.0.0",
     "@types/webpack": "^5.28.0",
+    "@types/webpack-bundle-analyzer": "^4.6.0",
     "@types/webpack-dev-server": "^4.0.3",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.2.0",
