@@ -1,11 +1,13 @@
 import { fetchNodes } from "./api.js";
 import Breadcrumb from "./components/Breadcrumb.js";
+import ImageViewer from "./components/ImageViewer.js";
 import Nodes from "./components/Nodes.js";
 
 export default function App($app) {
   this.state = {
     nodes: [],
     depth: [],
+    filePath: null,
   };
   this.setState = (nextState) => {
     this.state = {
@@ -17,18 +19,11 @@ export default function App($app) {
       nodes: this.state.nodes,
       depth: this.state.depth,
     });
+    imageViewer.setState(this.state.filePath);
   };
 
-  this.init = async () => {
-    this.setState({
-      nodes: await fetchNodes(),
-      depth: [],
-    });
-  };
+  const breadcrumb = new Breadcrumb({ $app, initialState: this.state.depth });
 
-  this.render = () => {};
-
-  const breadcrumb = new Breadcrumb({ $app, initialState: "" });
   const nodes = new Nodes({
     $app,
     initialState: { nodes: this.state.nodes, depth: this.state.depth },
@@ -47,16 +42,33 @@ export default function App($app) {
             depth: nextDepth,
           });
         }
-      }
-      if (node.type === "DIRECTORY") {
+      } else if (node.type === "DIRECTORY") {
         this.setState({
           nodes: await fetchNodes(node.id),
           depth: [...this.state.depth, node],
         });
       } else if (node.type === "FILE") {
+        this.setState({
+          filePath: node.filePath,
+        });
       }
     },
   });
 
-  this.init();
+  const imageViewer = new ImageViewer({
+    $app,
+    initialState: this.state.filePath,
+    onClose: () => {
+      this.setState({ filePath: null });
+    },
+  });
+
+  const init = async () => {
+    this.setState({
+      nodes: await fetchNodes(),
+      depth: [],
+    });
+  };
+
+  init();
 }
