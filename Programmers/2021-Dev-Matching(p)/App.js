@@ -22,7 +22,26 @@ export default function App($app) {
     imageViewer.setState(this.state.filePath);
   };
 
-  const breadcrumb = new Breadcrumb({ $app, initialState: this.state.depth });
+  const breadcrumb = new Breadcrumb({
+    $app,
+    initialState: this.state.depth,
+    onClickDiv: async (index) => {
+      if (isNaN(index)) {
+        this.setState({
+          nodes: await fetchNodes(),
+          depth: [],
+        });
+      } else if (index === this.state.depth.length - 1) {
+        return;
+      } else {
+        const nextDepth = this.state.depth.slice(0, index + 1);
+        this.setState({
+          nodes: await fetchNodes(nextDepth[nextDepth.length - 1].id),
+          depth: nextDepth,
+        });
+      }
+    },
+  });
 
   const nodes = new Nodes({
     $app,
@@ -34,7 +53,7 @@ export default function App($app) {
         if (nextDepth.length === 0) {
           this.setState({
             nodes: await fetchNodes(),
-            depth: nextDepth,
+            depth: [],
           });
         } else {
           this.setState({
@@ -48,9 +67,7 @@ export default function App($app) {
           depth: [...this.state.depth, node],
         });
       } else if (node.type === "FILE") {
-        this.setState({
-          filePath: node.filePath,
-        });
+        this.setState({ filePath: node.filePath });
       }
     },
   });
@@ -67,6 +84,7 @@ export default function App($app) {
     this.setState({
       nodes: await fetchNodes(),
       depth: [],
+      filePath: null,
     });
   };
 

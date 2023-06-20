@@ -1,4 +1,4 @@
-export default function Breadcrumb({ $app, initialState }) {
+export default function Breadcrumb({ $app, initialState, onClickDiv }) {
   this.state = initialState;
   this.setState = (nextState) => {
     this.state = nextState;
@@ -7,6 +7,12 @@ export default function Breadcrumb({ $app, initialState }) {
 
   this.$element = document.createElement("nav");
   this.$element.className = "Breadcrumb";
+  this.$element.addEventListener("click", (e) => {
+    if (e.target.tagName === "DIV") {
+      const { index } = e.target.dataset;
+      onClickDiv(+index);
+    }
+  });
   $app.append(this.$element);
 
   this.render = () => {
@@ -14,7 +20,7 @@ export default function Breadcrumb({ $app, initialState }) {
     if (this.state.length === 0) this.$element.innerHTML = rootHTML;
     else {
       const directoryHTML = this.state
-        .map((node) => `<div>${node.name}</div>`)
+        .map((node, index) => `<div data-index=${index}>${node.name}</div>`)
         .join("");
       this.$element.innerHTML = rootHTML + directoryHTML;
     }
