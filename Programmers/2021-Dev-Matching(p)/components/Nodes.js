@@ -1,4 +1,4 @@
-export default function Nodes({ $app, initialState }) {
+export default function Nodes({ $app, initialState, onClickNode }) {
   this.state = initialState;
   this.setState = (nextState) => {
     this.state = {
@@ -10,6 +10,13 @@ export default function Nodes({ $app, initialState }) {
 
   this.$element = document.createElement("div");
   this.$element.className = "Nodes";
+  this.$element.addEventListener("click", (e) => {
+    const $node = e.target.closest(".Node");
+    if (!$node) return;
+    const { nodeId } = $node.dataset;
+    const node = this.state.nodes.find((node) => node.id === nodeId);
+    onClickNode(node);
+  });
   $app.append(this.$element);
 
   this.render = () => {
@@ -17,13 +24,13 @@ export default function Nodes({ $app, initialState }) {
       .map((node) => {
         if (node.type === "DIRECTORY") {
           return `
-        <div class="Node">
+        <div class="Node" data-node-id=${node.id}>
           <img src="./assets/directory.png" />
           <div>${node.name}</div>
         </div>`;
         } else if (node.type === "FILE") {
           return `
-        <div class="Node">
+        <div class="Node" data-node-id=${node.id}>
           <img src="./assets/file.png" />
           <div>${node.name}</div>
         </div>`;

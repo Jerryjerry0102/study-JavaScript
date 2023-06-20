@@ -7,13 +7,17 @@ export default function Breadcrumb({ $app, initialState }) {
 
   this.$element = document.createElement("nav");
   this.$element.className = "Breadcrumb";
-  this.$element.innerHTML = `<div>root</div>`;
   $app.append(this.$element);
 
   this.render = () => {
-    if (this.state.length === 0) return;
-    const html = this.state.map((node) => `<div>${node.name}</div>`).join("");
-    this.$element.insertAdjacentHTML("afterbegin", html);
+    const rootHTML = "<div>root</div>";
+    if (this.state.length === 0) this.$element.innerHTML = rootHTML;
+    else {
+      const directoryHTML = this.state
+        .map((node) => `<div>${node.name}</div>`)
+        .join("");
+      this.$element.innerHTML = rootHTML + directoryHTML;
+    }
   };
   this.render();
 

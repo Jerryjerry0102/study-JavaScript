@@ -22,6 +22,7 @@ export default function App($app) {
   this.init = async () => {
     this.setState({
       nodes: await fetchNodes(),
+      depth: [],
     });
   };
 
@@ -31,6 +32,17 @@ export default function App($app) {
   const nodes = new Nodes({
     $app,
     initialState: { nodes: this.state.nodes, depth: this.state.depth },
+    onClickNode: async (node) => {
+      if (!node) {
+      }
+      if (node.type === "DIRECTORY") {
+        this.setState({
+          nodes: await fetchNodes(node.id),
+          depth: [...this.state.depth, node],
+        });
+      } else if (node.type === "FILE") {
+      }
+    },
   });
 
   this.init();
