@@ -25,7 +25,6 @@ export default function Breadcrumb({ $app, initialState, onClickDiv }) {
       this.$element.innerHTML = rootHTML + directoryHTML;
     }
   };
-  this.render();
 
   /**
    * <nav class="Breadcrumb">

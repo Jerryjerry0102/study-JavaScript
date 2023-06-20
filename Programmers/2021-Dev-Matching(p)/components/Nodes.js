@@ -41,7 +41,6 @@ export default function Nodes({ $app, initialState, onClickNode }) {
     this.$element.innerHTML =
       this.state.depth.length === 0 ? basicHTML : prevHTML + basicHTML;
   };
-  this.render();
 
   /**
    * <div class="Nodes">

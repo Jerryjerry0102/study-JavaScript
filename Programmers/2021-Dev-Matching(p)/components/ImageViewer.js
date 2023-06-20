@@ -30,6 +30,7 @@ export default function ImageViewer({ $app, initialState, onClose }) {
       this.$element.style.display = "none";
     }
   };
+
   /**
   * <div class="Modal ImageViewer">
       <div class="content">
