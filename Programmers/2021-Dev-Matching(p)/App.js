@@ -34,6 +34,19 @@ export default function App($app) {
     initialState: { nodes: this.state.nodes, depth: this.state.depth },
     onClickNode: async (node) => {
       if (!node) {
+        const nextDepth = this.state.depth;
+        nextDepth.pop();
+        if (nextDepth.length === 0) {
+          this.setState({
+            nodes: await fetchNodes(),
+            depth: nextDepth,
+          });
+        } else {
+          this.setState({
+            nodes: await fetchNodes(nextDepth[nextDepth.length - 1].id),
+            depth: nextDepth,
+          });
+        }
       }
       if (node.type === "DIRECTORY") {
         this.setState({
