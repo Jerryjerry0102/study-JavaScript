@@ -4,6 +4,8 @@ import ImageViewer from "./components/ImageViewer.js";
 import Loading from "./components/Loading.js";
 import Nodes from "./components/Nodes.js";
 
+const cache = {};
+
 export default function App($app) {
   this.state = {
     nodes: [],
@@ -30,10 +32,9 @@ export default function App($app) {
     initialState: this.state.depth,
     onClickDiv: async (index) => {
       try {
-        this.setState({ isLoading: true });
         if (isNaN(index)) {
           this.setState({
-            nodes: await fetchNodes(),
+            nodes: cache.root,
             depth: [],
           });
         } else if (index === this.state.depth.length - 1) {
@@ -41,14 +42,12 @@ export default function App($app) {
         } else {
           const nextDepth = this.state.depth.slice(0, index + 1);
           this.setState({
-            nodes: await fetchNodes(nextDepth[nextDepth.length - 1].id),
+            nodes: cache[nextDepth[nextDepth.length - 1].id],
             depth: nextDepth,
           });
         }
       } catch (err) {
         throw new Error(err.message);
-      } finally {
-        this.setState({ isLoading: false });
       }
     },
   });
@@ -64,20 +63,29 @@ export default function App($app) {
           nextDepth.pop();
           if (nextDepth.length === 0) {
             this.setState({
-              nodes: await fetchNodes(),
+              nodes: cache.root,
               depth: [],
             });
           } else {
             this.setState({
-              nodes: await fetchNodes(nextDepth[nextDepth.length - 1].id),
+              nodes: cache[nextDepth[nextDepth.length - 1].id],
               depth: nextDepth,
             });
           }
         } else if (node.type === "DIRECTORY") {
-          this.setState({
-            nodes: await fetchNodes(node.id),
-            depth: [...this.state.depth, node],
-          });
+          if (cache[node.id]) {
+            this.setState({
+              nodes: cache[node.id],
+              depth: [...this.state.depth, node],
+            });
+          } else {
+            const nextNodes = await fetchNodes(node.id);
+            cache[node.id] = nextNodes;
+            this.setState({
+              nodes: nextNodes,
+              depth: [...this.state.depth, node],
+            });
+          }
         } else if (node.type === "FILE") {
           this.setState({ filePath: node.filePath });
         }
@@ -102,7 +110,9 @@ export default function App($app) {
   const init = async () => {
     try {
       this.setState({ isLoading: true });
-      this.setState({ nodes: await fetchNodes() });
+      const rootNodes = await fetchNodes();
+      this.setState({ nodes: rootNodes });
+      cache.root = rootNodes;
     } catch (err) {
       throw new Error(err.message);
     } finally {
