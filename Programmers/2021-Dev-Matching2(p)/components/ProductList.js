@@ -10,26 +10,19 @@ export default function ProductList({ $page, initialState }) {
   };
 
   this.render = () => {
-    this.$component.innerHTML = `
-      <li class="Product">
-        <img
-          src="https://grepp-cloudfront.s3.ap-northeast-2.amazonaws.com/programmers_imgs/assignment_image/cafe_coffee_cup.png"
-        />
-        <div class="Product__info">
-          <div>커피잔</div>
-          <div>10,000원~</div>
-        </div>
-      </li>
-      <li class="Product">
-        <img
-          src="https://grepp-cloudfront.s3.ap-northeast-2.amazonaws.com/programmers_imgs/assignment_image/cafe_coffee_cup.png"
-        />
-        <div class="Product__info">
-          <div>커피잔</div>
-          <div>10,000원~</div>
-        </div>
-      </li>
-    `;
+    this.$component.innerHTML = this.state
+      .map(
+        (product) => `
+          <li class="Product">
+            <img src= ${product.imageUrl} />
+            <div class="Product__info">
+              <div>${product.name}</div>
+              <div>${product.price.toLocaleString()}원~</div>
+            </div>
+          </li>
+        `
+      )
+      .join("");
   };
 }
 

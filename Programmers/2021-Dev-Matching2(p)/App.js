@@ -3,19 +3,16 @@ import ProductListPage from "./pages/ProductListPage.js";
 import CartPage from "./pages/CartPage.js";
 
 export default function App($app) {
-  const productListPage = new ProductListPage($app);
-  const productDetailPage = new ProductDetailPage($app);
-  const cartPage = new CartPage($app);
-
   this.checkRoute = () => {
     const { pathname } = window.location;
     if (pathname === "/") {
-      productListPage.render();
+      new ProductListPage($app).render();
     } else if (pathname.includes("/products")) {
       const productId = pathname.split("/")[2];
-      productDetailPage.setState(productId);
+      new ProductDetailPage({ $app, productId }).render();
+      // productDetailPage.setState(productId);
     } else if (pathname === "/cart") {
-      cartPage.render();
+      new CartPage($app).render();
     }
   };
 
