@@ -1,12 +1,44 @@
+import { routeChange } from "../utils/router.js";
+import { getItem, setItem } from "../utils/storage.js";
+
 export default function SelectedOptions({ $target, initialState }) {
   this.$temp = document.createElement("div");
-  // 상품 수량 변경할 수 있게 만들기
   this.$temp.addEventListener("change", (e) => {
     if (e.target.tagName === "INPUT") {
       try {
+        const nextQuantity = +e.target.value;
+        const nextSelectedOptions = [...this.state.selectedOptions];
+        const optionId = +e.target.dataset.optionId;
+        const option = this.state.product.productOptions.find(
+          (option) => option.id === optionId
+        );
+        const selectedOptionIndex = nextSelectedOptions.findIndex(
+          (option) => option.id === optionId
+        );
+        nextSelectedOptions[selectedOptionIndex].quantity =
+          option.stock >= nextQuantity ? nextQuantity : option.stock;
+
+        this.setState({ selectedOptions: nextSelectedOptions });
       } catch (err) {
         console.error(err.message);
       }
+    }
+  });
+  this.$temp.addEventListener("click", (e) => {
+    if (e.target.className === "OrderButton") {
+      const cartData = getItem("products_cart", []);
+      // 장바구니 데이터 만들기
+      setItem(
+        "products_cart",
+        cartData.concat(
+          this.state.selectedOptions.map((option) => ({
+            productId: this.state.product.id,
+            optionId: option.id,
+            quantity: option.quantity,
+          }))
+        )
+      );
+      routeChange("/cart");
     }
   });
   $target.append(this.$temp);
@@ -16,10 +48,10 @@ export default function SelectedOptions({ $target, initialState }) {
   this.getTotalPrice = () => {
     const { product, selectedOptions } = this.state;
 
-    return selectedOptions.reduce((acc, option) => {
-      console.log(product.price + option.price, option.quantity);
-      return acc + (product.price + option.price) * option.quantity;
-    }, 0);
+    return selectedOptions.reduce(
+      (acc, option) => acc + (product.price + option.price) * option.quantity,
+      0
+    );
   };
 
   this.setState = (nextState) => {
@@ -40,7 +72,7 @@ export default function SelectedOptions({ $target, initialState }) {
           (option) => `
         <li>
           ${product.name} ${option.name} ${option.price}
-          <div><input type="number" data-option-id=${option.id} value=${option.quantity} /></div>
+          <div><input type="number" min=1 data-option-id=${option.id} value=${option.quantity} /></div>
         </li>`
         )
         .join("")}
