@@ -1,4 +1,4 @@
-import { request } from "../api.js";
+import { request } from "../utils/api.js";
 import ProductList from "../components/ProductList.js";
 
 export default function ProductListPage($app) {

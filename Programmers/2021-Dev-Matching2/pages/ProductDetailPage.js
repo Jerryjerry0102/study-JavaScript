@@ -1,5 +1,5 @@
-import { request } from "../api.js";
 import ProductDetail from "../components/ProductDetail.js";
+import { request } from "../utils/api.js";
 
 export default function ProductDetailPage({ $app, productId }) {
   const $page = document.createElement("div");
