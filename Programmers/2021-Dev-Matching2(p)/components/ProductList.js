@@ -1,6 +1,12 @@
+import { changeRoute } from "../utils/router.js";
+
 export default function ProductList({ $page, initialState }) {
   this.$component = document.createElement("ul");
   this.$component.className = "ProductList";
+  this.$component.addEventListener("click", (e) => {
+    const { productId } = e.target.closest(".Product").dataset;
+    if (productId) changeRoute(`/products/${productId}`);
+  });
   $page.append(this.$component);
 
   this.state = initialState;
@@ -13,7 +19,7 @@ export default function ProductList({ $page, initialState }) {
     this.$component.innerHTML = this.state
       .map(
         (product) => `
-          <li class="Product">
+          <li class="Product" data-product-id=${product.id}>
             <img src= ${product.imageUrl} />
             <div class="Product__info">
               <div>${product.name}</div>

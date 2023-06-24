@@ -29,6 +29,5 @@ export default function ProductDetailPage({ $app, productId }) {
     if (!this.state) return;
     this.$h1.textContent = `${this.state.name} 상품 정보`;
     $app.append(this.$page);
-    productDetail.render();
   };
 }

@@ -25,14 +25,7 @@ export default function ProductDetail({ $page, initialState }) {
       $target: this.$component,
       initialState: this.state,
     });
-    // if (selectedOptions) return;
-    // selectedOptions = new SelectedOptions({
-    //   $target: this.$component,
-    //   initialState: this.state,
-    // });
   };
-
-  this.render();
 }
 
 /*
