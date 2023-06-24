@@ -1,3 +1,6 @@
+import { CART_STORAGE_KEY, getItem, setItem } from "../utils/storage.js";
+import { changeRoute } from "../utils/router.js";
+
 export default function SelectedOpticonsoleons({ $target, initialState }) {
   this.$element = document.createElement("div");
   this.$element.className = "ProductDetail__selectedOptions";
@@ -8,6 +11,16 @@ export default function SelectedOpticonsoleons({ $target, initialState }) {
       nextState.find((option) => option.id === +optionId).quantity =
         +e.target.value;
       this.setState(nextState);
+    }
+  });
+  this.$element.addEventListener("click", (e) => {
+    if (e.target.className === "OrderButton") {
+      const cartItems = getItem(CART_STORAGE_KEY);
+      const nextCartItems = cartItems
+        ? [...cartItems, ...this.state]
+        : this.state;
+      setItem(CART_STORAGE_KEY, nextCartItems);
+      changeRoute("/cart");
     }
   });
 
@@ -50,8 +63,6 @@ export default function SelectedOpticonsoleons({ $target, initialState }) {
       <div class="ProductDetail__totalPrice">${this.totalPrice().toLocaleString()}원</div>
       <button class="OrderButton">주문하기</button>`;
   };
-
-  this.render();
 }
 
 /*

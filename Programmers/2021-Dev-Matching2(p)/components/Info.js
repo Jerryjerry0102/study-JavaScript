@@ -18,6 +18,7 @@ export default function Info({ $target, initialState }) {
             productId: product.id,
             productName: product.name,
             productPrice: product.price,
+            productImageUrl: product.imageUrl,
             id: selectedOption.id,
             name: selectedOption.name,
             price: selectedOption.price,
