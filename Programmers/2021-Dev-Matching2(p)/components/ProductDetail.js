@@ -12,14 +12,13 @@ export default function ProductDetail({ $page, initialState }) {
     this.render();
 
     info.setState(this.state);
-    // selectedOptions.setState();
   };
 
   let info = null;
-  // let selectedOptions = null;
   this.render = () => {
     if (!this.state) return;
     this.$component.innerHTML = `<img src=${this.state.imageUrl} />`;
+
     if (info) return;
     info = new Info({
       $target: this.$component,
