@@ -75,17 +75,3 @@ export default function Info({ $target, initialState }) {
     initialState: this.state.selectedOptions,
   });
 }
-
-/*
-  <div class="ProductDetail__info">
-    <h2>커피잔</h2>
-    <div class="ProductDetail__price">10,000원~</div>
-    <select>
-      <option>선택하세요.</option>
-      <option>100개 번들</option>
-      <option>1000개 번들(+5,000)</option>
-    </select>
-    <div class="ProductDetail__selectedOptions">
-    </div>
-  </div>  
-*/
