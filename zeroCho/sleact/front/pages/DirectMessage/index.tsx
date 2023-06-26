@@ -1,10 +1,10 @@
-import React, { FormEvent, useCallback, useEffect, useRef } from 'react';
+import React, { DragEvent, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import gravatar from 'gravatar';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { useParams } from 'react-router';
 import fetcher from '@utils/fetcher';
-import { Container, Header } from '@pages/DirectMessage/styels';
+import { Container, DragOver, Header } from '@pages/DirectMessage/styels';
 import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
@@ -31,6 +31,8 @@ const DirectMessage = () => {
   const scrollbarRef = useRef<Scrollbars>(null);
 
   const [socket, disconnect] = useSocket(workspace);
+
+  const [dragOver, setDragOver] = useState(false);
 
   const onSubmitForm = useCallback(
     (e: FormEvent) => {
@@ -111,19 +113,61 @@ const DirectMessage = () => {
     }, 50);
   }, [id]);
 
+  const onDrop = useCallback(
+    (e: DragEvent) => {
+      console.log('File(s) dropped');
+
+      // Prevent default behavior (Prevent file from being opened)
+      e.preventDefault();
+
+      const formData = new FormData();
+
+      if (e.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        [...(e.dataTransfer.items as unknown as DataTransferItem[])].forEach((item, i) => {
+          // If dropped items aren't files, reject them
+          if (item.kind === 'file') {
+            const file = item.getAsFile();
+            if (!file) return;
+            console.log(`… item[${i}].name = ${file.name}`);
+            formData.append('image', file);
+          }
+        });
+      } else {
+        // Use DataTransfer interface to access the file(s)
+        [...(e.dataTransfer.files as unknown as File[])].forEach((file, i) => {
+          console.log(`… file[${i}].name = ${file.name}`);
+          formData.append('image', file);
+        });
+      }
+      axios.post(`/api/workspaces/${workspace}/dms/${id}/images`, formData).then(() => {
+        setDragOver(false);
+        mutateChat();
+      });
+    },
+    [id, workspace],
+  );
+
+  const onDragOver = useCallback((e: DragEvent) => {
+    console.log('File(s) in drop zone');
+    e.preventDefault();
+    setDragOver(true);
+  }, []);
+
   // if (!userData || !myData) return null;
   if (isLoading) return <div>로딩중</div>;
 
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
 
   return (
-    <Container>
+    <Container onDrop={onDrop} onDragOver={onDragOver}>
       <Header>
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
       <ChatList ref={scrollbarRef} chatSections={chatSections} setSize={setSize} isReachingEnd={isReachingEnd} />
       <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
+      {dragOver && <DragOver>업로드</DragOver>}
     </Container>
   );
 };
