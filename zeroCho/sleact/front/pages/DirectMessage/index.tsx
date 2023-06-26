@@ -55,6 +55,7 @@ const DirectMessage = () => {
           },
           { revalidate: false },
         ).then(() => {
+          localStorage.setItem(`${workspace}${id}`, new Date().getTime().toString());
           setChat('');
           scrollbarRef.current?.scrollToBottom();
         });
@@ -108,10 +109,13 @@ const DirectMessage = () => {
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
     setTimeout(() => {
-      console.log('채팅방 바뀔 때 한 번만');
       scrollbarRef.current?.scrollToBottom();
     }, 50);
   }, [id]);
+
+  useEffect(() => {
+    localStorage.setItem(`${workspace}${id}`, new Date().getTime().toString());
+  }, [workspace, id]);
 
   const onDrop = useCallback(
     (e: DragEvent) => {
@@ -141,6 +145,7 @@ const DirectMessage = () => {
         });
       }
       axios.post(`/api/workspaces/${workspace}/dms/${id}/images`, formData).then(() => {
+        localStorage.setItem(`${workspace}${id}`, new Date().getTime().toString());
         setDragOver(false);
         mutateChat();
       });

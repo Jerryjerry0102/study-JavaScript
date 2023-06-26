@@ -70,6 +70,7 @@ const Channel = () => {
       axios
         .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, { content: chat })
         .then(() => {
+          localStorage.setItem(`${workspace}${channel}`, new Date().getTime().toString());
           mutateChat();
           scrollbarRef.current?.scrollToBottom();
         })
@@ -99,7 +100,6 @@ const Channel = () => {
               scrollbarRef.current.getScrollHeight() <
               scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150
             ) {
-              console.log('scrollToBottom!', scrollbarRef.current?.getValues());
               scrollbarRef.current?.scrollToBottom();
             }
           }
@@ -119,10 +119,13 @@ const Channel = () => {
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
     setTimeout(() => {
-      console.log('채팅방 바뀔 때 한 번만');
       scrollbarRef.current?.scrollToBottom();
     }, 50);
   }, [channel]);
+
+  useEffect(() => {
+    localStorage.setItem(`${workspace}${channel}`, new Date().getTime().toString());
+  }, [workspace, channel]);
 
   const onClickInviteChannel = useCallback(() => {
     setShowInviteChannelModal((prev) => !prev);
@@ -160,6 +163,7 @@ const Channel = () => {
         });
       }
       axios.post(`/api/workspaces/${workspace}/channels/${channel}/images`, formData).then(() => {
+        localStorage.setItem(`${workspace}${channel}`, new Date().getTime().toString());
         setDragOver(false);
         mutateChat();
       });
