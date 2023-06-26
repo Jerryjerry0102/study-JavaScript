@@ -1,6 +1,5 @@
-import loadable from '@loadable/component';
-import Channel from '@pages/Channel';
 import React from 'react';
+import loadable from '@loadable/component';
 import { Navigate, Route, Routes } from 'react-router';
 
 const LogIn = loadable(() => import('@pages/LogIn'));
