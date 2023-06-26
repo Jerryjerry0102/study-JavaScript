@@ -8,7 +8,6 @@ const sockets: { [key: string]: Socket } = {};
 const useSocket = (workspace?: string): [Socket | undefined, () => void] => {
   const disconnect = useCallback(() => {
     if (workspace && sockets[workspace]) {
-      console.log('소켓 연결 끊음');
       sockets[workspace].disconnect();
       delete sockets[workspace];
     }
