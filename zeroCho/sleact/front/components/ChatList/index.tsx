@@ -14,7 +14,7 @@ const ChatList = forwardRef<Scrollbars, Props>(({ chatSections, setSize, isReach
   const onScroll = useCallback(
     (values: { scrollTop: number; scrollHeight: number }) => {
       if (values.scrollTop === 0 && !isReachingEnd) {
-        console.log('가장 위');
+        // console.log('가장 위');
         // 데이터 추가 로딩
         setSize((prev) => prev + 1).then(() => {
           // 스크롤 위치 유지

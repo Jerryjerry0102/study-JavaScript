@@ -118,7 +118,7 @@ const DirectMessage = () => {
 
   const onDrop = useCallback(
     (e: DragEvent) => {
-      console.log('File(s) dropped');
+      // console.log('File(s) dropped');
 
       // Prevent default behavior (Prevent file from being opened)
       e.preventDefault();
@@ -132,14 +132,14 @@ const DirectMessage = () => {
           if (item.kind === 'file') {
             const file = item.getAsFile();
             if (!file) return;
-            console.log(`… item[${i}].name = ${file.name}`);
+            // console.log(`… item[${i}].name = ${file.name}`);
             formData.append('image', file);
           }
         });
       } else {
         // Use DataTransfer interface to access the file(s)
         [...(e.dataTransfer.files as unknown as File[])].forEach((file, i) => {
-          console.log(`… file[${i}].name = ${file.name}`);
+          // console.log(`… file[${i}].name = ${file.name}`);
           formData.append('image', file);
         });
       }
@@ -153,7 +153,7 @@ const DirectMessage = () => {
   );
 
   const onDragOver = useCallback((e: DragEvent) => {
-    console.log('File(s) in drop zone');
+    // console.log('File(s) in drop zone');
     e.preventDefault();
     setDragOver(true);
   }, []);
