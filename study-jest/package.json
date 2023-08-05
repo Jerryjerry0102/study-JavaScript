@@ -1,0 +1,14 @@
+{
+  "name": "study-jest",
+  "version": "1.0.0",
+  "description": "jest 공부하기",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "jerry",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.6.2"
+  }
+}
