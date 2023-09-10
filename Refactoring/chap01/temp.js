@@ -2,11 +2,12 @@ import invoices from "./invoices.json" assert { type: "json" };
 import plays from "./plays.json" assert { type: "json" };
 
 function statement(invoice, plays) {
-  return renderPlainText(invoice, plays); //-> 본문 전체를 별도 함수로 추출
+  const statementData = {};
+  return renderPlainText(statementData, invoice, plays); //-> 중간 데이터 구조를 인수로 전달
 }
 
-//-> 본문 전체를 별도 함수로 추출
-function renderPlainText(invoice, plays) {
+function renderPlainText(data, invoice, plays) {
+  //-> 중간 데이터 구조를 인수로 전달
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
   for (let perf of invoice.performances) {
