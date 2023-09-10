@@ -10,9 +10,8 @@ function statement(invoice, plays) {
       perf.audience
     }석)\n`;
   }
-  let totalAmount = appleSauce(); //-> 함수 추출 & 임시 이름 부여
 
-  result += `총액: ${usd(totalAmount)}\n`;
+  result += `총액: ${usd(totalAmount())}\n`; //-> 변수 인라인 후 함수 이름 바꾸기
   result += `적립 포인트: ${totalVolumeCredits()}점\n`;
   return result;
 
@@ -68,7 +67,8 @@ function statement(invoice, plays) {
     return volumeCredits;
   }
 
-  function appleSauce() {
+  //-> 함수 이름 바꾸기
+  function totalAmount() {
     let totalAmount = 0;
     for (let perf of invoice.performances) {
       totalAmount += amountFor(perf);
