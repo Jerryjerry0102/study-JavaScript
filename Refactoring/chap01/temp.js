@@ -12,7 +12,7 @@ function statement(invoice, plays) {
   }).format;
 
   for (let perf of invoice.performances) {
-    let thisAmount = amountFor(perf, playFor(perf));
+    let thisAmount = amountFor(perf); // 필요 없어진 매개변수 제거
 
     // 포인트를 적립한다.
     volumeCredits += Math.max(perf.audience - 30, 0);
@@ -31,11 +31,11 @@ function statement(invoice, plays) {
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
 
-  function amountFor(aPerformance, play) {
+  function amountFor(aPerformance) {
+    // 필요 없어진 매개변수 제거
     let result = 0;
 
     switch (playFor(aPerformance).type) {
-      // play를 playFor() 호출로 변경
       case "tragedy":
         result = 40000;
         if (aPerformance.audience > 30) {
@@ -50,7 +50,7 @@ function statement(invoice, plays) {
         result += 300 * aPerformance.audience;
         break;
       default:
-        throw new Error(`알 수 없는 장르": ${playFor(aPerformance).type}`); // play를 playFor() 호출로 변경
+        throw new Error(`알 수 없는 장르": ${playFor(aPerformance).type}`);
     }
 
     return result;
