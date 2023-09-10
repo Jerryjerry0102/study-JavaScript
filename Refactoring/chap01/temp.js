@@ -9,12 +9,12 @@ function statement(invoice, plays) {
     volumeCredits += volumeCreditsFor(perf);
 
     // 청구 내역을 출력한다.
-    result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${
+    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     }석)\n`;
     totalAmount += amountFor(perf);
   }
-  result += `총액: ${format(totalAmount / 100)}\n`; // 임시 변수였던 format을 함수 호출로 대체
+  result += `총액: ${usd(totalAmount)}\n`; // 함수 이름 변경
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
 
@@ -54,12 +54,13 @@ function statement(invoice, plays) {
     return result;
   }
 
-  function format(aNumber) {
+  // 함수 이름 변경
+  function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 2,
-    }).format(aNumber);
+    }).format(aNumber / 100); // 단위 변환 로직도 이 함수 안으로 이동
   }
 }
 
