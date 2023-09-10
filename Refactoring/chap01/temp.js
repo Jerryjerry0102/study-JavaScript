@@ -12,7 +12,7 @@ function statement(invoice, plays) {
   }).format;
 
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+    const play = playFor(perf); // 우변을 함수로 출력
     let thisAmount = amountFor(perf, play);
 
     // 포인트를 적립한다.
@@ -32,7 +32,6 @@ function statement(invoice, plays) {
   return result;
 
   function amountFor(aPerformance, play) {
-    // 명확한 이름으로 변경
     let result = 0;
 
     switch (play.type) {
@@ -54,6 +53,10 @@ function statement(invoice, plays) {
     }
 
     return result;
+  }
+
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
   }
 }
 
