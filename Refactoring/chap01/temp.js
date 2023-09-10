@@ -12,11 +12,7 @@ function statement(invoice, plays) {
     }석)\n`;
     totalAmount += amountFor(perf);
   }
-  let volumeCredits = 0; //-> 변수 선언(초기화)을 반복문 앞으로 이동
-  for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-  }
-
+  let volumeCredits = totalVolumeCredits(); //-> 값 계산 로직을 함수로 추출
   result += `총액: ${usd(totalAmount)}\n`;
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
@@ -63,6 +59,14 @@ function statement(invoice, plays) {
       currency: "USD",
       minimumFractionDigits: 2,
     }).format(aNumber / 100);
+  }
+
+  function totalVolumeCredits() {
+    let volumeCredits = 0;
+    for (let perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
   }
 }
 
