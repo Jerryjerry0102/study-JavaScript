@@ -12,8 +12,6 @@ function statement(invoice, plays) {
   }).format;
 
   for (let perf of invoice.performances) {
-    let thisAmount = amountFor(perf); // 필요 없어진 매개변수 제거
-
     // 포인트를 적립한다.
     volumeCredits += Math.max(perf.audience - 30, 0);
     // 희극 관객 5명마다 추가 포인트를 제공한다.
@@ -21,10 +19,11 @@ function statement(invoice, plays) {
       volumeCredits += Math.floor(perf.audience / 5);
 
     // 청구 내역을 출력한다.
-    result += ` ${playFor(perf).name}: ${format(thisAmount / 100)} (${
+    result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${
+      // thisAmount 변수를 인라인
       perf.audience
     }석)\n`;
-    totalAmount += thisAmount;
+    totalAmount += amountFor(perf); // thisAmount 변수를 인라인
   }
 
   result += `총액: ${format(totalAmount / 100)}\n`;
@@ -32,7 +31,6 @@ function statement(invoice, plays) {
   return result;
 
   function amountFor(aPerformance) {
-    // 필요 없어진 매개변수 제거
     let result = 0;
 
     switch (playFor(aPerformance).type) {
