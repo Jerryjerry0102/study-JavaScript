@@ -5,16 +5,20 @@ function statement(invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
-  for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
 
+  for (let perf of invoice.performances) {
     // 청구 내역을 출력한다.
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     }석)\n`;
     totalAmount += amountFor(perf);
   }
-  result += `총액: ${usd(totalAmount)}\n`; // 함수 이름 변경
+  //-> 값 누적 로직을 별도 for문으로 분리
+  for (let perf of invoice.performances) {
+    volumeCredits += volumeCreditsFor(perf);
+  }
+
+  result += `총액: ${usd(totalAmount)}\n`;
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
 
@@ -54,13 +58,12 @@ function statement(invoice, plays) {
     return result;
   }
 
-  // 함수 이름 변경
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 2,
-    }).format(aNumber / 100); // 단위 변환 로직도 이 함수 안으로 이동
+    }).format(aNumber / 100);
   }
 }
 
