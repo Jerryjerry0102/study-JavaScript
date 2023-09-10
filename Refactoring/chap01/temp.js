@@ -2,6 +2,11 @@ import invoices from "./invoices.json" assert { type: "json" };
 import plays from "./plays.json" assert { type: "json" };
 
 function statement(invoice, plays) {
+  return renderPlainText(invoice, plays); //-> 본문 전체를 별도 함수로 추출
+}
+
+//-> 본문 전체를 별도 함수로 추출
+function renderPlainText(invoice, plays) {
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
   for (let perf of invoice.performances) {
