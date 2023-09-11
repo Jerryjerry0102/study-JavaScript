@@ -7,6 +7,7 @@ export default function createStatementData(invoice, plays) {
   return result;
 
   function enrichPerformance(aPerformance) {
+    const calculator = new PerformanceCalculator(aPerformance);
     const result = Object.assign({}, aPerformance);
     result.play = playFor(result);
     result.amount = amountFor(result);
@@ -56,5 +57,12 @@ export default function createStatementData(invoice, plays) {
 
   function totalVolumeCredits(data) {
     return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
+  }
+}
+
+//-> 공연료 계산기 클래스
+class PerformanceCalculator {
+  constructor(aPerformance) {
+    this.performance = aPerformance;
   }
 }
