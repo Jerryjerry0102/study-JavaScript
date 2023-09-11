@@ -3,14 +3,15 @@ import plays from "./plays.json" assert { type: "json" };
 
 function statement(invoice, plays) {
   const statementData = {};
-  return renderPlainText(statementData, invoice, plays); //-> 중간 데이터 구조를 인수로 전달
+  statementData.customer = invoice.customer; //-> 고객 데이터를 중간 데이터로 옮김
+  statementData.performances = invoice.performances; //-> 고객 데이터를 중간 데이터로 옮김
+  return renderPlainText(statementData, plays); //-> 필요 없어진 인수 삭제
 }
 
-function renderPlainText(data, invoice, plays) {
-  //-> 중간 데이터 구조를 인수로 전달
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+function renderPlainText(data, plays) {
+  let result = `청구 내역 (고객명: ${data.customer})\n`; //-> 고객 데이터를 중간 데이터로부터 얻음
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     }석)\n`;
@@ -22,7 +23,7 @@ function renderPlainText(data, invoice, plays) {
 
   function totalAmount() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
@@ -30,7 +31,7 @@ function renderPlainText(data, invoice, plays) {
 
   function totalVolumeCredits() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += volumeCreditsFor(perf);
     }
     return result;
