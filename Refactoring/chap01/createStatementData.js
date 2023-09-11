@@ -8,7 +8,6 @@ export default function createStatementData(invoice, plays) {
 
   function enrichPerformance(aPerformance) {
     const calculator = createPerformanceCalculator(
-      //-> 생성자 대신 팩터리 함수 이용
       aPerformance,
       playFor(aPerformance)
     );
@@ -43,7 +42,14 @@ export default function createStatementData(invoice, plays) {
 }
 
 function createPerformanceCalculator(aPerformance, aPlay) {
-  return new PerformanceCalculator(aPerformance, aPlay);
+  switch (aPlay.type) {
+    case "tragedy":
+      return new TragedyCalculator(aPerformance, aPlay);
+    case "comedy":
+      return new ComedyCalculator(aPerformance, aPlay);
+    default:
+      throw new Error(`알 수 없는 장르": ${aPlay.type}`);
+  }
 }
 
 class PerformanceCalculator {
@@ -84,3 +90,6 @@ class PerformanceCalculator {
     return result;
   }
 }
+
+class TragedyCalculator extends PerformanceCalculator {}
+class ComedyCalculator extends PerformanceCalculator {}
