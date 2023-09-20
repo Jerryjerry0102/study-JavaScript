@@ -1,4 +1,4 @@
-export default class Producer {
+module.exports = class Producer {
   #province;
   #cost;
   #name;
@@ -27,4 +27,4 @@ export default class Producer {
     this.#province.totalProduction += newProduction - this.#production;
     this.#production = newProduction;
   }
-}
+};
