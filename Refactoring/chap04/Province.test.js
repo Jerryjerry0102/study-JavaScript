@@ -14,8 +14,14 @@ describe("province", () => {
     };
   }
 
+  let asia;
+  beforeEach(() => {
+    asia = new Province(sampleProvinceData());
+  });
   test("shortfall", () => {
-    const asia = new Province(sampleProvinceData()); // 1. 픽스처 설정
-    expect(asia.shortfall).toBe(5); // 2. 검증
+    expect(asia.shortfall).toBe(5);
+  });
+  test("profit", () => {
+    expect(asia.profit).toBe(230);
   });
 });
