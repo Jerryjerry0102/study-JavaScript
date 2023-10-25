@@ -7,8 +7,19 @@ class Bag {
     this.#invitation = invitation;
   }
 
+  hold(ticket) {
+    if (this.#hasInvitation()) {
+      this.#setTicket(ticket);
+      return 0;
+    } else {
+      this.#setTicket(ticket);
+      this.#minusAmount(ticket.fee);
+      return ticket.fee;
+    }
+  }
+
   // 초대장 보유 여부
-  hasInvitation() {
+  #hasInvitation() {
     return this.#invitation !== null;
   }
 
@@ -18,11 +29,11 @@ class Bag {
   }
 
   // 초대장을 티켓으로 교환
-  set ticket(ticket) {
+  #setTicket(ticket) {
     this.#ticket = ticket;
   }
 
-  minusAmount(amount) {
+  #minusAmount(amount) {
     this.#amount -= amount;
   }
 
