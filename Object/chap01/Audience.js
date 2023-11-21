@@ -5,7 +5,9 @@ class Audience {
     this.#bag = bag;
   }
 
-  buy(ticket) {
-    return this.#bag.hold(ticket);
+  getBag() {
+    return this.#bag;
   }
 }
+
+export default Audience;
