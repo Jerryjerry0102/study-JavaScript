@@ -7,7 +7,11 @@ class TicketOffice {
     this.#tickets = tickets;
   }
 
-  getTicket() {
+  sellTicketTo(audience) {
+    this.#plusAmount(audience.buy(this.#getTicket()));
+  }
+
+  #getTicket() {
     return this.#tickets.shift();
   }
 
@@ -15,7 +19,7 @@ class TicketOffice {
     this.#amount -= amount;
   }
 
-  plusAmount(amount) {
+  #plusAmount(amount) {
     this.#amount += amount;
   }
 }
