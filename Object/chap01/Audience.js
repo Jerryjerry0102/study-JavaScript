@@ -5,8 +5,15 @@ class Audience {
     this.#bag = bag;
   }
 
-  getBag() {
-    return this.#bag;
+  buy(ticket) {
+    if (this.#bag.hasInvitation()) {
+      this.#bag.setTicket(ticket);
+      return 0;
+    } else {
+      this.#bag.minusAmount(ticket.getFee());
+      this.#bag.setTicket(ticket);
+      return ticket.getFee();
+    }
   }
 }
 

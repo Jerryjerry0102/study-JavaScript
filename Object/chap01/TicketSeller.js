@@ -5,8 +5,8 @@ class TicketSeller {
     this.#ticketoffice = ticketOffice;
   }
 
-  getTicketOffice() {
-    return this.#ticketoffice;
+  sellTo(audience) {
+    this.#ticketoffice.plusAmount(audience.buy(this.#ticketoffice.getTicket()));
   }
 }
 
