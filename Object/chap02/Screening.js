@@ -1,4 +1,5 @@
 import Reservation from "./Reservation.js";
+import Time from "./Time.js";
 
 class Screening {
   #movie; // 상영할 영화
@@ -7,7 +8,7 @@ class Screening {
 
   constructor(movie, sequence, whenScreened) {
     this.#movie = movie;
-    this.#sequence = sequence; // 순번
+    this.#sequence = sequence;
     this.#whenScreened = whenScreened;
   }
 
@@ -21,11 +22,18 @@ class Screening {
   }
 
   #calculateFee(audienceCount) {
-    return this.#movie.getFee().times(audienceCount);
+    return this.#movie.calculateMovieFee(this).times(audienceCount);
+  }
+
+  getDay() {
+    return this.#whenScreened.getDay();
   }
 
   getStartTime() {
-    return this.#whenScreened;
+    return new Time(
+      this.#whenScreened.getHours(),
+      this.#whenScreened.getMinutes()
+    );
   }
 
   isSequence(sequence) {

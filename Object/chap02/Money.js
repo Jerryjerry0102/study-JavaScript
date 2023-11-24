@@ -5,12 +5,16 @@ class Money {
     this.#amount = amount;
   }
 
+  getAmount() {
+    return this.#amount;
+  }
+
   plus(amount) {
-    return new Money(this.#amount + amount);
+    return new Money(this.#amount + amount.getAmount());
   }
 
   minus(amount) {
-    return new Money(this.#amount - amount);
+    return new Money(this.#amount - amount.getAmount());
   }
 
   times(percent) {
@@ -18,11 +22,11 @@ class Money {
   }
 
   isLessThan(other) {
-    return this.#amount < other;
+    return this.#amount < other.getAmount();
   }
 
   isGreaterThanOrEqual(other) {
-    return this.#amount > other;
+    return this.#amount > other.getAmount();
   }
 }
 
