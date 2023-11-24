@@ -51,8 +51,11 @@ class App {
       )
     );
 
+    const starWars = new Movie("스타워즈", 210, new Money(10000));
+
     new Screening(avatar, 2, new Date(2023, 11, 28, 13, 30)).reserve("tim", 3);
     new Screening(titanic, 5, new Date(2023, 11, 12, 14, 30)).reserve("tom", 2);
+    new Screening(starWars, 1, new Date(2023, 11, 1, 10, 30)).reserve("tam", 3);
   }
 }
 
