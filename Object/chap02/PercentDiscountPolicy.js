@@ -1,6 +1,6 @@
-import DiscountPolicy from "./DiscountPolicy.js";
+import DefaultDiscountPolicy from "./DefaultDiscountPolicy.js";
 
-class PercentDiscountPolicy extends DiscountPolicy {
+class PercentDiscountPolicy extends DefaultDiscountPolicy {
   #percent;
 
   constructor(percent, ...conditions) {

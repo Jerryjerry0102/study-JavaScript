@@ -1,8 +1,7 @@
-import DiscountPolicy from "./DiscountPolicy.js";
 import Money from "./Money.js";
 
-class NoneDiscountPolicy extends DiscountPolicy {
-  getDiscountAmount() {
+class NoneDiscountPolicy {
+  calculateDiscountAmount() {
     return new Money(0);
   }
 }

@@ -1,6 +1,6 @@
 import Money from "./Money.js";
 
-class DiscountPolicy {
+class DefaultDiscountPolicy {
   #conditions = [];
 
   constructor(...conditions) {
@@ -22,4 +22,4 @@ class DiscountPolicy {
   }
 }
 
-export default DiscountPolicy;
+export default DefaultDiscountPolicy;
