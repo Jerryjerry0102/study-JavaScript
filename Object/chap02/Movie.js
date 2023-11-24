@@ -4,7 +4,7 @@ class Movie {
   #fee;
   #discountPolicy;
 
-  constructor(title, runningTime, fee, discountPolicy = null) {
+  constructor(title, runningTime, fee, discountPolicy) {
     this.#title = title;
     this.#runningTime = runningTime;
     this.#fee = fee;
@@ -16,10 +16,6 @@ class Movie {
   }
 
   calculateMovieFee(screening) {
-    if (this.#discountPolicy === null) {
-      return this.#fee;
-    }
-
     return this.#fee.minus(
       this.#discountPolicy.calculateDiscountAmount(screening)
     );

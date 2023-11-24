@@ -2,6 +2,7 @@ import AmountDiscountPolicy from "./AmountDiscountPolicy.js";
 import DAY_OF_WEEK from "./DayOfWeek.js";
 import Money from "./Money.js";
 import Movie from "./Movie.js";
+import NoneDiscountPolicy from "./NoneDiscountPolicy.js";
 import PercentDiscountPolicy from "./PercentDiscountPolicy.js";
 import PeriodCondition from "./PeriodCondition.js";
 import Screening from "./Screening.js";
@@ -51,7 +52,12 @@ class App {
       )
     );
 
-    const starWars = new Movie("스타워즈", 210, new Money(10000));
+    const starWars = new Movie(
+      "스타워즈",
+      210,
+      new Money(10000),
+      new NoneDiscountPolicy()
+    );
 
     new Screening(avatar, 2, new Date(2023, 11, 28, 13, 30)).reserve("tim", 3);
     new Screening(titanic, 5, new Date(2023, 11, 12, 14, 30)).reserve("tom", 2);
