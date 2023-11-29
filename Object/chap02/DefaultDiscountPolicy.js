@@ -1,9 +1,11 @@
+import DiscountPolicy from "./DiscountPolicy.js";
 import Money from "./Money.js";
 
-class DefaultDiscountPolicy {
+class DefaultDiscountPolicy extends DiscountPolicy {
   #conditions = [];
 
   constructor(...conditions) {
+    super(...conditions);
     this.#conditions = conditions;
   }
 

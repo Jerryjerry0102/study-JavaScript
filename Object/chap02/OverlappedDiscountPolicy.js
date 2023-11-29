@@ -1,9 +1,11 @@
+import DiscountPolicy from "./DiscountPolicy.js";
 import Money from "./Money.js";
 
-class OverlappedDiscountPolicy {
+class OverlappedDiscountPolicy extends DiscountPolicy {
   #discountPolicies = [];
 
   constructor(...discountPolicies) {
+    super();
     this.#discountPolicies = discountPolicies;
   }
 
